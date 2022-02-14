@@ -38,4 +38,7 @@ public extension Date {
         return result
     }
 
+    public var epochMilliseconds: Int64 {
+        Int64((self.timeIntervalSince1970 * 1000.0).rounded())
+    }
 }

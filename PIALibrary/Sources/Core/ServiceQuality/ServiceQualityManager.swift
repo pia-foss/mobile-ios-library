@@ -38,35 +38,35 @@ public class ServiceQualityManager: NSObject {
      * e.g. Manual for user-related actions, Automatic for reconnections, etc.
      */
     private enum KPIConnectionSource: String {
-        case Automatic
-        case Manual
+        case automatic = "Automatic"
+        case manual = "Manual"
     }
 
     /**
      * Enum defining the supported connection related events.
      */
     private enum KPIConnectionEvent: String {
-        case VPN_CONNECTION_ATTEMPT
-        case VPN_CONNECTION_CANCELLED
-        case VPN_CONNECTION_ESTABLISHED
+        case vpnConnectionAttempt = "VPN_CONNECTION_ATTEMPT"
+        case vpnConnectionCancelled = "VPN_CONNECTION_CANCELLED"
+        case vpnConnectionEstablished = "VPN_CONNECTION_ESTABLISHED"
     }
 
     /**
      * Enum defining the supported vpn protocols to report.
      */
     private enum KPIVpnProtocol: String {
-        case OpenVPN
-        case WireGuard
-        case IPSec
+        case ovpn = "OpenVPN"
+        case wireguard = "WireGuard"
+        case ipsec = "IPSec"
     }
 
     /**
      * Enum defining the supported vpn protocols to report.
      */
     private enum KPIEventPropertyKey: String {
-        case connection_source
-        case user_agent
-        case vpn_protocol
+        case connectionSource = "connection_source"
+        case userAgent = "user_agent"
+        case vpnProtocol = "vpn_protocol"
     }
 
     
@@ -147,14 +147,14 @@ public class ServiceQualityManager: NSObject {
     
     public func connectionAttemptEvent() {
         let connectionSource = connectionSource()
-        if connectionSource == .Manual && isAppActive {
+        if connectionSource == .manual && isAppActive {
             let event = KPIClientEvent(
                 eventCountry: nil,
-                eventName: KPIConnectionEvent.VPN_CONNECTION_ATTEMPT.rawValue,
+                eventName: KPIConnectionEvent.vpnConnectionAttempt.rawValue,
                 eventProperties: [
-                    KPIEventPropertyKey.connection_source.rawValue: connectionSource.rawValue,
-                    KPIEventPropertyKey.user_agent.rawValue: PIAWebServices.userAgent,
-                    KPIEventPropertyKey.vpn_protocol.rawValue: currentProtocol().rawValue
+                    KPIEventPropertyKey.connectionSource.rawValue: connectionSource.rawValue,
+                    KPIEventPropertyKey.userAgent.rawValue: PIAWebServices.userAgent,
+                    KPIEventPropertyKey.vpnProtocol.rawValue: currentProtocol().rawValue
                 ],
                 eventInstant: Kotlinx_datetimeInstant.companion.fromEpochMilliseconds(epochMilliseconds: Date().epochMilliseconds)
             )
@@ -166,14 +166,14 @@ public class ServiceQualityManager: NSObject {
 
     public func connectionEstablishedEvent() {
         let connectionSource = connectionSource()
-        if connectionSource == .Manual && isAppActive {
+        if connectionSource == .manual && isAppActive {
             let event = KPIClientEvent(
                 eventCountry: nil,
-                eventName: KPIConnectionEvent.VPN_CONNECTION_ESTABLISHED.rawValue,
+                eventName: KPIConnectionEvent.vpnConnectionEstablished.rawValue,
                 eventProperties: [
-                    KPIEventPropertyKey.connection_source.rawValue: connectionSource.rawValue,
-                    KPIEventPropertyKey.user_agent.rawValue: PIAWebServices.userAgent,
-                    KPIEventPropertyKey.vpn_protocol.rawValue: currentProtocol().rawValue
+                    KPIEventPropertyKey.connectionSource.rawValue: connectionSource.rawValue,
+                    KPIEventPropertyKey.userAgent.rawValue: PIAWebServices.userAgent,
+                    KPIEventPropertyKey.vpnProtocol.rawValue: currentProtocol().rawValue
                 ],
                 eventInstant: Kotlinx_datetimeInstant.companion.fromEpochMilliseconds(epochMilliseconds: Date().epochMilliseconds)
             )
@@ -186,14 +186,14 @@ public class ServiceQualityManager: NSObject {
     
     public func connectionCancelledEvent() {
         let disconnectionSource = disconnectionSource()
-        if disconnectionSource == .Manual && isAppActive {
+        if disconnectionSource == .manual && isAppActive {
             let event = KPIClientEvent(
                 eventCountry: nil,
-                eventName: KPIConnectionEvent.VPN_CONNECTION_CANCELLED.rawValue,
+                eventName: KPIConnectionEvent.vpnConnectionCancelled.rawValue,
                 eventProperties: [
-                    KPIEventPropertyKey.connection_source.rawValue: disconnectionSource.rawValue,
-                    KPIEventPropertyKey.user_agent.rawValue: PIAWebServices.userAgent,
-                    KPIEventPropertyKey.vpn_protocol.rawValue: currentProtocol().rawValue
+                    KPIEventPropertyKey.connectionSource.rawValue: disconnectionSource.rawValue,
+                    KPIEventPropertyKey.userAgent.rawValue: PIAWebServices.userAgent,
+                    KPIEventPropertyKey.vpnProtocol.rawValue: currentProtocol().rawValue
                 ],
                 eventInstant: Kotlinx_datetimeInstant.companion.fromEpochMilliseconds(epochMilliseconds: Date().epochMilliseconds)
             )
@@ -215,27 +215,27 @@ public class ServiceQualityManager: NSObject {
     
     private func connectionSource() -> KPIConnectionSource {
         return Client.configuration.connectedManually ?
-        KPIConnectionSource.Manual :
-        KPIConnectionSource.Automatic
+        KPIConnectionSource.manual :
+        KPIConnectionSource.automatic
     }
 
     private func disconnectionSource() -> KPIConnectionSource {
         return Client.configuration.disconnectedManually ?
-        KPIConnectionSource.Manual :
-        KPIConnectionSource.Automatic
+        KPIConnectionSource.manual :
+        KPIConnectionSource.automatic
     }
 
     private func currentProtocol() -> KPIVpnProtocol {
         
         switch Client.providers.vpnProvider.currentVPNType {
         case IKEv2Profile.vpnType:
-            return KPIVpnProtocol.IPSec
+            return KPIVpnProtocol.ipsec
         case PIATunnelProfile.vpnType:
-            return KPIVpnProtocol.OpenVPN
+            return KPIVpnProtocol.ovpn
         case PIAWGTunnelProfile.vpnType:
-            return KPIVpnProtocol.WireGuard
+            return KPIVpnProtocol.wireguard
         default:
-            return KPIVpnProtocol.IPSec
+            return KPIVpnProtocol.ipsec
         }
     }
 }

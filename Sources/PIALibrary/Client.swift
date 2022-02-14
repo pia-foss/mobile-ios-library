@@ -51,8 +51,8 @@ public final class Client {
     
     static var webServices: WebServices = PIAWebServices()
 
-    #if os(iOS)
-    static var store: InAppProvider = AppStoreProvider()
+    #if os(iOS) || os(tvOS)
+    public static var store: InAppProvider = AppStoreProvider()
     #endif
 
     // MARK: Initialization
@@ -139,12 +139,5 @@ public final class Client {
      */
     public static func ping(servers: [Server]) {
         ServersPinger.shared.ping(withDestinations: servers)
-    }
-
-    /**
-     Returns the Signup Storyboard owned by the library to be used by the clients
-     */
-    public static func signupStoryboard() -> UIStoryboard {
-        UIStoryboard(name: "Signup", bundle: Bundle.module)
     }
 }

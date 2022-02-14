@@ -19,7 +19,7 @@
 //  You should have received a copy of the GNU General Public License along with the Private
 //  Internet Access iOS Client.  If not, see <https://www.gnu.org/licenses/>.
 //
-
+#if os(iOS)
 import Foundation
 import TunnelKitOpenVPN
 
@@ -45,3 +45,4 @@ extension OpenVPNProvider.Configuration: VPNCustomConfiguration {
         return true
     }
 }
+#endif

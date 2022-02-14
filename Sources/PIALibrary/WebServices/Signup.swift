@@ -22,7 +22,7 @@
 
 import Foundation
 
-struct Signup {
+public struct Signup {
     let email: String
 
     let receipt: Data
@@ -37,7 +37,7 @@ struct Signup {
     }
 }
 
-#if os(iOS)
+#if os(iOS) || os(tvOS)
 extension SignupRequest {
     func signup(withStore store: InAppProvider) -> Signup? {
         guard let receipt = store.paymentReceipt else {

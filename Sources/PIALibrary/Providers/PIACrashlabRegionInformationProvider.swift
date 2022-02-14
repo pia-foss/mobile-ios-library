@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import PIACSI
+import csi
 
 class PIACSIRegionInformationProvider : ICSIProvider {
     

@@ -22,7 +22,7 @@
 
 import Foundation
 
-class PurchasePlan: NSObject {
+public class PurchasePlan: NSObject {
     private class DummyInAppProduct: InAppProduct {
         let identifier = ""
         
@@ -47,50 +47,50 @@ class PurchasePlan: NSObject {
         return f
     }()
     
-    static let dummy = PurchasePlan()
+    public static let dummy = PurchasePlan()
     
-    var isDummy: Bool {
+    public var isDummy: Bool {
         return (self == .dummy)
     }
     
-    let plan: Plan
+    public let plan: Plan
     
-    let product: InAppProduct
+    public let product: InAppProduct
     
-    let monthlyFactor: Double
+    public let monthlyFactor: Double
     
-    var title = ""
+    public var title = ""
 
-    var detail = ""
+    public var detail = ""
 
-    var bestValue = false
+    public var bestValue = false
     
-    var price: NSNumber {
+    public var price: NSNumber {
         return product.price
     }
     
-    var monthlyPrice: NSNumber {
+    public var monthlyPrice: NSNumber {
         return NSDecimalNumber(value: price.doubleValue / monthlyFactor)
     }
     
-    var priceString: String {
+    public var priceString: String {
         return PurchasePlan.string(forPrice: price, locale: product.priceLocale)
     }
 
-    var monthlyPriceString: String {
+    public var monthlyPriceString: String {
         return PurchasePlan.string(forPrice: monthlyPrice, locale: product.priceLocale)
     }
 
-    var accessibleMonthlyPriceString: String {
+    public var accessibleMonthlyPriceString: String {
         return PurchasePlan.accessibleString(forPrice: monthlyPrice, locale: product.priceLocale)
     }
 
-    static func string(forPrice price: NSNumber, locale: Locale) -> String {
+    public static func string(forPrice price: NSNumber, locale: Locale) -> String {
         formatter.locale = locale
         return formatter.string(from: price)!
     }
 
-    static func accessibleString(forPrice price: NSNumber, locale: Locale) -> String {
+    public static func accessibleString(forPrice price: NSNumber, locale: Locale) -> String {
         formatter.locale = locale
         return formatter.string(from: price)!
     }
@@ -101,7 +101,7 @@ class PurchasePlan: NSObject {
         monthlyFactor = 1.0
     }
 
-    init(plan: Plan, product: InAppProduct, monthlyFactor: Double) {
+    public init(plan: Plan, product: InAppProduct, monthlyFactor: Double) {
         precondition(monthlyFactor > 0.0)
         self.plan = plan
         self.product = product

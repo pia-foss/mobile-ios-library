@@ -40,7 +40,7 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
 
     // MARK: AccountProvider
     
-    #if os(iOS)
+    #if os(iOS) || os(tvOS)
     var planProducts: [Plan: InAppProduct]? {
         guard let products = accessedStore.availableProducts else {
             return nil
@@ -137,7 +137,7 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
         return accessedDatabase.secure.passwordReference(for: username)
     }
     
-    #if os(iOS)
+    #if os(iOS) || os(tvOS)
     var lastSignupRequest: SignupRequest? {
         guard let email = accessedDatabase.plain.lastSignupEmail else {
             return nil
@@ -356,7 +356,7 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
         }
     }
     
-    #if os(iOS)
+    #if os(iOS) || os(tvOS)
     func subscriptionInformation(_ callback: LibraryCallback<AppStoreInformation>?) {
         log.debug("Fetching available product keys...")
         

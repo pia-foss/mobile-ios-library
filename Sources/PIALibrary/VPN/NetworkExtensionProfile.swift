@@ -91,7 +91,7 @@ extension NetworkExtensionProfile {
                 self.configureDefaultOnDemandRules(force, vpn, configuration)
             }
         }
-        
+        #if os(iOS)
         if #available(iOS 14.2, *) {
             let selectedProtocol = Client.preferences.vpnType
             let isWireGuard = selectedProtocol == PIAWGTunnelProfile.vpnType
@@ -112,6 +112,7 @@ extension NetworkExtensionProfile {
                 }
             }
         }
+        #endif
         
         log.debug("Configured with server: \(protocolConfiguration.serverAddress!)")
         log.debug("Username: \(protocolConfiguration.username!)")
@@ -209,6 +210,7 @@ extension NetworkExtensionProfile {
     }
     
     private func configureOnDemandOnCellularNetworks(_ vpn: NEVPNManager) {
+        #if os(iOS)
         let rules = Client.preferences.nmtGenericRules
         let cellularRule = rules[NMTType.cellular.rawValue]
         
@@ -226,6 +228,7 @@ extension NetworkExtensionProfile {
             ruleIgnore.interfaceTypeMatch = .cellular
             vpn.onDemandRules?.append(ruleIgnore)
         }
+        #endif
     }
     
     private func configureDefaultOnDemandRules(_ force: Bool,

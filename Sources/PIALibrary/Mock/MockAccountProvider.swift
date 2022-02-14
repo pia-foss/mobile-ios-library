@@ -143,7 +143,7 @@ public class MockAccountProvider: AccountProvider, WebServicesConsumer {
     
     // MARK: AccountProvider
 
-    #if os(iOS)
+    #if os(iOS) || os(tvOS)
     /// :nodoc:
     public var planProducts: [Plan : InAppProduct]? {
         return delegate.planProducts
@@ -198,7 +198,7 @@ public class MockAccountProvider: AccountProvider, WebServicesConsumer {
         }
     }
         
-    #if os(iOS)
+    #if os(iOS) || os(tvOS)
     /// :nodoc:
     public var lastSignupRequest: SignupRequest? {
         return delegate.lastSignupRequest
@@ -276,7 +276,7 @@ public class MockAccountProvider: AccountProvider, WebServicesConsumer {
         delegate.cleanDatabase()
     }
     
-    #if os(iOS)
+    #if os(iOS) || os(tvOS)
     /// :nodoc:
     public func listPlanProducts(_ callback: (([Plan : InAppProduct]?, Error?) -> Void)?) {
         delegate.listPlanProducts(callback)

@@ -62,22 +62,22 @@ extension Client {
 
         private let debugLogBaseUrls: [Client.Environment: String]
 
-        var baseUrl: String {
+        public var baseUrl: String {
             guard let url = baseUrls[Client.environment] else {
                 fatalError("Base URL not found for environment \(Client.environment). Use setBaseURL(_:for:) to fix the issue.")
             }
             return url
         }
 
-        let tosPath: String
+        public let tosPath: String
         
-        var tosUrl: String {
+        public var tosUrl: String {
             return "\(baseUrl)/\(tosPath)"
         }
         
-        let privacyPath: String
+        public let privacyPath: String
         
-        var privacyUrl: String {
+        public var privacyUrl: String {
             return "\(baseUrl)/\(privacyPath)"
         }
         
@@ -94,7 +94,7 @@ extension Client {
         /// Downloads server updates regularly.
         public var enablesServerUpdates: Bool
         
-        let defaultServersConfiguration: ServersBundle.Configuration
+        public let defaultServersConfiguration: ServersBundle.Configuration
 
         /// Sets the delay after which to re-schedule servers update when network is down.
         public var serversUpdateWhenNetworkDownDelay: Int
@@ -117,7 +117,7 @@ extension Client {
         /// - Seealso: `Client.Daemons`
         public var enablesConnectivityUpdates: Bool
 
-        let connectivityVPNLag: Int
+        public let connectivityVPNLag: Int
         
         /// Sets the timeout for connectivity checks.
         public var connectivityTimeout: Int
@@ -140,11 +140,11 @@ extension Client {
         /// Sets the rsa certificate to use for pinning puposes.
         public var rsa4096Certificate: String?
 
-        let maceHostname: String
+        public let maceHostname: String
         
-        let macePort: UInt16
+        public let macePort: UInt16
 
-        let maceDelay: Int
+        public let maceDelay: Int
 
         let sessionManager: Session
 
@@ -158,7 +158,7 @@ extension Client {
         /// The default delay of VPN reconnection attempts.
         public var vpnReconnectionDelay: Int
         
-        #if os(iOS)
+        #if os(iOS) || os(tvOS)
         
         // MARK: InApp
         
@@ -250,7 +250,7 @@ extension Client {
             urlscfg.urlCache = nil
             sessionManager = Session(configuration: urlscfg)
             
-            #if os(iOS)
+            #if os(iOS) || os(tvOS)
             inAppPlans = [:]
             eligibleForTrial = true
             #endif
@@ -322,7 +322,7 @@ extension Client {
             return true
         }
         
-        #if os(iOS)
+        #if os(iOS) || os(tvOS)
         
         // MARK: InApp
         

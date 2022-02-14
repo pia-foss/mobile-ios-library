@@ -27,28 +27,71 @@ import SwiftyBeaver
 private let log = SwiftyBeaver.self
 
 public class ServiceQualityManager: NSObject {
-    
-    private var kpiToken = ""
+
     public static let shared = ServiceQualityManager()
+    private let kpiPreferenceName = "PIA_KPI_PREFERENCE_NAME"
     private var kpiManager: KPIAPI?
     private var isAppActive = true
+
+    /**
+     * Enum defining the different connection sources.
+     * e.g. Manual for user-related actions, Automatic for reconnections, etc.
+     */
+    private enum KPIConnectionSource: String {
+        case Automatic
+        case Manual
+    }
+
+    /**
+     * Enum defining the supported connection related events.
+     */
+    private enum KPIConnectionEvent: String {
+        case VPN_CONNECTION_ATTEMPT
+        case VPN_CONNECTION_CANCELLED
+        case VPN_CONNECTION_ESTABLISHED
+    }
+
+    /**
+     * Enum defining the supported vpn protocols to report.
+     */
+    private enum KPIVpnProtocol: String {
+        case OpenVPN
+        case WireGuard
+        case IPSec
+    }
+
+    /**
+     * Enum defining the supported vpn protocols to report.
+     */
+    private enum KPIEventPropertyKey: String {
+        case connection_source
+        case user_agent
+        case vpn_protocol
+    }
+
     
     public override init() {
         super.init()
         
         if Client.environment == .staging {
-            kpiToken = LibraryConstants.Elastic.stagingToken
             kpiManager = KPIBuilder()
-                .setAppVersion(appVersion: Macros.localizedVersionNumber())
                 .setKPIFlushEventMode(kpiSendEventMode: .perBatch)
                 .setKPIClientStateProvider(kpiClientStateProvider: PIAKPIStagingClientStateProvider())
+                .setEventTimeRoundGranularity(eventTimeRoundGranularity: KTimeUnit.hours)
+                .setEventTimeSendGranularity(eventSendTimeGranularity: KTimeUnit.milliseconds)
+                .setRequestFormat(requestFormat: KPIRequestFormat.kape)
+                .setPreferenceName(preferenceName: kpiPreferenceName)
+                .setUserAgent(userAgent: PIAWebServices.userAgent)
                 .build()
         } else {
-            kpiToken = LibraryConstants.Elastic.liveToken
             kpiManager = KPIBuilder()
-                .setAppVersion(appVersion: Macros.localizedVersionNumber())
                 .setKPIFlushEventMode(kpiSendEventMode: .perBatch)
                 .setKPIClientStateProvider(kpiClientStateProvider: PIAKPIClientStateProvider())
+                .setEventTimeRoundGranularity(eventTimeRoundGranularity: KTimeUnit.hours)
+                .setEventTimeSendGranularity(eventSendTimeGranularity: KTimeUnit.milliseconds)
+                .setRequestFormat(requestFormat: KPIRequestFormat.kape)
+                .setPreferenceName(preferenceName: kpiPreferenceName)
+                .setUserAgent(userAgent: PIAWebServices.userAgent)
                 .build()
         }
         
@@ -73,8 +116,13 @@ public class ServiceQualityManager: NSObject {
     }
 
     public func stop() {
-        kpiManager?.stop()
-        log.debug("KPI manager stopped")
+        kpiManager?.stop(callback: { error in
+            guard error == nil else {
+                log.error("\(error)")
+                return
+            }
+            log.debug("KPI manager stopped")
+        })
     }
     
     @objc private func appChangedState(with notification: Notification) {
@@ -89,29 +137,48 @@ public class ServiceQualityManager: NSObject {
     
     @objc private func flushEvents() {
         kpiManager?.flush(callback: { error in
-            guard error != nil else {
+            guard error == nil else {
+                log.error("\(error)")
                 return
             }
-            log.error("\(error)")
+            log.debug("KPI events flushed")
         })
     }
     
     public func connectionAttemptEvent() {
         let connectionSource = connectionSource()
-        if connectionSource == .manual && isAppActive {
-            let event = KPIClientEvent(eventCountry: nil, eventName: KPIConnectionEvent.vpnConnectionAttempt, eventProperties: KPIClientEvent.EventProperties(connectionSource: connectionSource, data: nil, preRelease: isPreRelease(), reason: nil, serverIdentifier: nil, userAgent: PIAWebServices.userAgent, vpnProtocol: currentProtocol()), eventToken: kpiToken)
+        if connectionSource == .Manual && isAppActive {
+            let event = KPIClientEvent(
+                eventCountry: nil,
+                eventName: KPIConnectionEvent.VPN_CONNECTION_ATTEMPT.rawValue,
+                eventProperties: [
+                    KPIEventPropertyKey.connection_source.rawValue: connectionSource.rawValue,
+                    KPIEventPropertyKey.user_agent.rawValue: PIAWebServices.userAgent,
+                    KPIEventPropertyKey.vpn_protocol.rawValue: currentProtocol().rawValue
+                ],
+                eventInstant: Kotlinx_datetimeInstant.companion.fromEpochMilliseconds(epochMilliseconds: Date().epochMilliseconds)
+            )
             kpiManager?.submit(event: event) { (error) in
-                log.debug("Event sent \(event)")
+                log.debug("KPI event submitted \(event)")
             }
         }
     }
 
     public func connectionEstablishedEvent() {
         let connectionSource = connectionSource()
-        if connectionSource == .manual && isAppActive {
-            let event = KPIClientEvent(eventCountry: nil, eventName: KPIConnectionEvent.vpnConnectionEstablished, eventProperties: KPIClientEvent.EventProperties(connectionSource: connectionSource, data: nil, preRelease: isPreRelease(), reason: nil, serverIdentifier: nil, userAgent: PIAWebServices.userAgent, vpnProtocol: currentProtocol()), eventToken: kpiToken)
+        if connectionSource == .Manual && isAppActive {
+            let event = KPIClientEvent(
+                eventCountry: nil,
+                eventName: KPIConnectionEvent.VPN_CONNECTION_ESTABLISHED.rawValue,
+                eventProperties: [
+                    KPIEventPropertyKey.connection_source.rawValue: connectionSource.rawValue,
+                    KPIEventPropertyKey.user_agent.rawValue: PIAWebServices.userAgent,
+                    KPIEventPropertyKey.vpn_protocol.rawValue: currentProtocol().rawValue
+                ],
+                eventInstant: Kotlinx_datetimeInstant.companion.fromEpochMilliseconds(epochMilliseconds: Date().epochMilliseconds)
+            )
             kpiManager?.submit(event: event) { (error) in
-                log.debug("Event sent \(event)")
+                log.debug("KPI event submitted \(event)")
             }
         }
     }
@@ -119,10 +186,19 @@ public class ServiceQualityManager: NSObject {
     
     public func connectionCancelledEvent() {
         let disconnectionSource = disconnectionSource()
-        if disconnectionSource == .manual && isAppActive {
-            let event = KPIClientEvent(eventCountry: nil, eventName: KPIConnectionEvent.vpnConnectionCancelled, eventProperties: KPIClientEvent.EventProperties(connectionSource: disconnectionSource, data: nil, preRelease: isPreRelease(), reason: nil, serverIdentifier: nil, userAgent: PIAWebServices.userAgent, vpnProtocol: currentProtocol()), eventToken: kpiToken)
+        if disconnectionSource == .Manual && isAppActive {
+            let event = KPIClientEvent(
+                eventCountry: nil,
+                eventName: KPIConnectionEvent.VPN_CONNECTION_CANCELLED.rawValue,
+                eventProperties: [
+                    KPIEventPropertyKey.connection_source.rawValue: disconnectionSource.rawValue,
+                    KPIEventPropertyKey.user_agent.rawValue: PIAWebServices.userAgent,
+                    KPIEventPropertyKey.vpn_protocol.rawValue: currentProtocol().rawValue
+                ],
+                eventInstant: Kotlinx_datetimeInstant.companion.fromEpochMilliseconds(epochMilliseconds: Date().epochMilliseconds)
+            )
             kpiManager?.submit(event: event) { (error) in
-                log.debug("Event sent \(event)")
+                log.debug("KPI event submitted \(event)")
             }
         }
     }
@@ -138,26 +214,28 @@ public class ServiceQualityManager: NSObject {
     }
     
     private func connectionSource() -> KPIConnectionSource {
-        return Client.configuration.connectedManually ? .manual : .automatic
+        return Client.configuration.connectedManually ?
+        KPIConnectionSource.Manual :
+        KPIConnectionSource.Automatic
     }
 
     private func disconnectionSource() -> KPIConnectionSource {
-        return Client.configuration.disconnectedManually ? .manual : .automatic
+        return Client.configuration.disconnectedManually ?
+        KPIConnectionSource.Manual :
+        KPIConnectionSource.Automatic
     }
 
     private func currentProtocol() -> KPIVpnProtocol {
         
         switch Client.providers.vpnProvider.currentVPNType {
         case IKEv2Profile.vpnType:
-            return KPIVpnProtocol.ipsec
+            return KPIVpnProtocol.IPSec
         case PIATunnelProfile.vpnType:
-            return KPIVpnProtocol.openvpn
+            return KPIVpnProtocol.OpenVPN
         case PIAWGTunnelProfile.vpnType:
-            return KPIVpnProtocol.wireguard
+            return KPIVpnProtocol.WireGuard
         default:
-            return KPIVpnProtocol.ipsec
+            return KPIVpnProtocol.IPSec
         }
-
     }
-
 }

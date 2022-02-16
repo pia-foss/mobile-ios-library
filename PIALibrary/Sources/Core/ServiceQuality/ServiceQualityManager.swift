@@ -32,7 +32,8 @@ public class ServiceQualityManager: NSObject {
     private let kpiPreferenceName = "PIA_KPI_PREFERENCE_NAME"
     private var kpiManager: KPIAPI?
     private var isAppActive = true
-
+    private var lastConnectionAttempt: TimeInterval = Date().timeIntervalSince1970
+    
     /**
      * Enum defining the different connection sources.
      * e.g. Manual for user-related actions, Automatic for reconnections, etc.
@@ -67,6 +68,7 @@ public class ServiceQualityManager: NSObject {
         case connectionSource = "connection_source"
         case userAgent = "user_agent"
         case vpnProtocol = "vpn_protocol"
+        case timeToConnect = "time_to_connect"
     }
 
     
@@ -103,6 +105,11 @@ public class ServiceQualityManager: NSObject {
                                                selector: #selector(appChangedState(with:)),
                                                name: UIApplication.didBecomeActiveNotification,
                                                object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(vpnStatusChanged(with:)),
+                                               name: .PIADaemonsDidUpdateVPNStatus,
+                                               object: nil)
 
     }
     
@@ -123,6 +130,15 @@ public class ServiceQualityManager: NSObject {
             }
             log.debug("KPI manager stopped")
         })
+    }
+    
+    @objc private func vpnStatusChanged(with notification: Notification) {
+        switch Client.providers.vpnProvider.vpnStatus {
+        case .connecting:
+            lastConnectionAttempt = Date().timeIntervalSince1970
+        default:
+            log.debug("KPI manager detected VPN status change")
+        }
     }
     
     @objc private func appChangedState(with notification: Notification) {
@@ -173,7 +189,8 @@ public class ServiceQualityManager: NSObject {
                 eventProperties: [
                     KPIEventPropertyKey.connectionSource.rawValue: connectionSource.rawValue,
                     KPIEventPropertyKey.userAgent.rawValue: PIAWebServices.userAgent,
-                    KPIEventPropertyKey.vpnProtocol.rawValue: currentProtocol().rawValue
+                    KPIEventPropertyKey.vpnProtocol.rawValue: currentProtocol().rawValue,
+                    KPIEventPropertyKey.timeToConnect.rawValue: "\(Date().timeIntervalSince1970 - lastConnectionAttempt)"
                 ],
                 eventInstant: Kotlinx_datetimeInstant.companion.fromEpochMilliseconds(epochMilliseconds: Date().epochMilliseconds)
             )

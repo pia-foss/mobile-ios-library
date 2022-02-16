@@ -32,7 +32,6 @@ public class ServiceQualityManager: NSObject {
     private let kpiPreferenceName = "PIA_KPI_PREFERENCE_NAME"
     private var kpiManager: KPIAPI?
     private var isAppActive = true
-    private var lastConnectionAttempt: TimeInterval = Date().timeIntervalSince1970
     
     /**
      * Enum defining the different connection sources.
@@ -105,11 +104,6 @@ public class ServiceQualityManager: NSObject {
                                                selector: #selector(appChangedState(with:)),
                                                name: UIApplication.didBecomeActiveNotification,
                                                object: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(vpnStatusChanged(with:)),
-                                               name: .PIADaemonsDidUpdateVPNStatus,
-                                               object: nil)
 
     }
     
@@ -130,15 +124,6 @@ public class ServiceQualityManager: NSObject {
             }
             log.debug("KPI manager stopped")
         })
-    }
-    
-    @objc private func vpnStatusChanged(with notification: Notification) {
-        switch Client.providers.vpnProvider.vpnStatus {
-        case .connecting:
-            lastConnectionAttempt = Date().timeIntervalSince1970
-        default:
-            log.debug("KPI manager detected VPN status change")
-        }
     }
     
     @objc private func appChangedState(with notification: Notification) {
@@ -190,7 +175,7 @@ public class ServiceQualityManager: NSObject {
                     KPIEventPropertyKey.connectionSource.rawValue: connectionSource.rawValue,
                     KPIEventPropertyKey.userAgent.rawValue: PIAWebServices.userAgent,
                     KPIEventPropertyKey.vpnProtocol.rawValue: currentProtocol().rawValue,
-                    KPIEventPropertyKey.timeToConnect.rawValue: "\(Date().timeIntervalSince1970 - lastConnectionAttempt)"
+                    KPIEventPropertyKey.timeToConnect.rawValue: timeToConnect()
                 ],
                 eventInstant: Kotlinx_datetimeInstant.companion.fromEpochMilliseconds(epochMilliseconds: Date().epochMilliseconds)
             )
@@ -254,5 +239,9 @@ public class ServiceQualityManager: NSObject {
         default:
             return KPIVpnProtocol.ipsec
         }
+    }
+    
+    private func timeToConnect() -> String {
+        return "\(VPNDaemon.shared.timeToConnect)"
     }
 }

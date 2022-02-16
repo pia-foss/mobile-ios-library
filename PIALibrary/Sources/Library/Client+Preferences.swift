@@ -379,7 +379,15 @@ extension Client {
                 accessedDatabase.plain.shareServiceQualityData = newValue
             }
         }
-
+        /// Store a date as a number when last VPN Connection was attempted.
+        public var lastVPNConnectionAttempt: Double {
+            get {
+                return accessedDatabase.plain.lastVPNConnectionAttempt
+            }
+            set {
+                accessedDatabase.plain.lastVPNConnectionAttempt = newValue
+            }
+        }
     }
 }
 

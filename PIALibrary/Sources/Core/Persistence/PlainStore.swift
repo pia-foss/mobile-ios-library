@@ -68,6 +68,8 @@ protocol PlainStore: class {
     var vpnCustomConfigurationMaps: [String: [String: Any]]? { get set }
 
     var lastKnownVpnStatus: VPNStatus { get set }
+    
+    var lastVPNConnectionAttempt: Double { get set }
 
     // MARK: Preferences
     

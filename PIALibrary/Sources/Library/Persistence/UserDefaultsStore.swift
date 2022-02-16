@@ -97,7 +97,8 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
         static let nmtGenericRules = "NMTGenericRules"
 
         static let shareServiceQualityData = "ShareServiceQualityData"
-
+        
+        static let lastVPNConnectionAttempt = "lastVPNConnectionAttempt"
     }
     
     private let backend: UserDefaults
@@ -409,7 +410,15 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
         }
 
     }
-
+    
+    var lastVPNConnectionAttempt: Double {
+        get {
+            return backend.double(forKey: Entries.lastVPNConnectionAttempt)
+        }
+        set {
+            backend.set(newValue, forKey: Entries.lastVPNConnectionAttempt)
+        }
+    }
     
     // MARK: Preferences
 

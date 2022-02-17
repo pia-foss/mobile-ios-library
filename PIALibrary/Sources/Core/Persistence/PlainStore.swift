@@ -70,6 +70,8 @@ protocol PlainStore: class {
     var lastKnownVpnStatus: VPNStatus { get set }
     
     var lastVPNConnectionAttempt: Double { get set }
+    
+    var timeToConnectVPN: Double { get set }
 
     // MARK: Preferences
     

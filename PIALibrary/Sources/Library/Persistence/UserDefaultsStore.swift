@@ -99,6 +99,8 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
         static let shareServiceQualityData = "ShareServiceQualityData"
         
         static let lastVPNConnectionAttempt = "lastVPNConnectionAttempt"
+        
+        static let timeToConnectVPN = "timeToConnectVPN"
     }
     
     private let backend: UserDefaults
@@ -417,6 +419,15 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
         }
         set {
             backend.set(newValue, forKey: Entries.lastVPNConnectionAttempt)
+        }
+    }
+    
+    var timeToConnectVPN: Double {
+        get {
+            return backend.double(forKey: Entries.timeToConnectVPN)
+        }
+        set {
+            backend.set(newValue, forKey: Entries.timeToConnectVPN)
         }
     }
     

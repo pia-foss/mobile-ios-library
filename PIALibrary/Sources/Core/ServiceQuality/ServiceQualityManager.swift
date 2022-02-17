@@ -242,6 +242,6 @@ public class ServiceQualityManager: NSObject {
     }
     
     private func timeToConnect() -> String {
-        return "\(VPNDaemon.shared.timeToConnect)"
+        return "\(Client.preferences.timeToConnectVPN)"
     }
 }

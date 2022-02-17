@@ -379,6 +379,7 @@ extension Client {
                 accessedDatabase.plain.shareServiceQualityData = newValue
             }
         }
+        
         /// Store a date as a number when last VPN Connection was attempted.
         public var lastVPNConnectionAttempt: Double {
             get {
@@ -386,6 +387,17 @@ extension Client {
             }
             set {
                 accessedDatabase.plain.lastVPNConnectionAttempt = newValue
+            }
+        }
+        
+        /// Store a decimal number which represents time (in seconds) between
+        /// connecting and connect state of VPNDaemon
+        public var timeToConnectVPN: Double {
+            get {
+                return accessedDatabase.plain.timeToConnectVPN
+            }
+            set {
+                accessedDatabase.plain.timeToConnectVPN = newValue
             }
         }
     }

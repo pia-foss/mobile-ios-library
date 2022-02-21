@@ -171,7 +171,7 @@ public class ServiceQualityManager: NSObject {
             let event = KPIClientEvent(
                 eventCountry: nil,
                 eventName: KPIConnectionEvent.vpnConnectionEstablished.rawValue,
-                eventProperties: connectionEstablisedEventProperties(),
+                eventProperties: createEstablishedEventProperties(),
                 eventInstant: Kotlinx_datetimeInstant.companion.fromEpochMilliseconds(epochMilliseconds: Date().epochMilliseconds)
             )
             kpiManager?.submit(event: event) { (error) in
@@ -236,7 +236,7 @@ public class ServiceQualityManager: NSObject {
         }
     }
     
-    private func connectionEstablisedEventProperties() -> [String: String] {
+    private func createEstablishedEventProperties() -> [String: String] {
         var eventProperties: [String: String] = [
             KPIEventPropertyKey.connectionSource.rawValue: connectionSource().rawValue,
             KPIEventPropertyKey.userAgent.rawValue: PIAWebServices.userAgent,
@@ -245,7 +245,7 @@ public class ServiceQualityManager: NSObject {
         if let appVersion = Macros.versionString(), let optedVersion = Client.preferences.versionServiceQualityOpted {
             switch optedVersion.versionCompare(appVersion) {
             case .orderedSame, .orderedDescending:
-                eventProperties[KPIEventPropertyKey.timeToConnect.rawValue] = timeToConnect()
+                eventProperties[KPIEventPropertyKey.timeToConnect.rawValue] = getTimeToConnect()
             default:
                 break
             }
@@ -253,7 +253,7 @@ public class ServiceQualityManager: NSObject {
         return eventProperties
     }
     
-    private func timeToConnect() -> String {
+    private func getTimeToConnect() -> String {
         return "\(Client.preferences.timeToConnectVPN)"
     }
 }

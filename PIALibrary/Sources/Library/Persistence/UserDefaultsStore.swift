@@ -98,7 +98,7 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
 
         static let shareServiceQualityData = "ShareServiceQualityData"
         
-        static let versionServiceQualityOpted = "versionServiceQualityOpted"
+        static let versionWhenServiceQualityOpted = "versionWhenServiceQualityOpted"
         
         static let lastVPNConnectionAttempt = "lastVPNConnectionAttempt"
         
@@ -527,12 +527,12 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
         }
     }
     
-    var versionServiceQualityOpted: String? {
+    var versionWhenServiceQualityOpted: String? {
         get {
-            return backend.string(forKey: Entries.versionServiceQualityOpted)
+            return backend.string(forKey: Entries.versionWhenServiceQualityOpted)
         }
         set {
-            backend.set(newValue, forKey: Entries.versionServiceQualityOpted)
+            backend.set(newValue, forKey: Entries.versionWhenServiceQualityOpted)
         }
     }
     
@@ -661,7 +661,7 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
         backend.removeObject(forKey: Entries.serverNetwork)
         backend.removeObject(forKey: Entries.signInWithAppleFakeEmail)
         backend.removeObject(forKey: Entries.shareServiceQualityData)
-        backend.removeObject(forKey: Entries.versionServiceQualityOpted)
+        backend.removeObject(forKey: Entries.versionWhenServiceQualityOpted)
         backend.synchronize()
     }
 

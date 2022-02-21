@@ -75,7 +75,7 @@ protocol PlainStore: class {
 
     // MARK: Service Quality
     
-    var versionServiceQualityOpted: String? { get set }
+    var versionWhenServiceQualityOpted: String? { get set }
     
     // MARK: Preferences
     

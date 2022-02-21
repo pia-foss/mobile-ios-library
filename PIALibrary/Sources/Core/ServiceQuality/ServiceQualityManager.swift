@@ -243,7 +243,7 @@ public class ServiceQualityManager: NSObject {
             KPIEventPropertyKey.vpnProtocol.rawValue: currentProtocol().rawValue
         ]
         if let appVersion = Macros.versionString(),
-           let optedVersion = Client.preferences.versionServiceQualityOpted,
+           let optedVersion = Client.preferences.versionWhenServiceQualityOpted,
            appVersion.isGreaterThanEqual(to: optedVersion) {
             eventProperties[KPIEventPropertyKey.timeToConnect.rawValue] = getTimeToConnect()
         }

@@ -68,7 +68,7 @@ private protocol PreferencesStore: class {
 
     var shareServiceQualityData: Bool { get set }
     
-    var versionServiceQualityOpted: String? { get set }
+    var versionWhenServiceQualityOpted: String? { get set }
 
     func vpnCustomConfiguration(for vpnType: String) -> VPNCustomConfiguration?
     
@@ -102,7 +102,7 @@ private extension PreferencesStore {
         ikeV2PacketSize = source.ikeV2PacketSize
         signInWithAppleFakeEmail = source.signInWithAppleFakeEmail
         shareServiceQualityData = source.shareServiceQualityData
-        versionServiceQualityOpted = source.versionServiceQualityOpted
+        versionWhenServiceQualityOpted = source.versionWhenServiceQualityOpted
         lastConnectedRegion = source.lastConnectedRegion
     }
 }
@@ -407,12 +407,12 @@ extension Client {
         }
         
         /// Store app version when user opted-in for service quality stats
-        public var versionServiceQualityOpted: String? {
+        public var versionWhenServiceQualityOpted: String? {
             get {
-                return accessedDatabase.plain.versionServiceQualityOpted
+                return accessedDatabase.plain.versionWhenServiceQualityOpted
             }
             set {
-                accessedDatabase.plain.versionServiceQualityOpted = newValue
+                accessedDatabase.plain.versionWhenServiceQualityOpted = newValue
             }
         }
     }
@@ -451,7 +451,7 @@ extension Client.Preferences {
             ikeV2PacketSize = 0
             signInWithAppleFakeEmail = nil
             shareServiceQualityData = false
-            versionServiceQualityOpted = nil
+            versionWhenServiceQualityOpted = nil
         }
 
         /**
@@ -541,7 +541,7 @@ extension Client.Preferences {
         public var shareServiceQualityData: Bool
         
         /// :nodoc:
-        public var versionServiceQualityOpted: String?
+        public var versionWhenServiceQualityOpted: String?
         
         /// :nodoc:
         public func vpnCustomConfiguration(for vpnType: String) -> VPNCustomConfiguration? {

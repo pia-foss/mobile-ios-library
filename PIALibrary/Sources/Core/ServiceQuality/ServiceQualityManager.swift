@@ -242,13 +242,10 @@ public class ServiceQualityManager: NSObject {
             KPIEventPropertyKey.userAgent.rawValue: PIAWebServices.userAgent,
             KPIEventPropertyKey.vpnProtocol.rawValue: currentProtocol().rawValue
         ]
-        if let appVersion = Macros.versionString(), let optedVersion = Client.preferences.versionServiceQualityOpted {
-            switch optedVersion.versionCompare(appVersion) {
-            case .orderedSame, .orderedDescending:
-                eventProperties[KPIEventPropertyKey.timeToConnect.rawValue] = getTimeToConnect()
-            default:
-                break
-            }
+        if let appVersion = Macros.versionString(),
+           let optedVersion = Client.preferences.versionServiceQualityOpted,
+           appVersion.isGreaterThanEqual(to: optedVersion) {
+            eventProperties[KPIEventPropertyKey.timeToConnect.rawValue] = getTimeToConnect()
         }
         return eventProperties
     }
@@ -259,6 +256,16 @@ public class ServiceQualityManager: NSObject {
 }
 
 private extension String {
+    
+    func isGreaterThanEqual(to version: String) -> Bool {
+        switch self.versionCompare(version) {
+        case .orderedSame, .orderedDescending:
+            return true
+        default:
+            return false
+        }
+    }
+    
     func versionCompare(_ otherVersion: String, versionDelimiter: String = ".") -> ComparisonResult {
         // split the versions by period a default delimiter (.)
         var versionComponents = self.components(separatedBy: versionDelimiter)

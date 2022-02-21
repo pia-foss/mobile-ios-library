@@ -244,7 +244,7 @@ public class ServiceQualityManager: NSObject {
         ]
         if let appVersion = Macros.versionString(),
            let optedVersion = Client.preferences.versionWhenServiceQualityOpted,
-           appVersion.isGreaterThanEqual(to: optedVersion) {
+           appVersion.isVersionGreaterThanEqual(to: optedVersion) {
             eventProperties[KPIEventPropertyKey.timeToConnect.rawValue] = getTimeToConnect()
         }
         return eventProperties
@@ -257,7 +257,7 @@ public class ServiceQualityManager: NSObject {
 
 private extension String {
     
-    func isGreaterThanEqual(to version: String) -> Bool {
+    func isVersionGreaterThanEqual(to version: String) -> Bool {
         switch self.versionCompare(version) {
         case .orderedSame, .orderedDescending:
             return true

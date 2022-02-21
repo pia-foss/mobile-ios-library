@@ -171,12 +171,7 @@ public class ServiceQualityManager: NSObject {
             let event = KPIClientEvent(
                 eventCountry: nil,
                 eventName: KPIConnectionEvent.vpnConnectionEstablished.rawValue,
-                eventProperties: [
-                    KPIEventPropertyKey.connectionSource.rawValue: connectionSource.rawValue,
-                    KPIEventPropertyKey.userAgent.rawValue: PIAWebServices.userAgent,
-                    KPIEventPropertyKey.vpnProtocol.rawValue: currentProtocol().rawValue,
-                    KPIEventPropertyKey.timeToConnect.rawValue: timeToConnect()
-                ],
+                eventProperties: connectionEstablisedEventProperties(),
                 eventInstant: Kotlinx_datetimeInstant.companion.fromEpochMilliseconds(epochMilliseconds: Date().epochMilliseconds)
             )
             kpiManager?.submit(event: event) { (error) in
@@ -241,7 +236,53 @@ public class ServiceQualityManager: NSObject {
         }
     }
     
+    private func connectionEstablisedEventProperties() -> [String: String] {
+        var eventProperties: [String: String] = [
+            KPIEventPropertyKey.connectionSource.rawValue: connectionSource().rawValue,
+            KPIEventPropertyKey.userAgent.rawValue: PIAWebServices.userAgent,
+            KPIEventPropertyKey.vpnProtocol.rawValue: currentProtocol().rawValue
+        ]
+        if let appVersion = Macros.versionString(), let optedVersion = Client.preferences.versionServiceQualityOpted {
+            switch optedVersion.versionCompare(appVersion) {
+            case .orderedSame, .orderedDescending:
+                eventProperties[KPIEventPropertyKey.timeToConnect.rawValue] = timeToConnect()
+            default:
+                break
+            }
+        }
+        return eventProperties
+    }
+    
     private func timeToConnect() -> String {
         return "\(Client.preferences.timeToConnectVPN)"
+    }
+}
+
+private extension String {
+    func versionCompare(_ otherVersion: String, versionDelimiter: String = ".") -> ComparisonResult {
+        // split the versions by period a default delimiter (.)
+        var versionComponents = self.components(separatedBy: versionDelimiter)
+        var otherVersionComponents = otherVersion.components(separatedBy: versionDelimiter)
+        
+        // then, find the difference of digit that we will zero pad
+        let zeroDiff = versionComponents.count - otherVersionComponents.count
+        
+        // if there are no differences, we don't need to do anything and use simple .compare
+        if zeroDiff == 0 {
+            // Same format, compare normally
+            return self.compare(otherVersion, options: .numeric)
+        } else {
+            // we populate an array of missing zero
+            let zeros = Array(repeating: "0", count: abs(zeroDiff))
+            // we add zero pad array to a version with a fewer period and zero.
+            if zeroDiff > 0 {
+                otherVersionComponents.append(contentsOf: zeros)
+            } else {
+                versionComponents.append(contentsOf: zeros)
+            }
+            // we use array components to build back our versions from components and compare them. This time it will have the same period and number of digit.
+            return versionComponents.joined(separator: versionDelimiter)
+                .compare(otherVersionComponents.joined(separator: versionDelimiter), options: .numeric)
+        }
     }
 }

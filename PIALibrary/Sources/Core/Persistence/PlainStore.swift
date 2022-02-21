@@ -73,6 +73,10 @@ protocol PlainStore: class {
     
     var timeToConnectVPN: Double { get set }
 
+    // MARK: Service Quality
+    
+    var versionServiceQualityOpted: String? { get set }
+    
     // MARK: Preferences
     
     var isPersistentConnection: Bool? { get set }

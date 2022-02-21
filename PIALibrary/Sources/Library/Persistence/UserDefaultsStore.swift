@@ -98,6 +98,8 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
 
         static let shareServiceQualityData = "ShareServiceQualityData"
         
+        static let versionServiceQualityOpted = "versionServiceQualityOpted"
+        
         static let lastVPNConnectionAttempt = "lastVPNConnectionAttempt"
         
         static let timeToConnectVPN = "timeToConnectVPN"
@@ -514,6 +516,8 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
         }
     }
     
+    // MARK: Service Quality
+    
     var shareServiceQualityData: Bool? {
         get {
             return backend.bool(forKey: Entries.shareServiceQualityData)
@@ -522,7 +526,16 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
             backend.set(newValue, forKey: Entries.shareServiceQualityData)
         }
     }
-
+    
+    var versionServiceQualityOpted: String? {
+        get {
+            return backend.string(forKey: Entries.versionServiceQualityOpted)
+        }
+        set {
+            backend.set(newValue, forKey: Entries.versionServiceQualityOpted)
+        }
+    }
+    
     //MARK: Networks
     var cachedNetworks: [String] {
         get {
@@ -648,6 +661,7 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
         backend.removeObject(forKey: Entries.serverNetwork)
         backend.removeObject(forKey: Entries.signInWithAppleFakeEmail)
         backend.removeObject(forKey: Entries.shareServiceQualityData)
+        backend.removeObject(forKey: Entries.versionServiceQualityOpted)
         backend.synchronize()
     }
 

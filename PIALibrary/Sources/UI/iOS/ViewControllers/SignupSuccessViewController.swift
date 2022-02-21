@@ -96,6 +96,7 @@ public class SignupSuccessViewController: AutolayoutViewController, BrandableNav
     @IBAction private func acceptShareData() {
         let preferences = Client.preferences.editable()
         preferences.shareServiceQualityData = true
+        preferences.versionServiceQualityOpted = Macros.versionString()
         preferences.commit()
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.3) {

@@ -67,6 +67,8 @@ private protocol PreferencesStore: class {
     var signInWithAppleFakeEmail: String? { get set }
 
     var shareServiceQualityData: Bool { get set }
+    
+    var versionServiceQualityOpted: String? { get set }
 
     func vpnCustomConfiguration(for vpnType: String) -> VPNCustomConfiguration?
     
@@ -100,6 +102,7 @@ private extension PreferencesStore {
         ikeV2PacketSize = source.ikeV2PacketSize
         signInWithAppleFakeEmail = source.signInWithAppleFakeEmail
         shareServiceQualityData = source.shareServiceQualityData
+        versionServiceQualityOpted = source.versionServiceQualityOpted
         lastConnectedRegion = source.lastConnectedRegion
     }
 }
@@ -369,16 +372,6 @@ extension Client {
                 accessedDatabase.plain.signInWithAppleFakeEmail = newValue
             }
         }
-
-        /// Shares anonymous data to the service quality library.
-        public fileprivate(set) var shareServiceQualityData: Bool {
-            get {
-                return accessedDatabase.plain.shareServiceQualityData ?? false
-            }
-            set {
-                accessedDatabase.plain.shareServiceQualityData = newValue
-            }
-        }
         
         /// Store a date as a number when last VPN Connection was attempted.
         public var lastVPNConnectionAttempt: Double {
@@ -398,6 +391,28 @@ extension Client {
             }
             set {
                 accessedDatabase.plain.timeToConnectVPN = newValue
+            }
+        }
+        
+        // MARK: Service Quality
+        
+        /// Shares anonymous data to the service quality library.
+        public fileprivate(set) var shareServiceQualityData: Bool {
+            get {
+                return accessedDatabase.plain.shareServiceQualityData ?? false
+            }
+            set {
+                accessedDatabase.plain.shareServiceQualityData = newValue
+            }
+        }
+        
+        /// Store app version when user opted-in for service quality stats
+        public var versionServiceQualityOpted: String? {
+            get {
+                return accessedDatabase.plain.versionServiceQualityOpted
+            }
+            set {
+                accessedDatabase.plain.versionServiceQualityOpted = newValue
             }
         }
     }
@@ -436,6 +451,7 @@ extension Client.Preferences {
             ikeV2PacketSize = 0
             signInWithAppleFakeEmail = nil
             shareServiceQualityData = false
+            versionServiceQualityOpted = nil
         }
 
         /**
@@ -523,7 +539,10 @@ extension Client.Preferences {
         
         /// :nodoc:
         public var shareServiceQualityData: Bool
-
+        
+        /// :nodoc:
+        public var versionServiceQualityOpted: String?
+        
         /// :nodoc:
         public func vpnCustomConfiguration(for vpnType: String) -> VPNCustomConfiguration? {
             return vpnCustomConfigurations[vpnType]

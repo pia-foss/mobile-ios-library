@@ -35,7 +35,7 @@ class VPNDaemon: Daemon, DatabaseAccess, ProvidersAccess {
     private var isReconnecting: Bool
     
     private var lastKnownVpnStatus: VPNStatus = .disconnected
-
+    
     private init() {
         hasEnabledUpdates = false
         isReconnecting = false
@@ -71,6 +71,7 @@ class VPNDaemon: Daemon, DatabaseAccess, ProvidersAccess {
         switch connection.status {
         case .connected:
             nextStatus = .connected
+            Client.preferences.timeToConnectVPN = Date().timeIntervalSince1970 - Client.preferences.lastVPNConnectionAttempt
             
             let previousStatus = accessedDatabase.transient.vpnStatus
             
@@ -92,7 +93,8 @@ class VPNDaemon: Daemon, DatabaseAccess, ProvidersAccess {
         case .connecting, .reasserting:
             
             nextStatus = .connecting
-                        
+            Client.preferences.lastVPNConnectionAttempt = Date().timeIntervalSince1970
+            
             let previousStatus = accessedDatabase.transient.vpnStatus
             
             if accessedDatabase.transient.vpnStatus == .disconnected,

@@ -67,6 +67,8 @@ private protocol PreferencesStore: class {
     var signInWithAppleFakeEmail: String? { get set }
 
     var shareServiceQualityData: Bool { get set }
+    
+    var versionWhenServiceQualityOpted: String? { get set }
 
     func vpnCustomConfiguration(for vpnType: String) -> VPNCustomConfiguration?
     
@@ -100,6 +102,7 @@ private extension PreferencesStore {
         ikeV2PacketSize = source.ikeV2PacketSize
         signInWithAppleFakeEmail = source.signInWithAppleFakeEmail
         shareServiceQualityData = source.shareServiceQualityData
+        versionWhenServiceQualityOpted = source.versionWhenServiceQualityOpted
         lastConnectedRegion = source.lastConnectedRegion
     }
 }
@@ -369,7 +372,30 @@ extension Client {
                 accessedDatabase.plain.signInWithAppleFakeEmail = newValue
             }
         }
-
+        
+        /// Store a date as a number when last VPN Connection was attempted.
+        public var lastVPNConnectionAttempt: Double {
+            get {
+                return accessedDatabase.plain.lastVPNConnectionAttempt
+            }
+            set {
+                accessedDatabase.plain.lastVPNConnectionAttempt = newValue
+            }
+        }
+        
+        /// Store a decimal number which represents time (in seconds) between
+        /// connecting and connect state of VPNDaemon
+        public var timeToConnectVPN: Double {
+            get {
+                return accessedDatabase.plain.timeToConnectVPN
+            }
+            set {
+                accessedDatabase.plain.timeToConnectVPN = newValue
+            }
+        }
+        
+        // MARK: Service Quality
+        
         /// Shares anonymous data to the service quality library.
         public fileprivate(set) var shareServiceQualityData: Bool {
             get {
@@ -379,7 +405,16 @@ extension Client {
                 accessedDatabase.plain.shareServiceQualityData = newValue
             }
         }
-
+        
+        /// Store app version when user opted-in for service quality stats
+        public var versionWhenServiceQualityOpted: String? {
+            get {
+                return accessedDatabase.plain.versionWhenServiceQualityOpted
+            }
+            set {
+                accessedDatabase.plain.versionWhenServiceQualityOpted = newValue
+            }
+        }
     }
 }
 
@@ -416,6 +451,7 @@ extension Client.Preferences {
             ikeV2PacketSize = 0
             signInWithAppleFakeEmail = nil
             shareServiceQualityData = false
+            versionWhenServiceQualityOpted = nil
         }
 
         /**
@@ -503,7 +539,10 @@ extension Client.Preferences {
         
         /// :nodoc:
         public var shareServiceQualityData: Bool
-
+        
+        /// :nodoc:
+        public var versionWhenServiceQualityOpted: String?
+        
         /// :nodoc:
         public func vpnCustomConfiguration(for vpnType: String) -> VPNCustomConfiguration? {
             return vpnCustomConfigurations[vpnType]

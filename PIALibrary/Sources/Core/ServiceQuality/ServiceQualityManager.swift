@@ -32,7 +32,7 @@ public class ServiceQualityManager: NSObject {
     private let kpiPreferenceName = "PIA_KPI_PREFERENCE_NAME"
     private var kpiManager: KPIAPI?
     private var isAppActive = true
-
+    
     /**
      * Enum defining the different connection sources.
      * e.g. Manual for user-related actions, Automatic for reconnections, etc.
@@ -67,6 +67,7 @@ public class ServiceQualityManager: NSObject {
         case connectionSource = "connection_source"
         case userAgent = "user_agent"
         case vpnProtocol = "vpn_protocol"
+        case timeToConnect = "time_to_connect"
     }
 
     
@@ -170,11 +171,7 @@ public class ServiceQualityManager: NSObject {
             let event = KPIClientEvent(
                 eventCountry: nil,
                 eventName: KPIConnectionEvent.vpnConnectionEstablished.rawValue,
-                eventProperties: [
-                    KPIEventPropertyKey.connectionSource.rawValue: connectionSource.rawValue,
-                    KPIEventPropertyKey.userAgent.rawValue: PIAWebServices.userAgent,
-                    KPIEventPropertyKey.vpnProtocol.rawValue: currentProtocol().rawValue
-                ],
+                eventProperties: createEstablishedEventProperties(),
                 eventInstant: Kotlinx_datetimeInstant.companion.fromEpochMilliseconds(epochMilliseconds: Date().epochMilliseconds)
             )
             kpiManager?.submit(event: event) { (error) in
@@ -236,6 +233,63 @@ public class ServiceQualityManager: NSObject {
             return KPIVpnProtocol.wireguard
         default:
             return KPIVpnProtocol.ipsec
+        }
+    }
+    
+    private func createEstablishedEventProperties() -> [String: String] {
+        var eventProperties: [String: String] = [
+            KPIEventPropertyKey.connectionSource.rawValue: connectionSource().rawValue,
+            KPIEventPropertyKey.userAgent.rawValue: PIAWebServices.userAgent,
+            KPIEventPropertyKey.vpnProtocol.rawValue: currentProtocol().rawValue
+        ]
+        if let appVersion = Macros.versionString(),
+           let optedVersion = Client.preferences.versionWhenServiceQualityOpted,
+           appVersion.isVersionGreaterThanEqual(to: optedVersion) {
+            eventProperties[KPIEventPropertyKey.timeToConnect.rawValue] = getTimeToConnect()
+        }
+        return eventProperties
+    }
+    
+    private func getTimeToConnect() -> String {
+        return "\(Client.preferences.timeToConnectVPN)"
+    }
+}
+
+private extension String {
+    
+    func isVersionGreaterThanEqual(to version: String) -> Bool {
+        switch self.versionCompare(version) {
+        case .orderedSame, .orderedDescending:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    func versionCompare(_ otherVersion: String, versionDelimiter: String = ".") -> ComparisonResult {
+        // split the versions by period a default delimiter (.)
+        var versionComponents = self.components(separatedBy: versionDelimiter)
+        var otherVersionComponents = otherVersion.components(separatedBy: versionDelimiter)
+        
+        // then, find the difference of digit that we will zero pad
+        let zeroDiff = versionComponents.count - otherVersionComponents.count
+        
+        // if there are no differences, we don't need to do anything and use simple .compare
+        if zeroDiff == 0 {
+            // Same format, compare normally
+            return self.compare(otherVersion, options: .numeric)
+        } else {
+            // we populate an array of missing zero
+            let zeros = Array(repeating: "0", count: abs(zeroDiff))
+            // we add zero pad array to a version with a fewer period and zero.
+            if zeroDiff > 0 {
+                otherVersionComponents.append(contentsOf: zeros)
+            } else {
+                versionComponents.append(contentsOf: zeros)
+            }
+            // we use array components to build back our versions from components and compare them. This time it will have the same period and number of digit.
+            return versionComponents.joined(separator: versionDelimiter)
+                .compare(otherVersionComponents.joined(separator: versionDelimiter), options: .numeric)
         }
     }
 }

@@ -85,6 +85,7 @@ For all of these events, we will collect the following information:
     - App type (pre-release or not)
     - Protocol used
     - Connection source (manual or using automation)
+    - Time To Connect (time between connecting and connected state)
 
 All events will contain a unique ID, which is randomly generated. This ID is not associated with your user account. This unique ID is re-generated daily for privacy purposes.
 

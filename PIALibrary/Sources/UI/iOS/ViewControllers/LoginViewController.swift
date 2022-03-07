@@ -80,7 +80,10 @@ class LoginViewController: AutolayoutViewController, WelcomeChild, PIAWelcomeVie
         labelTitle.text = L10n.Welcome.Login.title
         textUsername.placeholder = L10n.Welcome.Login.Username.placeholder
         textPassword.placeholder = L10n.Welcome.Login.Password.placeholder
-
+        
+        textUsername.accessibilityIdentifier = "uitests.login.username"
+        textPassword.accessibilityIdentifier = "uitests.login.password"
+        
         textUsername.text = preset.loginUsername
         textPassword.text = preset.loginPassword
         

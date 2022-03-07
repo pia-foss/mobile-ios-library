@@ -52,6 +52,7 @@ public class EndpointManager {
         if let historicalServer = Client.providers.serverProvider.historicalServers.first,
            let meta = historicalServer.meta {
             availableEndpoints.append(PinningEndpoint(host: meta.ip,
+                                                      isProxy: true,
                                                       useCertificatePinning: true,
                                                       commonName: meta.cn))
         }
@@ -65,16 +66,16 @@ public class EndpointManager {
             if filtered.count < 2 {
                 while availableEndpoints.count < 2 {
                     if let random = currentServers.randomElement(), let meta = random.meta {
-                        availableEndpoints.append(PinningEndpoint(host: meta.ip, useCertificatePinning: true, commonName: meta.cn))
+                        availableEndpoints.append(PinningEndpoint(host: meta.ip, isProxy: true, useCertificatePinning: true, commonName: meta.cn))
                     }
                 }
             } else {
                 if let meta = filtered.first?.meta {
-                    availableEndpoints.append(PinningEndpoint(host: meta.ip, useCertificatePinning: true, commonName: meta.cn))
+                    availableEndpoints.append(PinningEndpoint(host: meta.ip ,isProxy: true, useCertificatePinning: true, commonName: meta.cn))
                 }
                 if availableEndpoints.count < 2 {
                     if let meta = filtered[1].meta {
-                        availableEndpoints.append(PinningEndpoint(host: meta.ip, useCertificatePinning: true, commonName: meta.cn))
+                        availableEndpoints.append(PinningEndpoint(host: meta.ip, isProxy: true, useCertificatePinning: true, commonName: meta.cn))
                     }
                 }
             }

@@ -81,8 +81,8 @@ class LoginViewController: AutolayoutViewController, WelcomeChild, PIAWelcomeVie
         textUsername.placeholder = L10n.Welcome.Login.Username.placeholder
         textPassword.placeholder = L10n.Welcome.Login.Password.placeholder
         
-        textUsername.accessibilityIdentifier = "uitests.login.username"
-        textPassword.accessibilityIdentifier = "uitests.login.password"
+        textUsername.accessibilityIdentifier = Accessibility.UITests.Login.username
+        textPassword.accessibilityIdentifier = Accessibility.UITests.Login.password
         
         textUsername.text = preset.loginUsername
         textPassword.text = preset.loginPassword
@@ -368,7 +368,7 @@ class LoginViewController: AutolayoutViewController, WelcomeChild, PIAWelcomeVie
         buttonLogin.style(style: TextStyle.Buttons.piaGreenButton)
         buttonLogin.setTitle(L10n.Welcome.Login.submit.uppercased(),
                                for: [])
-        buttonLogin.accessibilityIdentifier = "uitests.login.submit"
+        buttonLogin.accessibilityIdentifier = Accessibility.UITests.Login.submit
         
         couldNotGetPlanButton.setTitle(L10n.Welcome.Login.Restore.button,
                                        for: [])

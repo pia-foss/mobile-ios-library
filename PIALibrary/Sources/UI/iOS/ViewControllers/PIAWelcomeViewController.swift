@@ -76,6 +76,7 @@ public class PIAWelcomeViewController: AutolayoutViewController, WelcomeCompleti
         
         buttonCancel.isHidden = true
         buttonEnvironment.isHidden = !accessedConfiguration.isDevelopment
+        buttonEnvironment.accessibilityIdentifier = Accessibility.UITests.Welcome.environment
         
         #if os(iOS)
         let nc = NotificationCenter.default

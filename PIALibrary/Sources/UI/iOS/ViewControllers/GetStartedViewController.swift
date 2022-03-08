@@ -422,8 +422,8 @@ public class GetStartedViewController: PIAWelcomeViewController {
         newLoginButton.setTitle(L10n.Welcome.Login.submit.uppercased(),
                              for: [])
         
-        loginButton.accessibilityIdentifier = "uitests.login.submit"
-        newLoginButton.accessibilityIdentifier = "uitests.login.newSubmit"
+        loginButton.accessibilityIdentifier = Accessibility.UITests.Login.submit
+        newLoginButton.accessibilityIdentifier = Accessibility.UITests.Login.submitNew
         
         buyButton.setTitle(L10n.Signup.Purchase.Trials.All.plans,
                            for: [])

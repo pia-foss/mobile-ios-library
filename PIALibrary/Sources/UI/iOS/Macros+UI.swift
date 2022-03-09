@@ -251,7 +251,8 @@ extension Macros {
      */
     public static func displayImageNote(withImage image: UIImage,
                                         message: String,
-                                        andDuration duration: Double? = nil) {
+                                        andDuration duration: Double? = nil,
+                                        accessbilityIdentifier: String = "") {
         
         
         var attributes = EKAttributes()
@@ -271,6 +272,7 @@ extension Macros {
         let imageContent = EKProperty.ImageContent(image: image)
         let contentView = EKImageNoteMessageView(with: labelContent,
                                       imageContent: imageContent)
+        contentView.accessibilityIdentifier = accessbilityIdentifier
         
         SwiftEntryKit.display(entry: contentView,
                               using: attributes)
@@ -418,6 +420,7 @@ public extension PopupDialog {
         let button = DestructiveButton(title: title.uppercased(), dismissOnTap: true) {
             handler()
         }
+        button.accessibilityIdentifier = Accessibility.UITests.Dialog.destructive
         self.addButton(button)
     }
     

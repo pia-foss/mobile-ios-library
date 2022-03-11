@@ -420,7 +420,7 @@ public extension PopupDialog {
         let button = DestructiveButton(title: title.uppercased(), dismissOnTap: true) {
             handler()
         }
-        button.accessibilityIdentifier = Accessibility.UITests.Dialog.destructive
+        button.accessibilityIdentifier = Accessibility.Id.Dialog.destructive
         self.addButton(button)
     }
     

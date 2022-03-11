@@ -81,8 +81,8 @@ class LoginViewController: AutolayoutViewController, WelcomeChild, PIAWelcomeVie
         textUsername.placeholder = L10n.Welcome.Login.Username.placeholder
         textPassword.placeholder = L10n.Welcome.Login.Password.placeholder
         
-        textUsername.accessibilityIdentifier = Accessibility.UITests.Login.username
-        textPassword.accessibilityIdentifier = Accessibility.UITests.Login.password
+        textUsername.accessibilityIdentifier = Accessibility.Id.Login.username
+        textPassword.accessibilityIdentifier = Accessibility.Id.Login.password
         
         textUsername.text = preset.loginUsername
         textPassword.text = preset.loginPassword
@@ -339,7 +339,7 @@ class LoginViewController: AutolayoutViewController, WelcomeChild, PIAWelcomeVie
         
         Macros.displayImageNote(withImage: Asset.iconWarning.image,
                                 message: errorMessage ?? L10n.Welcome.Login.Error.title, andDuration: displayDuration,
-                                accessbilityIdentifier: Accessibility.UITests.Login.Error.banner)
+                                accessbilityIdentifier: Accessibility.Id.Login.Error.banner)
     }
     
     private func handleExpiredAccount() {
@@ -369,7 +369,7 @@ class LoginViewController: AutolayoutViewController, WelcomeChild, PIAWelcomeVie
         buttonLogin.style(style: TextStyle.Buttons.piaGreenButton)
         buttonLogin.setTitle(L10n.Welcome.Login.submit.uppercased(),
                                for: [])
-        buttonLogin.accessibilityIdentifier = Accessibility.UITests.Login.submit
+        buttonLogin.accessibilityIdentifier = Accessibility.Id.Login.submit
         
         couldNotGetPlanButton.setTitle(L10n.Welcome.Login.Restore.button,
                                        for: [])

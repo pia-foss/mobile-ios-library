@@ -14,7 +14,7 @@
 "login.error.title" = "تسجيل الدخول";
 "login.error.validation" = "يجب إدخال اسم المستخدم وكلمة المرور";
 "login.error.unauthorized" = "اسم المستخدم أو كلمة المرور غير صحيحة.";
-"login.error.throttled" = "لقد أجريت الكثير من المحاولات الفاشلة باسم المستخدم هذا. يرجى إعادة المحاولة لاحقًا.";
+"login.error.throttled" = "Too many failed login attempts with this username. Please try again after %@ second(s).";
 "login.receipt.button" = "تسجيل الدخول باستخدام إيصال الشراء";
 "login.magic.link.title" = "تسجيل الدخول باستخدام رابط البريد الإلكتروني السحري";
 "login.magic.link.response" = "يرجى إلقاء نظرة على بريدك الإلكتروني للحصول على رابط تسجيل الدخول.";

@@ -71,4 +71,22 @@
 "share.data.text.description" = "연결 상태를 저희와 익명으로 공유해 주시면 저희 서비스의 연결 성능을 개선하는 데 도움이 됩니다. 이 보고서에는 개인 식별 정보가 포함되지 않습니다.";
 "share.data.text.footer" = "언제든지 설정에서 이 옵션을 관리할 수 있습니다.";
 
-"share.data.readMore.text.description" = "이 최소한의 정보는 잠재적인 연결 문제를 식별하고 해결하는 데 도움이 됩니다. 이 정보를 공유하려면 기본적으로 해제되어 있는 승인과 수동 활성화가 필요합니다.\n\n저희가 수집하는 이벤트에 관한 정보는 다음과 같습니다.\n\n    - 연결 시도\n    - 취소된 연결\n    - 수립된 연결\n\n이러한 이벤트에 관하여 저희가 수집하는 정보는 다음과 같습니다.\n    - 플랫폼\n    - 앱 버전\n    - 앱 유형 (사전 출시 여부)\n    - 사용된 프로토콜\n    - 연결 소스 (수동 또는 자동 사용)\n\n모든 이벤트에는 무작위로 생성된 고유 ID가 포함됩니다. 이 ID는 사용자 계정과 연결되지 않습니다. 이 고유 ID는 개인 정보 보호 목적을 위하여 매일 다시 생성됩니다.\n\n회원님은 언제나 이를 통제할 수 있습니다. 설정에서 저희가 수집하는 데이터를 확인하고, 언제든지 해제하실 수 있습니다.";
+"share.data.readMore.text.description" = "This minimal information assists us in identifying and fixing potential connection issues. Note that sharing this information requires consent and manual activation as it is turned off by default.
+
+We will collect information about the following events:
+
+    - Connection Attempt
+    - Connection Canceled
+    - Connection Established
+
+For all of these events, we will collect the following information:
+    - Platform
+    - App version
+    - App type (pre-release or not)
+    - Protocol used
+    - Connection source (manual or using automation)
+    - Time To Connect (time between connecting and connected state)
+
+All events will contain a unique ID, which is randomly generated. This ID is not associated with your user account. This unique ID is re-generated daily for privacy purposes.
+
+You will always be in control. You can see what data we’ve collected from Settings, and you can turn it off at any time.";

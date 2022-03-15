@@ -71,4 +71,22 @@
 "share.data.text.description" = "Om ons te helpen de verbindingsprestaties van onze dienst te verbeteren, kunt u uw verbindingsstatistieken anoniem met ons delen. Deze rapporten bevatten geen persoonsgegevens.";
 "share.data.text.footer" = "U kunt dit via de Instellingen beheren";
 
-"share.data.readMore.text.description" = "Deze minimuminformatie helpt ons bij het identificeren en oplossen van potentiële verbindingsproblemen. Let op: voor het delen van deze informatie is toestemming vereist en de handmatige activatie is standaard uitgeschakeld.\n\nWe verzamelen gegevens over de volgende zaken:\n\n- Verbindingspoging\n- Verbinding geannuleerd\n- Verbinding gemaakt\n\nVoor al deze zaken verzamelen we de volgende informatie:\n- Platform\n- App-versie\n- App-type (pre-release of niet)\n- Gebruikt protocol\n- Verbindingsbron (handmatig of automatisch)\n\nAlle zaken krijgen een unieke ID die willekeurig wordt aangemaakt. Deze ID is niet gekoppeld aan uw gebruikersaccount. Dit unieke ID wordt vanwege de privacy dagelijks opnieuw aangemaakt.\n\nU houdt altijd de touwtjes in handen. Via Instellingen kunt u altijd zien welke gegevens we hebben verzameld en u kunt de verzameling te allen tijde uitschakelen.";
+"share.data.readMore.text.description" = "This minimal information assists us in identifying and fixing potential connection issues. Note that sharing this information requires consent and manual activation as it is turned off by default.
+
+We will collect information about the following events:
+
+    - Connection Attempt
+    - Connection Canceled
+    - Connection Established
+
+For all of these events, we will collect the following information:
+    - Platform
+    - App version
+    - App type (pre-release or not)
+    - Protocol used
+    - Connection source (manual or using automation)
+    - Time To Connect (time between connecting and connected state)
+
+All events will contain a unique ID, which is randomly generated. This ID is not associated with your user account. This unique ID is re-generated daily for privacy purposes.
+
+You will always be in control. You can see what data we’ve collected from Settings, and you can turn it off at any time.";

@@ -14,7 +14,7 @@
 "login.error.title" = "Entrar";
 "login.error.validation" = "Você deve inserir um nome de usuário e senha.";
 "login.error.unauthorized" = "Seu nome de usuário ou senha está incorreto.";
-"login.error.throttled" = "Muitas tentativas de login malsucedidas com este nome de usuário. Tente novamente mais tarde.";
+"login.error.throttled" = "Too many failed login attempts with this username. Please try again after %@ second(s).";
 "login.receipt.button" = "Faça login usando o recibo de compra";
 "login.magic.link.title" = "Faça login usando o link mágico enviado por e-mail";
 "login.magic.link.response" = "Veja se você recebeu por e-mail um link para fazer login.";

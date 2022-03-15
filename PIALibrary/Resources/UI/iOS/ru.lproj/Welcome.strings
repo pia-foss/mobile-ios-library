@@ -14,7 +14,7 @@
 "login.error.title" = "Войти";
 "login.error.validation" = "Нужно ввести имя пользователя и пароль.";
 "login.error.unauthorized" = "Неправильное имя пользователя или пароль.";
-"login.error.throttled" = "Слишком много неудачных попыток входа с использованием этого имени пользователя. Повторите попытку позже.";
+"login.error.throttled" = "Too many failed login attempts with this username. Please try again after %@ second(s).";
 "login.receipt.button" = "Выполните вход по квитанции о покупке";
 "login.magic.link.title" = "Войти через волшебную ссылку из письма";
 "login.magic.link.response" = "Поищите ссылку для входа в письме.";

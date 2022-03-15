@@ -14,7 +14,7 @@
 "login.error.title" = "Log ind";
 "login.error.validation" = "Du skal indtaste et brugernavn og et kodeord.";
 "login.error.unauthorized" = "Dit brugernavn eller kodeord er forkert.";
-"login.error.throttled" = "Alt for mange mislykkede forsøg på at logge ind med dette brugernavn. Prøv venligst igen senere.";
+"login.error.throttled" = "Too many failed login attempts with this username. Please try again after %@ second(s).";
 "login.receipt.button" = "Log på med købskvittering";
 "login.magic.link.title" = "Log ind ved hjælp af magisk e-maillink";
 "login.magic.link.response" = "Se i din e-mail for et login-link.";

@@ -14,7 +14,7 @@
 "login.error.title" = "ログイン";
 "login.error.validation" = "ユーザー名とパスワードを入力してください。";
 "login.error.unauthorized" = "ユーザー名またはパスワードが間違っています。";
-"login.error.throttled" = "このユーザー名で最大ログイン試行回数を超えました。後でもう一度お試しください。";
+"login.error.throttled" = "Too many failed login attempts with this username. Please try again after %@ second(s).";
 "login.receipt.button" = "購入領収書を使用してログイン";
 "login.magic.link.title" = "魔法のメールリンクを使用してログイン";
 "login.magic.link.response" = "ログインリンクについては、メールを確認してください。";

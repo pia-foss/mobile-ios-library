@@ -23,13 +23,28 @@ import Foundation
 import PIAKPI
 
 class PIAKPIStagingClientStateProvider : KPIClientStateProvider {
+
+    private let kpiPath = "/api/client/v2/service-quality"
+
+    func projectToken() -> String {
+        if Client.environment == .staging {
+            return LibraryConstants.Elastic.stagingToken
+        } else {
+            return LibraryConstants.Elastic.liveToken
+        }
+    }
+    
     func kpiAuthToken() -> String {
         return Client.providers.accountProvider.apiToken ?? ""
     }
     
     func kpiEndpoints() -> [KPIEndpoint] {
         return [
-            KPIEndpoint(endpoint: Client.configuration.baseUrl, isProxy: false, usePinnedCertificate: false, certificateCommonName: nil),
+            KPIEndpoint(
+                endpoint: Client.configuration.baseUrl + kpiPath,
+                usePinnedCertificate: false,
+                certificateCommonName: nil
+            )
         ]
     }
 }

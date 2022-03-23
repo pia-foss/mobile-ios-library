@@ -14,7 +14,7 @@
 "login.error.title" = "Inloggen";
 "login.error.validation" = "U moet een gebruikersnaam en wachtwoord invoeren.";
 "login.error.unauthorized" = "Uw gebruikersnaam of wachtwoord is onjuist.";
-"login.error.throttled" = "Te veel mislukte inlogpogingen met deze gebruikersnaam. Probeer het later opnieuw.";
+"login.error.throttled" = "Too many failed login attempts with this username. Please try again after %@ second(s).";
 "login.receipt.button" = "Inloggen met aankoopbewijs";
 "login.magic.link.title" = "Log in met de magische link in uw e-mail";
 "login.magic.link.response" = "Controleer uw e-mail voor een inloglink.";

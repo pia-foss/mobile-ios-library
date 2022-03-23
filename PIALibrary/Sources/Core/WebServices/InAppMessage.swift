@@ -45,8 +45,9 @@ public struct InAppMessage {
     public let settingAction: [String: Bool]?
     public let settingView: String?
     public let settingLink: String?
+    public let executionCompletionHandler: (() -> ())?
         
-    public init(withMessage message: [String: String], id: String, link: [String: String], type: InAppMessageType, level: InAppMessageLevel, actions: [String:Bool]?, view: String?, uri: String?) {
+    public init(withMessage message: [String: String], id: String, link: [String: String], type: InAppMessageType, level: InAppMessageLevel, actions: [String:Bool]?, view: String?, uri: String?, executionCompletionHandler: (() -> ())? = nil) {
         self.id = id
         self.message = message
         self.linkMessage = link
@@ -55,13 +56,14 @@ public struct InAppMessage {
         self.settingAction = actions
         self.settingView = view
         self.settingLink = uri
+        self.executionCompletionHandler = executionCompletionHandler
     }
     
 }
 
 extension InAppMessage {
     
-    init(withMessage messageInformation: MessageInformation, andLevel level: InAppMessageLevel) {
+    init(withMessage messageInformation: MessageInformation, andLevel level: InAppMessageLevel, executionCompletionHandler: (() -> ())? = nil) {
         
         self.id = "\(messageInformation.id)"
         self.message = messageInformation.message
@@ -98,7 +100,7 @@ extension InAppMessage {
         }
         
         self.level = level
-        
+        self.executionCompletionHandler = executionCompletionHandler
     }
 
 }

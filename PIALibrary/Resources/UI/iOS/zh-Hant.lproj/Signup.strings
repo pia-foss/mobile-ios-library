@@ -71,4 +71,22 @@
 "share.data.text.description" = "為了確保服務的連線品質，您可以匿名與我們分享您的連線統計資料。這些報告不會包含任何個人識別資訊。";
 "share.data.text.footer" = "您隨時都可以在設定中控制。";
 
-"share.data.readMore.text.description" = "這些基本資訊可協助我們辨識及修正可能的連線問題。請注意，分享這些資訊需要您的同意，且該功能預設為關閉，因此必須手動開啟。\n\n我們會收集以下事件的資訊：\n\n- 連線嘗試\n- 取消的連線\n- 建立的連線\n\n我們會針對上述事件收集下列資訊：\n- 平台\n- 應用程式版本\n- 應用程式類型 (是否為預先發布版)\n- 使用的通訊協定\n- 連線來源 (手動或自動)\n\n所有事件均有一組隨機產生的不重複識別碼。此識別碼不會和您的使用者帳戶建立關聯。為保護隱私，這個唯一識別碼每天都會重新產生。\n\n控制權始終都在您的掌握中。您可以在「設定」中看到我們收集了哪些資料，且隨時可關閉此功能。";
+"share.data.readMore.text.description" = "This minimal information assists us in identifying and fixing potential connection issues. Note that sharing this information requires consent and manual activation as it is turned off by default.
+
+We will collect information about the following events:
+
+    - Connection Attempt
+    - Connection Canceled
+    - Connection Established
+
+For all of these events, we will collect the following information:
+    - Platform
+    - App version
+    - App type (pre-release or not)
+    - Protocol used
+    - Connection source (manual or using automation)
+    - Time To Connect (time between connecting and connected state)
+
+All events will contain a unique ID, which is randomly generated. This ID is not associated with your user account. This unique ID is re-generated daily for privacy purposes.
+
+You will always be in control. You can see what data we’ve collected from Settings, and you can turn it off at any time.";

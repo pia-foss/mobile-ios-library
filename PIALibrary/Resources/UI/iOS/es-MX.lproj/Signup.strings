@@ -71,4 +71,22 @@
 "share.data.text.description" = "Para ayudarnos a garantizar el rendimiento de la conexión de nuestro servicio, puedes compartir con nosotros tus estadísticas de conexión de forma anónima. Estos informes no contienen ninguna información personal identificable.";
 "share.data.text.footer" = "Siempre puedes controlarlo desde tus ajustes.";
 
-"share.data.readMore.text.description" = "Esta información mínima nos ayuda a identificar y solucionar posibles problemas de conexión. Ten en cuenta que compartir esta información requiere el consentimiento y la activación manual, ya que está desactivada por defecto.\n\nRecopilaremos información sobre los siguientes eventos:\n\n    - Intento de conexión\n    - Conexión cancelada\n    - Conexión establecida\n\nEn todos estos eventos, recopilaremos la siguiente información:\n    - Plataforma\n    - Versión de la aplicación\n    - Tipo de aplicación (previa al lanzamiento o no)\n    - Protocolo utilizado\n    - Origen de la conexión (manual o mediante automatización)\n\nTodos los eventos contendrán una ID única, generada aleatoriamente. Esta ID no está asociado a tu cuenta de usuario. Esta ID única se genera de nuevo a diario por motivos de privacidad.\n\nSiempre tendrás el control. Podrás ver qué datos hemos recopilado en Ajustes y podrás desactivarlos en cualquier momento.";
+"share.data.readMore.text.description" = "This minimal information assists us in identifying and fixing potential connection issues. Note that sharing this information requires consent and manual activation as it is turned off by default.
+
+We will collect information about the following events:
+
+    - Connection Attempt
+    - Connection Canceled
+    - Connection Established
+
+For all of these events, we will collect the following information:
+    - Platform
+    - App version
+    - App type (pre-release or not)
+    - Protocol used
+    - Connection source (manual or using automation)
+    - Time To Connect (time between connecting and connected state)
+
+All events will contain a unique ID, which is randomly generated. This ID is not associated with your user account. This unique ID is re-generated daily for privacy purposes.
+
+You will always be in control. You can see what data we’ve collected from Settings, and you can turn it off at any time.";

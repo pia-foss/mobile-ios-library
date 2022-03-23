@@ -14,7 +14,7 @@
 "login.error.title" = "Accedi";
 "login.error.validation" = "Devi inserire un nome utente e una password.";
 "login.error.unauthorized" = "Nome utente o password non valida";
-"login.error.throttled" = "Troppi tentativi d'accesso non riusciti con questo nome utente. Riprova più tardi.";
+"login.error.throttled" = "Too many failed login attempts with this username. Please try again after %@ second(s).";
 "login.receipt.button" = "Accedi mediante ricevuta d'acquisto";
 "login.magic.link.title" = "Accedi tramite il link magico della mail";
 "login.magic.link.response" = "Controlla la tua mail per ottenere il link d'accesso.";

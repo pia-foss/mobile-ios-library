@@ -27,28 +27,72 @@ import SwiftyBeaver
 private let log = SwiftyBeaver.self
 
 public class ServiceQualityManager: NSObject {
-    
-    private var kpiToken = ""
+
     public static let shared = ServiceQualityManager()
+    private let kpiPreferenceName = "PIA_KPI_PREFERENCE_NAME"
     private var kpiManager: KPIAPI?
     private var isAppActive = true
+    
+    /**
+     * Enum defining the different connection sources.
+     * e.g. Manual for user-related actions, Automatic for reconnections, etc.
+     */
+    private enum KPIConnectionSource: String {
+        case automatic = "Automatic"
+        case manual = "Manual"
+    }
+
+    /**
+     * Enum defining the supported connection related events.
+     */
+    private enum KPIConnectionEvent: String {
+        case vpnConnectionAttempt = "VPN_CONNECTION_ATTEMPT"
+        case vpnConnectionCancelled = "VPN_CONNECTION_CANCELLED"
+        case vpnConnectionEstablished = "VPN_CONNECTION_ESTABLISHED"
+    }
+
+    /**
+     * Enum defining the supported vpn protocols to report.
+     */
+    private enum KPIVpnProtocol: String {
+        case ovpn = "OpenVPN"
+        case wireguard = "WireGuard"
+        case ipsec = "IPSec"
+    }
+
+    /**
+     * Enum defining the supported vpn protocols to report.
+     */
+    private enum KPIEventPropertyKey: String {
+        case connectionSource = "connection_source"
+        case userAgent = "user_agent"
+        case vpnProtocol = "vpn_protocol"
+        case timeToConnect = "time_to_connect"
+    }
+
     
     public override init() {
         super.init()
         
         if Client.environment == .staging {
-            kpiToken = LibraryConstants.Elastic.stagingToken
             kpiManager = KPIBuilder()
-                .setAppVersion(appVersion: Macros.localizedVersionNumber())
                 .setKPIFlushEventMode(kpiSendEventMode: .perBatch)
                 .setKPIClientStateProvider(kpiClientStateProvider: PIAKPIStagingClientStateProvider())
+                .setEventTimeRoundGranularity(eventTimeRoundGranularity: KTimeUnit.hours)
+                .setEventTimeSendGranularity(eventSendTimeGranularity: KTimeUnit.milliseconds)
+                .setRequestFormat(requestFormat: KPIRequestFormat.kape)
+                .setPreferenceName(preferenceName: kpiPreferenceName)
+                .setUserAgent(userAgent: PIAWebServices.userAgent)
                 .build()
         } else {
-            kpiToken = LibraryConstants.Elastic.liveToken
             kpiManager = KPIBuilder()
-                .setAppVersion(appVersion: Macros.localizedVersionNumber())
                 .setKPIFlushEventMode(kpiSendEventMode: .perBatch)
                 .setKPIClientStateProvider(kpiClientStateProvider: PIAKPIClientStateProvider())
+                .setEventTimeRoundGranularity(eventTimeRoundGranularity: KTimeUnit.hours)
+                .setEventTimeSendGranularity(eventSendTimeGranularity: KTimeUnit.milliseconds)
+                .setRequestFormat(requestFormat: KPIRequestFormat.kape)
+                .setPreferenceName(preferenceName: kpiPreferenceName)
+                .setUserAgent(userAgent: PIAWebServices.userAgent)
                 .build()
         }
         
@@ -73,8 +117,13 @@ public class ServiceQualityManager: NSObject {
     }
 
     public func stop() {
-        kpiManager?.stop()
-        log.debug("KPI manager stopped")
+        kpiManager?.stop(callback: { error in
+            guard error == nil else {
+                log.error("\(error)")
+                return
+            }
+            log.debug("KPI manager stopped")
+        })
     }
     
     @objc private func appChangedState(with notification: Notification) {
@@ -89,19 +138,29 @@ public class ServiceQualityManager: NSObject {
     
     @objc private func flushEvents() {
         kpiManager?.flush(callback: { error in
-            guard error != nil else {
+            guard error == nil else {
+                log.error("\(error)")
                 return
             }
-            log.error("\(error)")
+            log.debug("KPI events flushed")
         })
     }
     
     public func connectionAttemptEvent() {
         let connectionSource = connectionSource()
         if connectionSource == .manual && isAppActive {
-            let event = KPIClientEvent(eventCountry: nil, eventName: KPIConnectionEvent.vpnConnectionAttempt, eventProperties: KPIClientEvent.EventProperties(connectionSource: connectionSource, data: nil, preRelease: isPreRelease(), reason: nil, serverIdentifier: nil, userAgent: PIAWebServices.userAgent, vpnProtocol: currentProtocol()), eventToken: kpiToken)
+            let event = KPIClientEvent(
+                eventCountry: nil,
+                eventName: KPIConnectionEvent.vpnConnectionAttempt.rawValue,
+                eventProperties: [
+                    KPIEventPropertyKey.connectionSource.rawValue: connectionSource.rawValue,
+                    KPIEventPropertyKey.userAgent.rawValue: PIAWebServices.userAgent,
+                    KPIEventPropertyKey.vpnProtocol.rawValue: currentProtocol().rawValue
+                ],
+                eventInstant: Kotlinx_datetimeInstant.companion.fromEpochMilliseconds(epochMilliseconds: Date().epochMilliseconds)
+            )
             kpiManager?.submit(event: event) { (error) in
-                log.debug("Event sent \(event)")
+                log.debug("KPI event submitted \(event)")
             }
         }
     }
@@ -109,9 +168,14 @@ public class ServiceQualityManager: NSObject {
     public func connectionEstablishedEvent() {
         let connectionSource = connectionSource()
         if connectionSource == .manual && isAppActive {
-            let event = KPIClientEvent(eventCountry: nil, eventName: KPIConnectionEvent.vpnConnectionEstablished, eventProperties: KPIClientEvent.EventProperties(connectionSource: connectionSource, data: nil, preRelease: isPreRelease(), reason: nil, serverIdentifier: nil, userAgent: PIAWebServices.userAgent, vpnProtocol: currentProtocol()), eventToken: kpiToken)
+            let event = KPIClientEvent(
+                eventCountry: nil,
+                eventName: KPIConnectionEvent.vpnConnectionEstablished.rawValue,
+                eventProperties: createEstablishedEventProperties(),
+                eventInstant: Kotlinx_datetimeInstant.companion.fromEpochMilliseconds(epochMilliseconds: Date().epochMilliseconds)
+            )
             kpiManager?.submit(event: event) { (error) in
-                log.debug("Event sent \(event)")
+                log.debug("KPI event submitted \(event)")
             }
         }
     }
@@ -120,9 +184,18 @@ public class ServiceQualityManager: NSObject {
     public func connectionCancelledEvent() {
         let disconnectionSource = disconnectionSource()
         if disconnectionSource == .manual && isAppActive {
-            let event = KPIClientEvent(eventCountry: nil, eventName: KPIConnectionEvent.vpnConnectionCancelled, eventProperties: KPIClientEvent.EventProperties(connectionSource: disconnectionSource, data: nil, preRelease: isPreRelease(), reason: nil, serverIdentifier: nil, userAgent: PIAWebServices.userAgent, vpnProtocol: currentProtocol()), eventToken: kpiToken)
+            let event = KPIClientEvent(
+                eventCountry: nil,
+                eventName: KPIConnectionEvent.vpnConnectionCancelled.rawValue,
+                eventProperties: [
+                    KPIEventPropertyKey.connectionSource.rawValue: disconnectionSource.rawValue,
+                    KPIEventPropertyKey.userAgent.rawValue: PIAWebServices.userAgent,
+                    KPIEventPropertyKey.vpnProtocol.rawValue: currentProtocol().rawValue
+                ],
+                eventInstant: Kotlinx_datetimeInstant.companion.fromEpochMilliseconds(epochMilliseconds: Date().epochMilliseconds)
+            )
             kpiManager?.submit(event: event) { (error) in
-                log.debug("Event sent \(event)")
+                log.debug("KPI event submitted \(event)")
             }
         }
     }
@@ -138,11 +211,15 @@ public class ServiceQualityManager: NSObject {
     }
     
     private func connectionSource() -> KPIConnectionSource {
-        return Client.configuration.connectedManually ? .manual : .automatic
+        return Client.configuration.connectedManually ?
+        KPIConnectionSource.manual :
+        KPIConnectionSource.automatic
     }
 
     private func disconnectionSource() -> KPIConnectionSource {
-        return Client.configuration.disconnectedManually ? .manual : .automatic
+        return Client.configuration.disconnectedManually ?
+        KPIConnectionSource.manual :
+        KPIConnectionSource.automatic
     }
 
     private func currentProtocol() -> KPIVpnProtocol {
@@ -151,13 +228,68 @@ public class ServiceQualityManager: NSObject {
         case IKEv2Profile.vpnType:
             return KPIVpnProtocol.ipsec
         case PIATunnelProfile.vpnType:
-            return KPIVpnProtocol.openvpn
+            return KPIVpnProtocol.ovpn
         case PIAWGTunnelProfile.vpnType:
             return KPIVpnProtocol.wireguard
         default:
             return KPIVpnProtocol.ipsec
         }
-
     }
+    
+    private func createEstablishedEventProperties() -> [String: String] {
+        var eventProperties: [String: String] = [
+            KPIEventPropertyKey.connectionSource.rawValue: connectionSource().rawValue,
+            KPIEventPropertyKey.userAgent.rawValue: PIAWebServices.userAgent,
+            KPIEventPropertyKey.vpnProtocol.rawValue: currentProtocol().rawValue
+        ]
+        if let appVersion = Macros.versionString(),
+           let optedVersion = Client.preferences.versionWhenServiceQualityOpted,
+           appVersion.isVersionGreaterThanEqual(to: optedVersion) {
+            eventProperties[KPIEventPropertyKey.timeToConnect.rawValue] = getTimeToConnect()
+        }
+        return eventProperties
+    }
+    
+    private func getTimeToConnect() -> String {
+        return "\(Client.preferences.timeToConnectVPN)"
+    }
+}
 
+private extension String {
+    
+    func isVersionGreaterThanEqual(to version: String) -> Bool {
+        switch self.versionCompare(version) {
+        case .orderedSame, .orderedDescending:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    func versionCompare(_ otherVersion: String, versionDelimiter: String = ".") -> ComparisonResult {
+        // split the versions by period a default delimiter (.)
+        var versionComponents = self.components(separatedBy: versionDelimiter)
+        var otherVersionComponents = otherVersion.components(separatedBy: versionDelimiter)
+        
+        // then, find the difference of digit that we will zero pad
+        let zeroDiff = versionComponents.count - otherVersionComponents.count
+        
+        // if there are no differences, we don't need to do anything and use simple .compare
+        if zeroDiff == 0 {
+            // Same format, compare normally
+            return self.compare(otherVersion, options: .numeric)
+        } else {
+            // we populate an array of missing zero
+            let zeros = Array(repeating: "0", count: abs(zeroDiff))
+            // we add zero pad array to a version with a fewer period and zero.
+            if zeroDiff > 0 {
+                otherVersionComponents.append(contentsOf: zeros)
+            } else {
+                versionComponents.append(contentsOf: zeros)
+            }
+            // we use array components to build back our versions from components and compare them. This time it will have the same period and number of digit.
+            return versionComponents.joined(separator: versionDelimiter)
+                .compare(otherVersionComponents.joined(separator: versionDelimiter), options: .numeric)
+        }
+    }
 }

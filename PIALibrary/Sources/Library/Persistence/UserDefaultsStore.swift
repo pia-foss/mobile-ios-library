@@ -97,7 +97,12 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
         static let nmtGenericRules = "NMTGenericRules"
 
         static let shareServiceQualityData = "ShareServiceQualityData"
-
+        
+        static let versionWhenServiceQualityOpted = "versionWhenServiceQualityOpted"
+        
+        static let lastVPNConnectionAttempt = "lastVPNConnectionAttempt"
+        
+        static let timeToConnectVPN = "timeToConnectVPN"
     }
     
     private let backend: UserDefaults
@@ -409,7 +414,24 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
         }
 
     }
-
+    
+    var lastVPNConnectionAttempt: Double {
+        get {
+            return backend.double(forKey: Entries.lastVPNConnectionAttempt)
+        }
+        set {
+            backend.set(newValue, forKey: Entries.lastVPNConnectionAttempt)
+        }
+    }
+    
+    var timeToConnectVPN: Double {
+        get {
+            return backend.double(forKey: Entries.timeToConnectVPN)
+        }
+        set {
+            backend.set(newValue, forKey: Entries.timeToConnectVPN)
+        }
+    }
     
     // MARK: Preferences
 
@@ -494,6 +516,8 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
         }
     }
     
+    // MARK: Service Quality
+    
     var shareServiceQualityData: Bool? {
         get {
             return backend.bool(forKey: Entries.shareServiceQualityData)
@@ -502,7 +526,16 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
             backend.set(newValue, forKey: Entries.shareServiceQualityData)
         }
     }
-
+    
+    var versionWhenServiceQualityOpted: String? {
+        get {
+            return backend.string(forKey: Entries.versionWhenServiceQualityOpted)
+        }
+        set {
+            backend.set(newValue, forKey: Entries.versionWhenServiceQualityOpted)
+        }
+    }
+    
     //MARK: Networks
     var cachedNetworks: [String] {
         get {
@@ -628,6 +661,7 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
         backend.removeObject(forKey: Entries.serverNetwork)
         backend.removeObject(forKey: Entries.signInWithAppleFakeEmail)
         backend.removeObject(forKey: Entries.shareServiceQualityData)
+        backend.removeObject(forKey: Entries.versionWhenServiceQualityOpted)
         backend.synchronize()
     }
 

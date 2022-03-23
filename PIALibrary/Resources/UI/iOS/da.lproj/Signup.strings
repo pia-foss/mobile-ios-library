@@ -71,4 +71,22 @@
 "share.data.text.description" = "For at hjælpe os med at sikre vores tjenestes forbindelsesydelse, kan du anonymt dele dine forbindelsesstatistikker med os. Disse rapporter inkluderer ikke personligt identificerbare oplysninger.";
 "share.data.text.footer" = "Du kan altid kontrollere dette fra dine indstillinger";
 
-"share.data.readMore.text.description" = "Denne minimale information hjælper os med at identificere og løse potentielle forbindelsesproblemer. Bemærk, at deling af disse oplysninger kræver samtykke og manuel aktivering, da de er slået fra som standard.\n\nVi indsamler oplysninger om følgende begivenheder:\n\n- Forbindelsesforsøg\n- Afbrudt forbindelse\n- Forbindelse oprettet\n\nFor alle disse begivenheder indsamler vi følgende oplysninger:\n- Platform\n- Appversion\n- Apptype (forudgivelse eller ej)\n- Protokol anvendt\n- Forbindelseskilde (manuel eller ved hjælp af automatisering)\n\nAlle begivenheder vil indeholde et unikt id, der genereres tilfældigt. Dette id er ikke knyttet til din brugerkonto. Dette unikke id genoprettes dagligt for din fortroligheds skyld.\n\nDu vil altid have kontrol. Du kan se, hvilke data vi har indsamlet fra Indstillinger, og du kan til enhver tid slå dem fra.";
+"share.data.readMore.text.description" = "This minimal information assists us in identifying and fixing potential connection issues. Note that sharing this information requires consent and manual activation as it is turned off by default.
+
+We will collect information about the following events:
+
+    - Connection Attempt
+    - Connection Canceled
+    - Connection Established
+
+For all of these events, we will collect the following information:
+    - Platform
+    - App version
+    - App type (pre-release or not)
+    - Protocol used
+    - Connection source (manual or using automation)
+    - Time To Connect (time between connecting and connected state)
+
+All events will contain a unique ID, which is randomly generated. This ID is not associated with your user account. This unique ID is re-generated daily for privacy purposes.
+
+You will always be in control. You can see what data we’ve collected from Settings, and you can turn it off at any time.";

@@ -71,4 +71,22 @@
 "share.data.text.description" = "Pour nous aider à garantir les performances de connexion de notre service, vous pouvez partager vos statistiques de connexion de manière anonyme avec nous. Ces rapports ne contiennent aucune information personnellement identifiable.";
 "share.data.text.footer" = "Vous pouvez toujours contrôler cela à partir de vos paramètres.";
 
-"share.data.readMore.text.description" = "Ces informations minimales nous aident à identifier et à résoudre les problèmes de connexion potentiels. Notez que le partage de ces informations nécessite un consentement et une activation manuelle car ils sont désactivés par défaut.\n\nNous collecterons des informations sur les événements suivants :\n\n - Tentative de connexion\n - Connexion annulée\n - Connexion établie\n\nPour tous ces événements, nous collecterons les informations suivantes :\n - Plateforme\n - Version de l'application\n - Type d'application (pré-version ou non)\n - Protocole utilisé\n - Source de connexion (manuelle ou utilisant l'automatisation)\n\nTous les événements contiendront un ID unique généré aléatoirement. Cet ID n'est pas associé à votre compte utilisateur. Cet ID unique est régénéré quotidiennement à des fins de confidentialité.\n\nVous aurez toujours le contrôle. Vous pouvez voir quelles données nous avons collectées à partir de Paramètres, et vous pouvez les désactiver à tout moment.";
+"share.data.readMore.text.description" = "This minimal information assists us in identifying and fixing potential connection issues. Note that sharing this information requires consent and manual activation as it is turned off by default.
+
+We will collect information about the following events:
+
+    - Connection Attempt
+    - Connection Canceled
+    - Connection Established
+
+For all of these events, we will collect the following information:
+    - Platform
+    - App version
+    - App type (pre-release or not)
+    - Protocol used
+    - Connection source (manual or using automation)
+    - Time To Connect (time between connecting and connected state)
+
+All events will contain a unique ID, which is randomly generated. This ID is not associated with your user account. This unique ID is re-generated daily for privacy purposes.
+
+You will always be in control. You can see what data we’ve collected from Settings, and you can turn it off at any time.";

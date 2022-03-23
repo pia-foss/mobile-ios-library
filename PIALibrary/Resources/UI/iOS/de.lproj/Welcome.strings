@@ -14,7 +14,7 @@
 "login.error.title" = "Anmelden";
 "login.error.validation" = "Du musst einen Benutzernamen und ein Passwort angeben.";
 "login.error.unauthorized" = "Dein Benutzername oder Passwort ist falsch.";
-"login.error.throttled" = "Zu viele fehlgeschlagene Anmeldeversuche mit diesem Benutzernamen. Bitte später erneut versuchen.";
+"login.error.throttled" = "Too many failed login attempts with this username. Please try again after %@ second(s).";
 "login.receipt.button" = "Anmeldung mit Kaufbeleg";
 "login.magic.link.title" = "Anmeldung mit magischem E-Mail-Link";
 "login.magic.link.response" = "Bitte überprüfen Sie Ihre E-Mail auf einen Login-Link.";

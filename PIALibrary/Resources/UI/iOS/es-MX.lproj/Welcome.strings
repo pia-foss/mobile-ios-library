@@ -14,7 +14,7 @@
 "login.error.title" = "Iniciar sesión";
 "login.error.validation" = "Debe ingresar un nombre de usuario y una contraseña.";
 "login.error.unauthorized" = "Tu nombre de usuario o contraseña son incorrectos.";
-"login.error.throttled" = "Demasiados intentos fallidos de inicio de sesión con este nombre de usuario. Por favor, inténtelo de nuevo más tarde.";
+"login.error.throttled" = "Too many failed login attempts with this username. Please try again after %@ second(s).";
 "login.receipt.button" = "Inicia sesión con el recibo de compra";
 "login.magic.link.title" = "Inicia sesión con el vínculo mágico del correo electrónico.";
 "login.magic.link.response" = "Busca en tu correo electrónico un enlace de inicio de sesión.";

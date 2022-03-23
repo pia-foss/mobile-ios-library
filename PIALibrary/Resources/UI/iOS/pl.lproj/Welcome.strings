@@ -14,7 +14,7 @@
 "login.error.title" = "Zaloguj";
 "login.error.validation" = "Musisz podać nazwę użytkownika i hasło.";
 "login.error.unauthorized" = "Twoja nazwa użytkownika i hasło są nieprawidłowe.";
-"login.error.throttled" = "Zbyt wiele nieudanych prób logowania z tą nazwą użytkownika. Spróbuj ponownie później.";
+"login.error.throttled" = "Too many failed login attempts with this username. Please try again after %@ second(s).";
 "login.receipt.button" = "Zaloguj się, używając pokwitowania zakupu";
 "login.magic.link.title" = "Zaloguj się, używając sekretnego linku z e-maila";
 "login.magic.link.response" = "Link do logowania wysłaliśmy e-mailem,";
@@ -79,10 +79,10 @@
 
 "getstarted.buttons.buyaccount" = "Zakup konto";
 
-"gdpr.collect.data.title" = "Zbierane przez dane asobowe";
+"gdpr.collect.data.title" = "Zbierane dane osobowe";
 "gdpr.collect.data.description" = "Adres e-mail do zarządzania kontem i ochrony przed nadużyciami.";
 "gdpr.usage.data.title" = "Sposoby wykorzystania zbieranych przez nas danych osobowych";
 "gdpr.usage.data.description" = "Adres e-mail; używany go do wysyłania informacji o subskrypcji, potwierdzeń płatności, korespondencji z klientami i wysyłania ofert promocyjnych wyłącznie Private Internet Access";
 "gdpr.accept.button.title" = "Zaakceptuj i kontynuuj";
 
-"update.account.email.error" = "Nie udało się zmienić -emalia konta";
+"update.account.email.error" = "Nie udało się zmienić adresu e-mail konta";

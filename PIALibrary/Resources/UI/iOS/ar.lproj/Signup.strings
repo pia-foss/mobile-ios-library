@@ -71,4 +71,22 @@
 "share.data.text.description" = "لمساعدتنا في ضمان أداء اتصال خدمتنا، يمكنك مشاركة إحصائيات اتصالك معنا دون الكشف عن هويتك. لا تتضمن هذه التقارير أي معلومات محددة للشخصية.";
 "share.data.text.footer" = "يمكنك دائمًا التحكم في ذلك من إعداداتك";
 
-"share.data.readMore.text.description" = "يساعدنا هذا الحد الأدنى من المعلومات في تحديد مشكلات الاتصال المحتملة وإصلاحها. لاحظ أن مشاركة هذه المعلومات تتطلب الموافقة والتفعيل اليدوي حيث أنها متوقفة بشكل افتراضي.\n\nسنجمع معلومات حول الأحداث التالية:\n\n- محاولة الاتصال\n- الاتصال الملغى\n- الاتصال المؤسس\n\nلجميع هذه الأحداث، سنجمع المعلومات التالية:\n- المنصة\n- إصدار التطبيق\n- نوع التطبيق (إصدار تجريبي أم لا)\n- البروتوكول المستخدم\n- مصدر الاتصال (يدوي أو مؤتمت)\n\nستحتوي جميع الأحداث على معرّف فريد يتم إنشاؤه عشوائيًا. هذا المعرف غير مرتبط بحساب المستخدم الخاص بك. يتم إعادة إنشاء هذا المعرف الفريد يوميًا لأغراض الخصوصية.\n\nستكون دائما أنت المتحكم. يمكنك معرفة البيانات التي جمعناها من \"الإعدادات\"، ويمكنك إيقافها في أي وقت.";
+"share.data.readMore.text.description" = "This minimal information assists us in identifying and fixing potential connection issues. Note that sharing this information requires consent and manual activation as it is turned off by default.
+
+We will collect information about the following events:
+
+    - Connection Attempt
+    - Connection Canceled
+    - Connection Established
+
+For all of these events, we will collect the following information:
+    - Platform
+    - App version
+    - App type (pre-release or not)
+    - Protocol used
+    - Connection source (manual or using automation)
+    - Time To Connect (time between connecting and connected state)
+
+All events will contain a unique ID, which is randomly generated. This ID is not associated with your user account. This unique ID is re-generated daily for privacy purposes.
+
+You will always be in control. You can see what data we’ve collected from Settings, and you can turn it off at any time.";

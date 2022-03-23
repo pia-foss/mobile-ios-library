@@ -14,7 +14,7 @@
 "login.error.title" = "เข้าสู่ระบบ";
 "login.error.validation" = "คุณต้องกรอกชื่อผู้ใช้และรหัสผ่าน";
 "login.error.unauthorized" = "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
-"login.error.throttled" = "มีการลงชื่อเข้าใช้ล้มเหลวด้วยชื่อผู้ใช้นี้เกินจำนวนครั้งที่กำหนด โปรดลองใหม่อีกครั้งภายใน";
+"login.error.throttled" = "Too many failed login attempts with this username. Please try again after %@ second(s).";
 "login.receipt.button" = "เข้าสู่ระบบโดยใช้ใบเสร็จรับเงิน";
 "login.magic.link.title" = "เข้าสู่ระบบโดยใช้ลิงก์อีเมลวิเศษ";
 "login.magic.link.response" = "โปรดตรวจสอบอีเมลของคุณเพื่อดูลิงค์สำหรับเข้าสู่ระบบ";

@@ -83,10 +83,13 @@ public final class Client {
 
         // migrate from old token
         providers.accountProvider.migrateOldTokenIfNeeded { (error) in
-            // If there was an error. It will retry on the next boostrap.
-            if (error != nil) {
-                log.debug("Client bootstrap migrateOldTokenIfNeeded error: \(error)")
+            // If there was an error. It will force the user logout.
+            guard let error = error as? ClientError else {
                 return
+            }
+            log.debug("Client bootstrap migrateOldTokenIfNeeded error: \(error)")
+            if (error == .unauthorized) {
+                providers.accountProvider.logout(nil)
             }
         }
     }

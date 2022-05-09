@@ -37,7 +37,9 @@ extension Client {
     public final class Configuration {
 
         static let teamId = "5357M5NW9W"
-
+        
+        static let teamIdentifierCSI = "pia_ios"
+        
         static let appGroup = "group.com.privateinternetaccess"
 
         static let debugLogKey = "LastVPNLog"

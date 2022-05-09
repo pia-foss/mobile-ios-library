@@ -9,7 +9,38 @@
 import Foundation
 import PIACSI
 
-class PIACSIProtocolInformationProvider : ProtocolInformationProvider {
+class PIACSIProtocolInformationProvider : ICSIProvider {
+    static let csiProtocolInformationFilename = "protocol_information"
+    var filename: String? {
+        get {
+            return PIACSIProtocolInformationProvider.csiProtocolInformationFilename
+        }
+    }
+    
+    var isPersistedData: Bool {
+        get {
+            return false
+        }
+    }
+    
+    var providerType: ProviderType {
+        get {
+            return ProviderType.protocolInformation
+        }
+    }
+    
+    var reportType: ReportType {
+        get {
+            return ReportType.diagnostic
+        }
+    }
+    
+    var value: String? {
+        get {
+            return protocolInformation()
+        }
+    }
+    
 
     private var protocolLogs: String?
 

@@ -9,21 +9,23 @@
 import Foundation
 import PIACSI
 
-class PIACSIClientStateProvider : CSIClientStateProvider {
-
-    func csiEndpoints() -> [CSIEndpoint] {
-        let validEndpoints = EndpointManager.shared.availableCSIEndpoints()
-        var clientEndpoints = [CSIEndpoint]()
-        for endpoint in validEndpoints {
-            clientEndpoints.append(
-                CSIEndpoint(
-                    endpoint: endpoint.host,
-                    isProxy: endpoint.isProxy,
-                    usePinnedCertificate: endpoint.useCertificatePinning,
-                    certificateCommonName: endpoint.commonName
+class PIACSIClientStateProvider : IEndPointProvider {
+    
+    var endpoints: [CSIEndpoint] {
+        get {
+            let validEndpoints = EndpointManager.shared.availableCSIEndpoints()
+            var clientEndpoints = [CSIEndpoint]()
+            for endpoint in validEndpoints {
+                clientEndpoints.append(
+                    CSIEndpoint(
+                        endpoint: endpoint.host,
+                        isProxy: endpoint.isProxy,
+                        usePinnedCertificate: endpoint.useCertificatePinning,
+                        certificateCommonName: endpoint.commonName
+                    )
                 )
-            )
+            }
+            return clientEndpoints
         }
-        return clientEndpoints
     }
 }

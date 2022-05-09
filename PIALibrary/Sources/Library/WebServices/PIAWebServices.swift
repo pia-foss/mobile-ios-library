@@ -70,11 +70,17 @@ class PIAWebServices: WebServices, ConfigurationAccess {
             appVersion = info["CFBundleShortVersionString"] as? String ?? "Unknown"
         }
         self.csiAPI = CSIBuilder()
-            .setPlatform(platform: .ios)
+            .setTeamIdentifier(teamIdentifier: Client.Configuration.teamIdentifierCSI)
             .setAppVersion(appVersion: appVersion)
-            .setCSIClientStateProvider(csiClientStateProvider: PIACSIClientStateProvider())
-            .setProtocolInformationProvider(protocolInformationProvider: csiProtocolInformationProvider)
-            .setRegionInformationProvider(regionInformationProvider: PIACSIRegionInformationProvider())
+            .setCertificate(certificate: rsa4096Certificate)
+            .setUserAgent(userAgent: PIAWebServices.userAgent)
+            .setEndPointProvider(endpointsProvider: PIACSIClientStateProvider())
+            .addLogProviders(providers_: [
+                PIACSIProtocolInformationProvider(),
+                PIACSIRegionInformationProvider(),
+                PIACSIUserInformationProvider(),
+                PIACSIDeviceInformationProvider()
+            ])
             .build()
     }
     

@@ -77,6 +77,8 @@ protocol PlainStore: class {
     
     var versionWhenServiceQualityOpted: String? { get set }
     
+    var lastKnownException: String? { get set }
+    
     // MARK: Preferences
     
     var isPersistentConnection: Bool? { get set }

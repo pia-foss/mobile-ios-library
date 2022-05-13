@@ -11,37 +11,15 @@ import UIKit
 
 class PIACSIDeviceInformationProvider: ICSIProvider {
     
-    static let csiDeviceInformationFilename = "device_information"
+    var filename: String? { return "device_information" }
     
-    var filename: String? {
-        get {
-            return PIACSIDeviceInformationProvider.csiDeviceInformationFilename
-        }
-    }
+    var isPersistedData: Bool { return false }
     
-    var isPersistedData: Bool {
-        get {
-            return false
-        }
-    }
+    var providerType: ProviderType { return ProviderType.deviceInformation }
     
-    var providerType: ProviderType {
-        get {
-            return ProviderType.deviceInformation
-        }
-    }
+    var reportType: ReportType { return ReportType.diagnostic }
     
-    var reportType: ReportType {
-        get {
-            return ReportType.diagnostic
-        }
-    }
-    
-    var value: String? {
-        get {
-            return getDeviceInformation()
-        }
-    }
+    var value: String? { return getDeviceInformation() }
     
     
     func getDeviceInformation() -> String {

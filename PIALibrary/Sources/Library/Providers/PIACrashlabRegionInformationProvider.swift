@@ -10,36 +10,16 @@ import Foundation
 import PIACSI
 
 class PIACSIRegionInformationProvider : ICSIProvider {
-    static let csiRegionInformationFilename = "regions_information"
-    var filename: String? {
-        get {
-            return PIACSIRegionInformationProvider.csiRegionInformationFilename
-        }
-    }
     
-    var isPersistedData: Bool {
-        get {
-            return true
-        }
-    }
+    var filename: String? { return "regions_information" }
     
-    var providerType: ProviderType {
-        get {
-            return ProviderType.regionInformation
-        }
-    }
+    var isPersistedData: Bool { return true }
     
-    var reportType: ReportType {
-        get {
-            return ReportType.diagnostic
-        }
-    }
+    var providerType: ProviderType { return ProviderType.regionInformation }
     
-    var value: String? {
-        get {
-            return regionInformation()
-        }
-    }
+    var reportType: ReportType { return ReportType.diagnostic }
+    
+    var value: String? { return regionInformation() }
     
 
     func regionInformation() -> String {

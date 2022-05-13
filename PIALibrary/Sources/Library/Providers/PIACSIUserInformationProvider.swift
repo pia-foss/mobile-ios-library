@@ -11,37 +11,15 @@ import PIACSI
 
 class PIACSIUserInformationProvider: ICSIProvider {
     
-    static let csiUserSettingsFilename = "user_settings"
+    var filename: String? { return "user_settings" }
     
-    var filename: String? {
-        get {
-            return PIACSIUserInformationProvider.csiUserSettingsFilename
-        }
-    }
+    var isPersistedData: Bool { return true }
     
-    var isPersistedData: Bool {
-        get {
-            return true
-        }
-    }
+    var providerType: ProviderType { return ProviderType.userSettings }
     
-    var providerType: ProviderType {
-        get {
-            return ProviderType.userSettings
-        }
-    }
+    var reportType: ReportType { return ReportType.diagnostic }
     
-    var reportType: ReportType {
-        get {
-            return ReportType.diagnostic
-        }
-    }
-    
-    var value: String? {
-        get {
-            return getUserInformation()
-        }
-    }
+    var value: String? { return getUserInformation() }
     
     func getUserInformation() -> String {
         var userSettings = ""

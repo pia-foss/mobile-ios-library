@@ -237,9 +237,8 @@
 		7E9D038428479DE100BE85DC /* TimeInterval+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9D038328479DE100BE85DC /* TimeInterval+Date.swift */; };
 		7E9D038628479F9F00BE85DC /* AccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9D038528479F9F00BE85DC /* AccessibilityIdentifiers.swift */; };
 		7E9D038828479FB200BE85DC /* AccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9D038728479FB200BE85DC /* AccessibilityIdentifiers.swift */; };
-		7E9D038A2847A35500BE85DC /* WhitelistUserSettings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7E9D03892847A35500BE85DC /* WhitelistUserSettings.plist */; };
 		7E9D038C2847A8FC00BE85DC /* WhitelistUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9D038B2847A8FC00BE85DC /* WhitelistUtil.swift */; };
-		7E9D038E2847A94400BE85DC /* WhitelistUserPreferencesKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7E9D038D2847A94400BE85DC /* WhitelistUserPreferencesKeys.plist */; };
+		7E9D03902847AB5800BE85DC /* WhitelistUserPreferencesKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7E9D038F2847AB5800BE85DC /* WhitelistUserPreferencesKeys.plist */; };
 		821674F7267A47670028E4FD /* LibraryConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821674F6267A47670028E4FD /* LibraryConstants.swift */; };
 		821674F8267A47670028E4FD /* LibraryConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821674F6267A47670028E4FD /* LibraryConstants.swift */; };
 		82183D7F25011D200033023F /* MagicLinkLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82183D7D25011D200033023F /* MagicLinkLoginViewController.swift */; };
@@ -588,9 +587,8 @@
 		7E9D038328479DE100BE85DC /* TimeInterval+Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Date.swift"; sourceTree = "<group>"; };
 		7E9D038528479F9F00BE85DC /* AccessibilityIdentifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccessibilityIdentifiers.swift; path = PIALibrary/Sources/UI/iOS/AccessibilityIdentifiers.swift; sourceTree = SOURCE_ROOT; };
 		7E9D038728479FB200BE85DC /* AccessibilityIdentifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifiers.swift; sourceTree = "<group>"; };
-		7E9D03892847A35500BE85DC /* WhitelistUserSettings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = WhitelistUserSettings.plist; sourceTree = "<group>"; };
 		7E9D038B2847A8FC00BE85DC /* WhitelistUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhitelistUtil.swift; sourceTree = "<group>"; };
-		7E9D038D2847A94400BE85DC /* WhitelistUserPreferencesKeys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = WhitelistUserPreferencesKeys.plist; sourceTree = "<group>"; };
+		7E9D038F2847AB5800BE85DC /* WhitelistUserPreferencesKeys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WhitelistUserPreferencesKeys.plist; sourceTree = "<group>"; };
 		81CAB800806A3F61AEBB267F /* Pods-PIALibrary-PIALibraryTests-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PIALibrary-PIALibraryTests-iOS.release.xcconfig"; path = "Target Support Files/Pods-PIALibrary-PIALibraryTests-iOS/Pods-PIALibrary-PIALibraryTests-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		821674F6267A47670028E4FD /* LibraryConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryConstants.swift; sourceTree = "<group>"; };
 		82183D7D25011D200033023F /* MagicLinkLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicLinkLoginViewController.swift; sourceTree = "<group>"; };
@@ -741,9 +739,7 @@
 				7E9D038328479DE100BE85DC /* TimeInterval+Date.swift */,
 				82CDC2E1257A5B440001669D /* DateUtil.swift */,
 				7E9D038B2847A8FC00BE85DC /* WhitelistUtil.swift */,
-				7E9D038D2847A94400BE85DC /* WhitelistUserPreferencesKeys.plist */,
 				7E9D036D28478ADD00BE85DC /* WhitelistUserInformationUtil.swift */,
-				7E9D03892847A35500BE85DC /* WhitelistUserSettings.plist */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1043,6 +1039,7 @@
 			children = (
 				0EB8C07E1F9CE11A005857E4 /* Resources */,
 				0EDD36B31F741C9300A5A7B9 /* Sources */,
+				7E9D038F2847AB5800BE85DC /* WhitelistUserPreferencesKeys.plist */,
 				0EBFFFD91F693F800009D4F4 /* Info.plist */,
 			);
 			path = PIALibrary;
@@ -1550,15 +1547,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E9D03902847AB5800BE85DC /* WhitelistUserPreferencesKeys.plist in Resources */,
 				0E7361E51FD9731F00706BFF /* Welcome.storyboard in Resources */,
 				824D981E266A1AC500FCD7DA /* staging.json in Resources */,
 				0E6B0A791FA4986D00EBB916 /* UI.strings in Resources */,
 				0E7361B41FD9683B00706BFF /* Signup.strings in Resources */,
 				DD6DC5BC21B6A8FC00F9D538 /* pia-spinner.json in Resources */,
 				0EB8C0831F9CE11A005857E4 /* UI.xcassets in Resources */,
-				7E9D038E2847A94400BE85DC /* WhitelistUserPreferencesKeys.plist in Resources */,
 				0E7361E61FD9731F00706BFF /* Signup.storyboard in Resources */,
-				7E9D038A2847A35500BE85DC /* WhitelistUserSettings.plist in Resources */,
 				0E7361CF1FD96AF000706BFF /* Welcome.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

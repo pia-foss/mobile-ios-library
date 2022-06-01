@@ -231,13 +231,13 @@
 		354B015F27732095000A73B4 /* NavigationBar+Appearence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B015E27732095000A73B4 /* NavigationBar+Appearence.swift */; };
 		3D93D3414A3DA19ECB04B778 /* Pods_PIALibrary_PIALibraryHost_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB01CE68711A898531418458 /* Pods_PIALibrary_PIALibraryHost_iOS.framework */; };
 		7E9D036F28478ADD00BE85DC /* WhitelistUserInformationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9D036D28478ADD00BE85DC /* WhitelistUserInformationUtil.swift */; };
-		7E9D037028478ADD00BE85DC /* WhitelistUserInformation.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7E9D036E28478ADD00BE85DC /* WhitelistUserInformation.plist */; };
 		7E9D038028479DCC00BE85DC /* PIACSILastKnownExceptionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9D037D28479DCC00BE85DC /* PIACSILastKnownExceptionProvider.swift */; };
 		7E9D038128479DCC00BE85DC /* PIACSIDeviceInformationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9D037E28479DCC00BE85DC /* PIACSIDeviceInformationProvider.swift */; };
 		7E9D038228479DCC00BE85DC /* PIACSIUserInformationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9D037F28479DCC00BE85DC /* PIACSIUserInformationProvider.swift */; };
 		7E9D038428479DE100BE85DC /* TimeInterval+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9D038328479DE100BE85DC /* TimeInterval+Date.swift */; };
 		7E9D038628479F9F00BE85DC /* AccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9D038528479F9F00BE85DC /* AccessibilityIdentifiers.swift */; };
 		7E9D038828479FB200BE85DC /* AccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9D038728479FB200BE85DC /* AccessibilityIdentifiers.swift */; };
+		7E9D038A2847A35500BE85DC /* WhitelistUserSettings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7E9D03892847A35500BE85DC /* WhitelistUserSettings.plist */; };
 		821674F7267A47670028E4FD /* LibraryConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821674F6267A47670028E4FD /* LibraryConstants.swift */; };
 		821674F8267A47670028E4FD /* LibraryConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821674F6267A47670028E4FD /* LibraryConstants.swift */; };
 		82183D7F25011D200033023F /* MagicLinkLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82183D7D25011D200033023F /* MagicLinkLoginViewController.swift */; };
@@ -580,13 +580,13 @@
 		354B015E27732095000A73B4 /* NavigationBar+Appearence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NavigationBar+Appearence.swift"; sourceTree = "<group>"; };
 		67D8A0C15205E19B5912E3B7 /* Pods-PIALibrary-PIALibraryTests-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PIALibrary-PIALibraryTests-iOS.debug.xcconfig"; path = "Target Support Files/Pods-PIALibrary-PIALibraryTests-iOS/Pods-PIALibrary-PIALibraryTests-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		7E9D036D28478ADD00BE85DC /* WhitelistUserInformationUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhitelistUserInformationUtil.swift; sourceTree = "<group>"; };
-		7E9D036E28478ADD00BE85DC /* WhitelistUserInformation.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WhitelistUserInformation.plist; sourceTree = "<group>"; };
 		7E9D037D28479DCC00BE85DC /* PIACSILastKnownExceptionProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PIACSILastKnownExceptionProvider.swift; sourceTree = "<group>"; };
 		7E9D037E28479DCC00BE85DC /* PIACSIDeviceInformationProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PIACSIDeviceInformationProvider.swift; sourceTree = "<group>"; };
 		7E9D037F28479DCC00BE85DC /* PIACSIUserInformationProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PIACSIUserInformationProvider.swift; sourceTree = "<group>"; };
 		7E9D038328479DE100BE85DC /* TimeInterval+Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Date.swift"; sourceTree = "<group>"; };
 		7E9D038528479F9F00BE85DC /* AccessibilityIdentifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccessibilityIdentifiers.swift; path = PIALibrary/Sources/UI/iOS/AccessibilityIdentifiers.swift; sourceTree = SOURCE_ROOT; };
 		7E9D038728479FB200BE85DC /* AccessibilityIdentifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifiers.swift; sourceTree = "<group>"; };
+		7E9D03892847A35500BE85DC /* WhitelistUserSettings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = WhitelistUserSettings.plist; sourceTree = "<group>"; };
 		81CAB800806A3F61AEBB267F /* Pods-PIALibrary-PIALibraryTests-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PIALibrary-PIALibraryTests-iOS.release.xcconfig"; path = "Target Support Files/Pods-PIALibrary-PIALibraryTests-iOS/Pods-PIALibrary-PIALibraryTests-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		821674F6267A47670028E4FD /* LibraryConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryConstants.swift; sourceTree = "<group>"; };
 		82183D7D25011D200033023F /* MagicLinkLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicLinkLoginViewController.swift; sourceTree = "<group>"; };
@@ -719,8 +719,6 @@
 		0E1108911F77B6B600A92462 /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				7E9D036E28478ADD00BE85DC /* WhitelistUserInformation.plist */,
-				7E9D036D28478ADD00BE85DC /* WhitelistUserInformationUtil.swift */,
 				0E2ADCFB1FE136D600BB170C /* iOS */,
 				0E2ADCFC1FE136DA00BB170C /* macOS */,
 				0E2ADCC91FE06D7A00BB170C /* Array+Math.swift */,
@@ -738,6 +736,8 @@
 				DD6FB0362224355600A84F05 /* UIDevice+WiFi.swift */,
 				7E9D038328479DE100BE85DC /* TimeInterval+Date.swift */,
 				82CDC2E1257A5B440001669D /* DateUtil.swift */,
+				7E9D036D28478ADD00BE85DC /* WhitelistUserInformationUtil.swift */,
+				7E9D03892847A35500BE85DC /* WhitelistUserSettings.plist */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1548,10 +1548,10 @@
 				824D981E266A1AC500FCD7DA /* staging.json in Resources */,
 				0E6B0A791FA4986D00EBB916 /* UI.strings in Resources */,
 				0E7361B41FD9683B00706BFF /* Signup.strings in Resources */,
-				7E9D037028478ADD00BE85DC /* WhitelistUserInformation.plist in Resources */,
 				DD6DC5BC21B6A8FC00F9D538 /* pia-spinner.json in Resources */,
 				0EB8C0831F9CE11A005857E4 /* UI.xcassets in Resources */,
 				0E7361E61FD9731F00706BFF /* Signup.storyboard in Resources */,
+				7E9D038A2847A35500BE85DC /* WhitelistUserSettings.plist in Resources */,
 				0E7361CF1FD96AF000706BFF /* Welcome.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

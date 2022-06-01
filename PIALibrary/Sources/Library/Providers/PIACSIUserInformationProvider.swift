@@ -26,8 +26,11 @@ class PIACSIUserInformationProvider: ICSIProvider {
         guard let defaults = UserDefaults(suiteName: Client.Configuration.appGroup) else {
             return userSettings
         }
+        let allowedKeys = WhitelistUtil.keys()
         for (key, value) in defaults.dictionaryRepresentation() {
-            userSettings += "\(key): \(value)\n"
+            if allowedKeys.contains(key) {
+                userSettings += "\(key): \(value)\n"
+            }
         }
         return userSettings.redactIPs()
     }

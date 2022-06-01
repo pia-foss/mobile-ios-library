@@ -232,6 +232,12 @@
 		3D93D3414A3DA19ECB04B778 /* Pods_PIALibrary_PIALibraryHost_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB01CE68711A898531418458 /* Pods_PIALibrary_PIALibraryHost_iOS.framework */; };
 		7E9D036F28478ADD00BE85DC /* WhitelistUserInformationUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9D036D28478ADD00BE85DC /* WhitelistUserInformationUtil.swift */; };
 		7E9D037028478ADD00BE85DC /* WhitelistUserInformation.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7E9D036E28478ADD00BE85DC /* WhitelistUserInformation.plist */; };
+		7E9D038028479DCC00BE85DC /* PIACSILastKnownExceptionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9D037D28479DCC00BE85DC /* PIACSILastKnownExceptionProvider.swift */; };
+		7E9D038128479DCC00BE85DC /* PIACSIDeviceInformationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9D037E28479DCC00BE85DC /* PIACSIDeviceInformationProvider.swift */; };
+		7E9D038228479DCC00BE85DC /* PIACSIUserInformationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9D037F28479DCC00BE85DC /* PIACSIUserInformationProvider.swift */; };
+		7E9D038428479DE100BE85DC /* TimeInterval+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9D038328479DE100BE85DC /* TimeInterval+Date.swift */; };
+		7E9D038628479F9F00BE85DC /* AccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9D038528479F9F00BE85DC /* AccessibilityIdentifiers.swift */; };
+		7E9D038828479FB200BE85DC /* AccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9D038728479FB200BE85DC /* AccessibilityIdentifiers.swift */; };
 		821674F7267A47670028E4FD /* LibraryConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821674F6267A47670028E4FD /* LibraryConstants.swift */; };
 		821674F8267A47670028E4FD /* LibraryConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821674F6267A47670028E4FD /* LibraryConstants.swift */; };
 		82183D7F25011D200033023F /* MagicLinkLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82183D7D25011D200033023F /* MagicLinkLoginViewController.swift */; };
@@ -575,6 +581,12 @@
 		67D8A0C15205E19B5912E3B7 /* Pods-PIALibrary-PIALibraryTests-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PIALibrary-PIALibraryTests-iOS.debug.xcconfig"; path = "Target Support Files/Pods-PIALibrary-PIALibraryTests-iOS/Pods-PIALibrary-PIALibraryTests-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		7E9D036D28478ADD00BE85DC /* WhitelistUserInformationUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhitelistUserInformationUtil.swift; sourceTree = "<group>"; };
 		7E9D036E28478ADD00BE85DC /* WhitelistUserInformation.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WhitelistUserInformation.plist; sourceTree = "<group>"; };
+		7E9D037D28479DCC00BE85DC /* PIACSILastKnownExceptionProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PIACSILastKnownExceptionProvider.swift; sourceTree = "<group>"; };
+		7E9D037E28479DCC00BE85DC /* PIACSIDeviceInformationProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PIACSIDeviceInformationProvider.swift; sourceTree = "<group>"; };
+		7E9D037F28479DCC00BE85DC /* PIACSIUserInformationProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PIACSIUserInformationProvider.swift; sourceTree = "<group>"; };
+		7E9D038328479DE100BE85DC /* TimeInterval+Date.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Date.swift"; sourceTree = "<group>"; };
+		7E9D038528479F9F00BE85DC /* AccessibilityIdentifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccessibilityIdentifiers.swift; path = PIALibrary/Sources/UI/iOS/AccessibilityIdentifiers.swift; sourceTree = SOURCE_ROOT; };
+		7E9D038728479FB200BE85DC /* AccessibilityIdentifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifiers.swift; sourceTree = "<group>"; };
 		81CAB800806A3F61AEBB267F /* Pods-PIALibrary-PIALibraryTests-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PIALibrary-PIALibraryTests-iOS.release.xcconfig"; path = "Target Support Files/Pods-PIALibrary-PIALibraryTests-iOS/Pods-PIALibrary-PIALibraryTests-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		821674F6267A47670028E4FD /* LibraryConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryConstants.swift; sourceTree = "<group>"; };
 		82183D7D25011D200033023F /* MagicLinkLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicLinkLoginViewController.swift; sourceTree = "<group>"; };
@@ -724,6 +736,7 @@
 				DDD824E4218996CD00151709 /* Pages.swift */,
 				DD76292D21ECEC3F0092DF50 /* DataManipulation.swift */,
 				DD6FB0362224355600A84F05 /* UIDevice+WiFi.swift */,
+				7E9D038328479DE100BE85DC /* TimeInterval+Date.swift */,
 				82CDC2E1257A5B440001669D /* DateUtil.swift */,
 			);
 			path = Util;
@@ -936,6 +949,7 @@
 			children = (
 				84577FC6213E7D68006DEC3D /* ViewControllers */,
 				0EB8C04F1F9CD38A005857E4 /* ActivityButton.swift */,
+				7E9D038728479FB200BE85DC /* AccessibilityIdentifiers.swift */,
 				0EB8C0501F9CD38A005857E4 /* BorderedTextField.swift */,
 				0E0F95951FD560C40046DC64 /* CircleProgressView.swift */,
 				0EE14D1A1FF16B39008D9AC2 /* InvalidatingFlowLayout.swift */,
@@ -1209,6 +1223,9 @@
 		82FD5D542521F2B600E390CB /* Providers */ = {
 			isa = PBXGroup;
 			children = (
+				7E9D037E28479DCC00BE85DC /* PIACSIDeviceInformationProvider.swift */,
+				7E9D037D28479DCC00BE85DC /* PIACSILastKnownExceptionProvider.swift */,
+				7E9D037F28479DCC00BE85DC /* PIACSIUserInformationProvider.swift */,
 				AA319C4C25833088004BECF6 /* PIACrashlabClientStateProvider.swift */,
 				AA319C4B25833088004BECF6 /* PIACrashlabProtocolInformationProvider.swift */,
 				AA319C4A25833088004BECF6 /* PIACrashlabRegionInformationProvider.swift */,
@@ -1234,6 +1251,7 @@
 		84577FC6213E7D68006DEC3D /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				7E9D038528479F9F00BE85DC /* AccessibilityIdentifiers.swift */,
 				8289AD872685C1FC00DA6A17 /* GDPRViewController.swift */,
 				8289AD862685C1FC00DA6A17 /* ShareDataInformationViewController.swift */,
 				0EB8C0521F9CD38A005857E4 /* AutolayoutViewController.swift */,
@@ -1959,11 +1977,13 @@
 				AA319C5125833088004BECF6 /* PIACrashlabClientStateProvider.swift in Sources */,
 				0EB8C06E1F9CD38B005857E4 /* SignupInternetUnreachableViewController.swift in Sources */,
 				0E75D8D31F9E3F9F00658D1E /* UserAccount.swift in Sources */,
+				7E9D038228479DCC00BE85DC /* PIACSIUserInformationProvider.swift in Sources */,
 				0EB8C0691F9CD38B005857E4 /* PurchasePlanCell.swift in Sources */,
 				0EA8072F20A1E7C60033EC1A /* GlossRedeem.swift in Sources */,
 				0EA4C4311FDDD48F0041C3D8 /* Server.swift in Sources */,
 				DD56E3F4225F5D22002EDFB2 /* GlossProduct.swift in Sources */,
 				8276E175260B5ED400BB7B40 /* ServiceQualityManager.swift in Sources */,
+				7E9D038828479FB200BE85DC /* AccessibilityIdentifiers.swift in Sources */,
 				DD7411A923EC35B40058CEF3 /* PIAWGTunnelProfile.swift in Sources */,
 				84577FC5213D9B4D006DEC3D /* UILabel+LineHeight.swift in Sources */,
 				0EB9667E1FDF36490086ABC2 /* GlossParser.swift in Sources */,
@@ -2001,6 +2021,7 @@
 				0EE771091F9D21020029A77B /* Payment.swift in Sources */,
 				0E53A8531FE5D73F000C2A18 /* Client+Mock.swift in Sources */,
 				0E392D9D1FE31D630002160D /* MockVPNProvider.swift in Sources */,
+				7E9D038028479DCC00BE85DC /* PIACSILastKnownExceptionProvider.swift in Sources */,
 				0E9D62DA1FDEE3FE009A90CF /* ServerProvider.swift in Sources */,
 				DD76292821ECDFF80092DF50 /* Usage.swift in Sources */,
 				0E2ADD3A1FE14F8600BB170C /* VPNProfile.swift in Sources */,
@@ -2019,6 +2040,7 @@
 				0EB8C0481F9CCE07005857E4 /* Macros.swift in Sources */,
 				84577FC3213D9AEA006DEC3D /* UITextField+PlaceholderColor.swift in Sources */,
 				0EFEB4C12007784A00F81029 /* PIATunnelProvider+Profile.swift in Sources */,
+				7E9D038128479DCC00BE85DC /* PIACSIDeviceInformationProvider.swift in Sources */,
 				DD8C3E612327EF4C00BAD18E /* IKEv2IntegrityAlgorithm.swift in Sources */,
 				0E392DA31FE3247E0002160D /* Endpoint.swift in Sources */,
 				82CDC2E2257A5B440001669D /* DateUtil.swift in Sources */,
@@ -2037,6 +2059,7 @@
 				821674F7267A47670028E4FD /* LibraryConstants.swift in Sources */,
 				0EFEB4C22007784A00F81029 /* PIATunnelProfile.swift in Sources */,
 				DD1AB10523FC280000396E74 /* DeviceModel.swift in Sources */,
+				7E9D038428479DE100BE85DC /* TimeInterval+Date.swift in Sources */,
 				0E392DBB1FE34B5A0002160D /* NSString+URL.m in Sources */,
 				AA319C4F25833088004BECF6 /* PIACrashlabProtocolInformationProvider.swift in Sources */,
 				8276E1E6260B961C00BB7B40 /* PIAKPIClientStateProvider.swift in Sources */,
@@ -2059,6 +2082,7 @@
 				DDD824EA2189CD5700151709 /* NavigationLogoView.swift in Sources */,
 				0EFB512E1F82D7C50033B81F /* PIAWebServices.swift in Sources */,
 				0EB8C0641F9CD38B005857E4 /* ActivityButton.swift in Sources */,
+				7E9D038628479F9F00BE85DC /* AccessibilityIdentifiers.swift in Sources */,
 				0ED2B5131F82444E00C9DB2B /* Client+Preferences.swift in Sources */,
 				0EE78AF61F81880E002E4CDD /* Credentials.swift in Sources */,
 				DD8BF3CB219C6BAA0041357C /* ConfirmVPNPlanViewController.swift in Sources */,

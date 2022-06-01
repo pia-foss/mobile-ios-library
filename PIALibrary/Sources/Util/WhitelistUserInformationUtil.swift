@@ -13,13 +13,13 @@ private let log = SwiftyBeaver.self
 public class WhitelistUtil {
     public static func keys() -> [String] {
         let bundle = Bundle(for: WhitelistUtil.self)
-        guard let filePath = bundle.path(forResource: "WhitelistUserInformation", ofType: "plist") else {
-            log.debug("Couldn't find file 'WhitelistUserInformation.plist'")
+        guard let filePath = bundle.path(forResource: "WhitelistUserSettings", ofType: "plist") else {
+            log.debug("Couldn't find file 'WhitelistUserSettings.plist'")
             return []
         }
         let contents = NSArray(contentsOfFile: filePath)
         guard let allValues = contents as? [String] else {
-            log.debug("Couldn't find whitelist contents in 'WhitelistUserInformation.plist'")
+            log.debug("Couldn't find whitelist contents in 'WhitelistUserSettings.plist'")
             return []
         }
         return allValues

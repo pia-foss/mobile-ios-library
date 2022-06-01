@@ -12,20 +12,18 @@ import PIACSI
 class PIACSIClientStateProvider : IEndPointProvider {
     
     var endpoints: [CSIEndpoint] {
-        get {
-            let validEndpoints = EndpointManager.shared.availableCSIEndpoints()
-            var clientEndpoints = [CSIEndpoint]()
-            for endpoint in validEndpoints {
-                clientEndpoints.append(
-                    CSIEndpoint(
-                        endpoint: endpoint.host,
-                        isProxy: endpoint.isProxy,
-                        usePinnedCertificate: endpoint.useCertificatePinning,
-                        certificateCommonName: endpoint.commonName
-                    )
+        let validEndpoints = EndpointManager.shared.availableCSIEndpoints()
+        var clientEndpoints = [CSIEndpoint]()
+        for endpoint in validEndpoints {
+            clientEndpoints.append(
+                CSIEndpoint(
+                    endpoint: endpoint.host,
+                    isProxy: endpoint.isProxy,
+                    usePinnedCertificate: endpoint.useCertificatePinning,
+                    certificateCommonName: endpoint.commonName
                 )
-            }
-            return clientEndpoints
+            )
         }
+        return clientEndpoints
     }
 }

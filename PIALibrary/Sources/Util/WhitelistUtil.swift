@@ -12,6 +12,11 @@ import SwiftyBeaver
 private let log = SwiftyBeaver.self
 
 public class WhitelistUtil {
+    
+    public static func filter(preferences: [String: Any], from filterKeys: [String] = WhitelistUtil.keys()) -> [String: Any] {
+        return preferences.filter({ filterKeys.contains($0.key) })
+    }
+    
     public static func keys() -> [String] {
         return ["Version",
                 "AddingEmojiKeybordHandled",

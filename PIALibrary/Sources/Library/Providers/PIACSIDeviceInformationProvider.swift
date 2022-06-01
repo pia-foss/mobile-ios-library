@@ -25,6 +25,6 @@ class PIACSIDeviceInformationProvider: ICSIProvider {
     func getDeviceInformation() -> String {
         let version = ProcessInfo.processInfo.operatingSystemVersion
         let versionString = "\(version.majorVersion).\(version.minorVersion).\(version.patchVersion)"
-        return "OS Version: \(versionString)\nDevice: \(UIDevice.current.type.rawValue)"
+        return "OS Version: \(versionString)\nDeviceType: \(UIDevice.current.type.rawValue)"
     }
 }

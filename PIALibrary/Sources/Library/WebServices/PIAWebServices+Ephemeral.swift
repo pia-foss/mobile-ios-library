@@ -46,8 +46,8 @@ extension PIAWebServices {
     
     func submitDebugReport(_ shouldSendPersistedData: Bool, _ protocolLogs: String, _ callback: LibraryCallback<String>?) {
         csiProtocolInformationProvider.setProtocolLogs(protocolLogs: protocolLogs)
-        self.csiAPI.send(shouldSendPersistedData: shouldSendPersistedData) { (reportIdentifier, error) in
-            if let _ = error {
+        self.csiAPI.send(shouldSendPersistedData: shouldSendPersistedData) { (reportIdentifier, errors) in
+            if !errors.isEmpty {
                 callback?(nil, ClientError.internetUnreachable)
                 return
             }

@@ -98,6 +98,8 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
 
         static let shareServiceQualityData = "ShareServiceQualityData"
         
+        static let lastKnownException = "LastKnownException"
+
         static let versionWhenServiceQualityOpted = "versionWhenServiceQualityOpted"
         
         static let lastVPNConnectionAttempt = "lastVPNConnectionAttempt"
@@ -533,6 +535,15 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
         }
         set {
             backend.set(newValue, forKey: Entries.versionWhenServiceQualityOpted)
+        }
+    }
+    
+    var lastKnownException: String? {
+        get {
+            return backend.string(forKey: Entries.lastKnownException) ?? ""
+        }
+        set {
+            backend.set(newValue, forKey: Entries.lastKnownException)
         }
     }
     

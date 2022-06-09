@@ -9,7 +9,18 @@
 import Foundation
 import PIACSI
 
-class PIACSIRegionInformationProvider : RegionInformationProvider {
+class PIACSIRegionInformationProvider : ICSIProvider {
+    
+    var filename: String? { return "regions_information" }
+    
+    var isPersistedData: Bool { return true }
+    
+    var providerType: ProviderType { return ProviderType.regionInformation }
+    
+    var reportType: ReportType { return ReportType.diagnostic }
+    
+    var value: String? { return regionInformation() }
+    
 
     func regionInformation() -> String {
         var redactedServers: [String] = []

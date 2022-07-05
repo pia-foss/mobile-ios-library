@@ -87,6 +87,8 @@ protocol PlainStore: class {
 
     var mace: Bool? { get set }
     
+    var disableMetaProxies: Bool { get set }
+    
     // MARK: Lifecycle
     
     func reset()

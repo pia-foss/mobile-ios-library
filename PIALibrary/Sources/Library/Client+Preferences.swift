@@ -34,6 +34,8 @@ private protocol PreferencesStore: class {
         
     var mace: Bool { get set }
     
+    var disableMetaProxies: Bool { get set }
+    
     var useWiFiProtection: Bool { get set }
 
     var trustCellularData: Bool { get set }
@@ -107,6 +109,7 @@ private extension PreferencesStore {
         lastKnownException = source.lastKnownException
         versionWhenServiceQualityOpted = source.versionWhenServiceQualityOpted
         lastConnectedRegion = source.lastConnectedRegion
+        disableMetaProxies = source.disableMetaProxies
     }
 }
 
@@ -168,6 +171,16 @@ extension Client {
             }
             set {
                 accessedDatabase.plain.mace = newValue
+            }
+        }
+        
+        /// Disables the meta proxies end-points
+        public var disableMetaProxies: Bool {
+            get {
+                return accessedDatabase.plain.disableMetaProxies
+            }
+            set {
+                accessedDatabase.plain.disableMetaProxies = newValue
             }
         }
         
@@ -466,6 +479,7 @@ extension Client.Preferences {
             shareServiceQualityData = false
             lastKnownException = nil
             versionWhenServiceQualityOpted = nil
+            disableMetaProxies = false
         }
 
         /**
@@ -502,7 +516,10 @@ extension Client.Preferences {
         
         /// :nodoc:
         public var mace: Bool
-
+        
+        /// :nodoc:
+        public var disableMetaProxies: Bool
+        
         /// :nodoc:
         public var useWiFiProtection: Bool
 

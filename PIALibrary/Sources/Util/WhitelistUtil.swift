@@ -35,7 +35,7 @@ public class WhitelistUtil {
                 "PKKeychainVersionKey",
                 "UseSmallPackets",
                 "AppEnvironmentIsProduction",
-                "stopInAppMessages",
+                "showServiceMessages",
                 "INNextHearbeatDate",
                 "DismissedMessages",
                 "AKLastEmailListRequestDateKey",

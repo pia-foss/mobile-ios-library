@@ -105,8 +105,6 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
         static let lastVPNConnectionAttempt = "lastVPNConnectionAttempt"
         
         static let timeToConnectVPN = "timeToConnectVPN"
-        
-        static let disableMetaProxies = "disableMetaProxies"
     }
     
     private let backend: UserDefaults
@@ -520,15 +518,6 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
         }
     }
     
-    var disableMetaProxies: Bool {
-        get {
-            return backend.bool(forKey: Entries.disableMetaProxies)
-        }
-        set {
-            backend.set(newValue, forKey: Entries.disableMetaProxies)
-        }
-    }
-    
     // MARK: Service Quality
     
     var shareServiceQualityData: Bool? {
@@ -684,7 +673,6 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
         backend.removeObject(forKey: Entries.signInWithAppleFakeEmail)
         backend.removeObject(forKey: Entries.shareServiceQualityData)
         backend.removeObject(forKey: Entries.versionWhenServiceQualityOpted)
-        backend.removeObject(forKey: Entries.disableMetaProxies)
         backend.synchronize()
     }
 

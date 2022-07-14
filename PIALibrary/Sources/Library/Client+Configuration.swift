@@ -30,6 +30,7 @@ extension Client {
         public static let disableMultiDipTokens = "disable-multi-dip-tokens"
         public static let checkDipExpirationRequest = "check-dip-expiration-request"
         public static let showNewInitialScreen = "show-new-initial-screen"
+        public static let disableSystemRatingDialog = "disable-system-rating-dialogue"
     }
     
     /// Encapsulates internal and public parameters of the client. When not specified otherwise, time intervals are in milliseconds.

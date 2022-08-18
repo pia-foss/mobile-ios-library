@@ -9,9 +9,9 @@
 import Foundation
 import PIACSI
 
-class PIACSIClientStateProvider : CSIClientStateProvider {
-
-    func csiEndpoints() -> [CSIEndpoint] {
+class PIACSIClientStateProvider : IEndPointProvider {
+    
+    var endpoints: [CSIEndpoint] {
         let validEndpoints = EndpointManager.shared.availableCSIEndpoints()
         var clientEndpoints = [CSIEndpoint]()
         for endpoint in validEndpoints {

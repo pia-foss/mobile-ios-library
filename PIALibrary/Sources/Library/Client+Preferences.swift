@@ -68,6 +68,8 @@ private protocol PreferencesStore: class {
 
     var shareServiceQualityData: Bool { get set }
     
+    var lastKnownException: String? { get set }
+    
     var versionWhenServiceQualityOpted: String? { get set }
 
     func vpnCustomConfiguration(for vpnType: String) -> VPNCustomConfiguration?
@@ -102,6 +104,7 @@ private extension PreferencesStore {
         ikeV2PacketSize = source.ikeV2PacketSize
         signInWithAppleFakeEmail = source.signInWithAppleFakeEmail
         shareServiceQualityData = source.shareServiceQualityData
+        lastKnownException = source.lastKnownException
         versionWhenServiceQualityOpted = source.versionWhenServiceQualityOpted
         lastConnectedRegion = source.lastConnectedRegion
     }
@@ -415,6 +418,16 @@ extension Client {
                 accessedDatabase.plain.versionWhenServiceQualityOpted = newValue
             }
         }
+        
+        /// Stores last known exception raised by the app at any point
+        public var lastKnownException: String? {
+            get {
+                return accessedDatabase.plain.lastKnownException
+            }
+            set {
+                accessedDatabase.plain.lastKnownException = newValue
+            }
+        }
     }
 }
 
@@ -451,6 +464,7 @@ extension Client.Preferences {
             ikeV2PacketSize = 0
             signInWithAppleFakeEmail = nil
             shareServiceQualityData = false
+            lastKnownException = nil
             versionWhenServiceQualityOpted = nil
         }
 
@@ -488,7 +502,7 @@ extension Client.Preferences {
         
         /// :nodoc:
         public var mace: Bool
-
+        
         /// :nodoc:
         public var useWiFiProtection: Bool
 
@@ -542,6 +556,9 @@ extension Client.Preferences {
         
         /// :nodoc:
         public var versionWhenServiceQualityOpted: String?
+        
+        /// :nodoc:
+        public var lastKnownException: String?
         
         /// :nodoc:
         public func vpnCustomConfiguration(for vpnType: String) -> VPNCustomConfiguration? {

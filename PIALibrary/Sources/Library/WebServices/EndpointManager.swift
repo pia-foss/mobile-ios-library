@@ -110,7 +110,7 @@ public class EndpointManager {
         
         var availableEndpoints = [PinningEndpoint]()
         availableMetaEndpoints(&availableEndpoints)
-
+        
         availableEndpoints.append(PinningEndpoint(host: pia))
         availableEndpoints.append(PinningEndpoint(host: proxy, isProxy: true))
         

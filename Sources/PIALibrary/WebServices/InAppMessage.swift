@@ -20,7 +20,7 @@
 //
 
 import Foundation
-import PIAAccount
+import account
 
 public enum InAppMessageType {
     case none

@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -11,7 +11,7 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "PIALibrary", 
+            name: "PIALibrary",
             targets: [
                 "PIALibrary",
                 "PIALibraryUtilObjC",
@@ -19,12 +19,12 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "git@github.com:pia-foss/releases-apple-kpi.git", .exact("1.1.0")),
-        .package(url: "git@github.com:pia-foss/releases-apple-csi.git", .exact("1.2.0")),
-        .package(url: "git@github.com:pia-foss/releases-apple-account.git", .exact("1.3.1")),
-        .package(url: "git@github.com:pia-foss/releases-apple-regions.git", .exact("1.3.2")),
-        .package(url: "git@github.com:pia-foss/tunnelkit.git", branch: "master"),
-        .package(url: "git@github.com:pia-foss/ios-wireguard.git", branch: "master"),
+      .package(url: "git@github.com:pia-foss/mobile-ios-releases-kpi.git", .exact("1.1.0")),
+      .package(url: "git@github.com:pia-foss/mobile-ios-releases-csi.git", .exact("1.2.0")),
+      .package(url: "git@github.com:pia-foss/mobile-ios-releases-account.git", .exact("1.4.4")),
+      .package(url: "git@github.com:pia-foss/mobile-ios-releases-regions.git", .exact("1.3.2")),
+        .package(url: "git@github.com:pia-foss/mobile-ios-openvpn.git", branch: "master"),
+        .package(url: "git@github.com:pia-foss/mobile-ios-wireguard.git", branch: "master"),
         .package(url: "https://github.com/hkellaway/Gloss.git", from: "3.1.0"),
         .package(url: "https://github.com/airbnb/lottie-ios.git", from: "3.4.1"),
         .package(url: "https://github.com/huri000/SwiftEntryKit.git", from: "1.0.3"),
@@ -35,7 +35,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "PIALibrary", 
+            name: "PIALibrary",
             dependencies: [
                 "SwiftyBeaver",
                 "Gloss",
@@ -44,21 +44,21 @@ let package = Package(
                 "PopupDialog",
                 .product(name: "Lottie", package: "lottie-ios"),
                 .product(name: "Reachability", package: "Reachability.swift"),
-                .product(name: "PIAKPI", package: "releases-apple-kpi"),
-                .product(name: "PIACSI", package: "releases-apple-csi"),
-                .product(name: "PIARegions", package: "releases-apple-regions"),
-                .product(name: "PIAAccount", package: "releases-apple-account"),
-                .product(name: "PIAWireguard", package: "ios-wireguard"),
-                .product(name: "TunnelKit", package: "tunnelkit"),
-                .product(name: "TunnelKitOpenVPN", package: "tunnelkit"),
-                .product(name: "TunnelKitOpenVPNAppExtension", package: "tunnelkit"),
+                .product(name: "PIAKPI", package: "mobile-ios-releases-kpi"),
+                .product(name: "PIACSI", package: "mobile-ios-releases-csi"),
+                .product(name: "PIARegions", package: "mobile-ios-releases-regions"),
+                .product(name: "PIAAccount", package: "mobile-ios-releases-account"),
+                .product(name: "PIAWireguard", package: "mobile-ios-wireguard"),
+                .product(name: "TunnelKit", package: "mobile-ios-openvpn"),
+                .product(name: "TunnelKitOpenVPN", package: "mobile-ios-openvpn"),
+                .product(name: "TunnelKitOpenVPNAppExtension", package: "mobile-ios-openvpn"),
             ],
             resources: [
                 .process("Resources")
             ]
         ),
         .target(
-            name: "PIALibraryUtilObjC", 
+            name: "PIALibraryUtilObjC",
             dependencies: []
         ),
         .testTarget(
@@ -72,3 +72,4 @@ let package = Package(
         ),
     ]
 )
+

@@ -129,8 +129,7 @@ class LoginViewController: AutolayoutViewController, WelcomeChild, PIAWelcomeVie
             return
         }
         
-        let bundle = Bundle(for: LoginViewController.self)
-        let storyboard = UIStoryboard(name: "Welcome", bundle: bundle)
+        let storyboard = UIStoryboard(name: "Welcome", bundle: Bundle.module)
         if let magicLinkLoginViewController = storyboard.instantiateViewController(withIdentifier: "MagicLinkLoginViewController") as? MagicLinkLoginViewController {
             let alert = Macros.alert(magicLinkLoginViewController)
             alert.addCancelAction(L10n.Signup.Purchase.Uncredited.Alert.Button.cancel)

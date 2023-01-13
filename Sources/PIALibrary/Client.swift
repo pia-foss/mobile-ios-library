@@ -22,6 +22,7 @@
 
 import Foundation
 import SwiftyBeaver
+import UIKit
 
 private let log = SwiftyBeaver.self
 
@@ -138,5 +139,12 @@ public final class Client {
      */
     public static func ping(servers: [Server]) {
         ServersPinger.shared.ping(withDestinations: servers)
+    }
+
+    /**
+     Returns the Signup Storyboard owned by the library to be used by the clients
+     */
+    public static func signupStoryboard() -> UIStoryboard {
+        UIStoryboard(name: "Signup", bundle: Bundle.module)
     }
 }

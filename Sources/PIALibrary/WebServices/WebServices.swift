@@ -85,8 +85,4 @@ protocol WebServices: class {
     func submitDebugReport(_ shouldSendPersistedData: Bool, _ protocolLogs: String, _ callback: LibraryCallback<String>?)
 
     func featureFlags(_ callback: LibraryCallback<[String]>?)
-    
-    // MARK: Messages
-    
-    func messages(forAppVersion version: String, _ callback: LibraryCallback<InAppMessage>?)
 }

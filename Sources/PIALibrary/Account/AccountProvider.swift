@@ -172,14 +172,6 @@ public protocol AccountProvider: class {
      */
     func featureFlags(_ callback: SuccessLibraryCallback?)
 
-    /**
-     Returns the available messages from the API.
- 
-     - Parameter version: App version.
-     - Parameter callback: Returns the message`InAppMessage` on success.
-     */
-    func inAppMessages(forAppVersion version: String, _ callback: LibraryCallback<InAppMessage>?)
-
     #if os(iOS)
     /**
      Lists the available plans with their corresponding product to purchase in order to get them.

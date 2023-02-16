@@ -516,23 +516,6 @@ class PIAWebServices: WebServices, ConfigurationAccess {
             }
         }
     }
-    
-    // MARK: Messages
-    func messages(forAppVersion version: String, _ callback: LibraryCallback<InAppMessage>?) {
-        self.accountAPI.message(appVersion: version, callback: { (message, errors) in
-            if !errors.isEmpty {
-                callback?(nil, ClientError.malformedResponseData)
-                return
-            }
-
-            if let message = message {
-                let inAppMessage = InAppMessage(withMessage: message, andLevel: .api)
-                callback?(inAppMessage, nil)
-            } else {
-                callback?(nil, nil)
-            }
-        })
-    }
 }
 
 typealias HandlerType<T> = (T?, Int?, Error?) -> Void

@@ -184,8 +184,4 @@ class EphemeralAccountProvider: AccountProvider, ProvidersAccess, InAppAccess {
     func featureFlags(_ callback: SuccessLibraryCallback?) {
         callback?(nil)
     }
-
-    func inAppMessages(forAppVersion version: String, _ callback: LibraryCallback<InAppMessage>?) {
-        callback?(nil, nil)
-    }
 }

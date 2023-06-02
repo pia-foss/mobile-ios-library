@@ -23,7 +23,7 @@ let package = Package(
         .package(url: "git@github.com:xvpn/kp_releases_apple_csi.git", .exact("1.2.0")),
         .package(url: "git@github.com:xvpn/kp_releases_apple_account.git", .exact("1.3.1")),
         .package(url: "git@github.com:xvpn/kp_releases_apple_regions.git", .exact("1.3.2")),
-        .package(url: "git@github.com:xvpn/cpz_pia-mobile_ios_pia-tunnelkit.git", revision: "d134257f300b90821bf6138f5c39c1b2cf1fd632"),
+        .package(url: "git@github.com:xvpn/cpz_pia-mobile_ios_pia-tunnelkit.git", revision: "8b3cdcafd079da39c6cb8dde51efff944e76c055"),
         .package(url: "git@github.com:xvpn/cpz_pia-mobile_ios_pia-wireguard.git", branch: "release/1.2.0"),
         .package(url: "https://github.com/hkellaway/Gloss.git", from: "3.1.0"),
         .package(url: "https://github.com/airbnb/lottie-ios.git", from: "3.4.1"),

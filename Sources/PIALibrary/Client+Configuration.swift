@@ -31,6 +31,8 @@ extension Client {
         public static let checkDipExpirationRequest = "check-dip-expiration-request"
         public static let showNewInitialScreen = "show-new-initial-screen"
         public static let disableSystemRatingDialog = "disable-system-rating-dialogue"
+        public static let showLeakProtection = "ios_custom_leak_protection"
+        public static let showLeakProtectionNotifications = "ios_custom_leak_protection_notifications"
     }
     
     /// Encapsulates internal and public parameters of the client. When not specified otherwise, time intervals are in milliseconds.

@@ -105,6 +105,10 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
         static let lastVPNConnectionAttempt = "lastVPNConnectionAttempt"
         
         static let timeToConnectVPN = "timeToConnectVPN"
+        
+        static let leakProtection = "LeakProtection"
+        
+        static let allowLocalDeviceAccess = "AllowLocalDeviceAccess"
     }
     
     private let backend: UserDefaults
@@ -432,6 +436,30 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
         }
         set {
             backend.set(newValue, forKey: Entries.timeToConnectVPN)
+        }
+    }
+    
+    var leakProtection: Bool {
+        get {
+            if backend.object(forKey: Entries.leakProtection) == nil {
+                backend.set(true, forKey: Entries.leakProtection)
+            }
+            return backend.bool(forKey: Entries.leakProtection)
+        }
+        set {
+            backend.set(newValue, forKey: Entries.leakProtection)
+        }
+    }
+    
+    var allowLocalDeviceAccess: Bool {
+        get {
+            if backend.object(forKey: Entries.allowLocalDeviceAccess) == nil {
+                backend.set(true, forKey: Entries.allowLocalDeviceAccess)
+            }
+            return backend.bool(forKey: Entries.allowLocalDeviceAccess)
+        }
+        set {
+            backend.set(newValue, forKey: Entries.allowLocalDeviceAccess)
         }
     }
     

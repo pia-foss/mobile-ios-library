@@ -92,6 +92,16 @@ extension NetworkExtensionProfile {
             }
         }
         
+        if #available(iOS 14.2, *) {
+            if Client.configuration.featureFlags.contains(Client.FeatureFlags.showLeakProtection) {
+                vpn.protocolConfiguration?.includeAllNetworks = configuration.leakProtection
+                vpn.protocolConfiguration?.excludeLocalNetworks = configuration.allowLocalDeviceAccess
+            } else {
+                vpn.protocolConfiguration?.includeAllNetworks = false
+                vpn.protocolConfiguration?.excludeLocalNetworks = true
+            }
+        }
+        
         log.debug("Configured with server: \(protocolConfiguration.serverAddress!)")
         log.debug("Username: \(protocolConfiguration.username!)")
         log.debug("On-demand is now \(vpn.isOnDemandEnabled ? "ENABLED" : "DISABLED")")

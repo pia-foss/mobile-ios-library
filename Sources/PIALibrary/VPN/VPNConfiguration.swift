@@ -47,6 +47,12 @@ public struct VPNConfiguration {
     ///
     /// - Seealso: `VPNCustomConfiguration`
     public let customConfiguration: VPNCustomConfiguration?
+    
+    /// When `true`, the VPN will enable leak protection. 
+    public let leakProtection: Bool
+    
+    /// When `true`, the VPN will enable access to local.
+    public let allowLocalDeviceAccess: Bool
 }
 
 /// Holds the configuration parameters of a custom VPN profile.

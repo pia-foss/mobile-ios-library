@@ -417,6 +417,16 @@ extension Client {
             }
         }
         
+        /// If the current connected WIFI is a RFC1918 vulnerable WIFI it stores the name, otherwise it returns nil
+        public var currentRFC1918VulnerableWifi: String? {
+            get {
+                return accessedDatabase.plain.currentRFC1918VulnerableWifi
+            }
+            set {
+                accessedDatabase.plain.currentRFC1918VulnerableWifi = newValue
+            }
+        }
+        
         // MARK: Service Quality
         
         /// Shares anonymous data to the service quality library.

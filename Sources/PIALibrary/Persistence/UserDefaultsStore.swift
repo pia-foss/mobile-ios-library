@@ -109,6 +109,8 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
         static let leakProtection = "LeakProtection"
         
         static let allowLocalDeviceAccess = "AllowLocalDeviceAccess"
+        
+        static let currentRFC1918VulnerableWifi = "CurrentRFC1918VulnerableWifi"
     }
     
     private let backend: UserDefaults
@@ -460,6 +462,15 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
         }
         set {
             backend.set(newValue, forKey: Entries.allowLocalDeviceAccess)
+        }
+    }
+    
+    var currentRFC1918VulnerableWifi: String? {
+        get {
+            return backend.string(forKey: Entries.currentRFC1918VulnerableWifi)
+        }
+        set {
+            backend.set(newValue, forKey: Entries.currentRFC1918VulnerableWifi)
         }
     }
     

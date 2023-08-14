@@ -397,6 +397,26 @@ extension Client {
             }
         }
         
+        /// Store a bool that represents the status of leak protection property
+        public var leakProtection: Bool {
+            get {
+                return accessedDatabase.plain.leakProtection
+            }
+            set {
+                accessedDatabase.plain.leakProtection = newValue
+            }
+        }
+        
+        /// Store a bool that represents the status of allowLocalDeviceAccess property
+        public var allowLocalDeviceAccess: Bool {
+            get {
+                return accessedDatabase.plain.allowLocalDeviceAccess
+            }
+            set {
+                accessedDatabase.plain.allowLocalDeviceAccess = newValue
+            }
+        }
+        
         // MARK: Service Quality
         
         /// Shares anonymous data to the service quality library.

@@ -363,7 +363,9 @@ class DefaultVPNProvider: VPNProvider, ConfigurationAccess, DatabaseAccess, Pref
             server: accessedProviders.serverProvider.targetServer,
             isOnDemand: accessedPreferences.isPersistentConnection,
             disconnectsOnSleep: accessedPreferences.vpnDisconnectsOnSleep,
-            customConfiguration: customConfiguration
+            customConfiguration: customConfiguration,
+            leakProtection: accessedPreferences.leakProtection,
+            allowLocalDeviceAccess: accessedPreferences.allowLocalDeviceAccess
         )
     }
 

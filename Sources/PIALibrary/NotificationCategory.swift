@@ -11,7 +11,7 @@ public struct NotificationCategory {
 
 extension Macros {
     
-    public static func showLocalNotification(_ id: String, type: String, body: String, info: [String: String] = [:], title: String? = nil, delay: Double = 1) {
+    public static func showLocalNotification(_ id: String, type: String, body: String, info: [String: String] = [:], title: String? = nil, delay: Double = 0) {
         
         let content = UNMutableNotificationContent()
         content.categoryIdentifier = type

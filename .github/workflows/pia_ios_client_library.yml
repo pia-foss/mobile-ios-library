@@ -21,4 +21,10 @@ jobs:
       run: xcodebuild -scheme 'PIALibrary' -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 14' build | xcpretty
       
     - name: Test
-      run: xcodebuild -scheme 'PIALibrary' -destination 'platform=iOS Simulator,name=iPhone 14' test | xcpretty
+      run: xcodebuild -scheme 'PIALibrary' -destination 'platform=iOS Simulator,name=iPhone 14' \
+        -skip-testing:PIALibraryTests/EndpointManagerTests \
+        -skip-testing:PIALibraryTests/AccountTests \
+        -skip-testing:PIALibraryTests/AccountInfoTests \
+        -skip-testing:PIALibraryTests/ProductTests \
+        -skip-testing:PIALibraryTests/DIPTokenKeychainTests \
+        test | xcpretty

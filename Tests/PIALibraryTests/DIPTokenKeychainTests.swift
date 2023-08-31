@@ -70,8 +70,8 @@ class DIPTokenKeychainTests: XCTestCase {
         Client.database.secure.setDIPToken("token_3")
         XCTAssertTrue(Client.database.secure.dipTokens()?.count == 3)
         Client.database.secure.remove("token_2")
-        XCTAssertTrue(Client.database.secure.dipTokens()![0] == "token_1")
-        XCTAssertTrue(Client.database.secure.dipTokens()![1] == "token_3")
+        XCTAssertTrue(Client.database.secure.dipTokens()?[0] == "token_1")
+        XCTAssertTrue(Client.database.secure.dipTokens()?[1] == "token_3")
 
     }
     

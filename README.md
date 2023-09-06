@@ -31,49 +31,18 @@ The library has been tested on both iOS and macOS and includes the following fea
 - Xcode 9+ (Swift 4)
 - Git (preinstalled with Xcode Command Line Tools)
 - Ruby (preinstalled with macOS)
-- [CocoaPods 1.5.0][dep-cocoapods]
 - [SwiftGen][dep-swiftgen]
 - [jazzy][dep-jazzy] (optional, for documentation)
 
 It's highly recommended to use the Git and Ruby packages provided by [Homebrew][dep-brew].
 
-### CocoaPods
+### Swift Package Manager
 
-To use with CocoaPods just add this to your Podfile:
-
-```ruby
-pod 'PIALibrary'
-```
-
-To include other non-default subspecs:
+To use with Swift Package Manager just add the repo as part of your packages dependencies via Xcode or via Package.swift. e.g.
 
 ```ruby
-pod 'PIALibrary'
-pod 'PIALibrary/VPN' # adds support for TunnelKit
-pod 'PIALibrary/Mock'
+.package(url: "https://github.com/pia-foss/client-library-apple.git", from: "2.18.0")
 ```
-
-### Testing
-
-Download the library codebase locally:
-
-    $ git clone https://github.com/pia-foss/client-library-apple.git
-
-Assuming you have a [working CocoaPods environment][dep-cocoapods], setting up the library workspace only requires installing the pod dependencies:
-
-    $ pod install
-
-After that, open `PIALibrary.xcworkspace` in Xcode and run the unit tests found in the `PIALibraryTests` target. A simple CMD+U while on `PIALibrary-iOS` should do that as well.
-
-#### Demo
-
-There is a `Demo` directory containing a simple project for testing the library. As usual, prepare for CocoaPods:
-
-    $ pod install
-
-then open `Demo.xcworkspace`. You can test the account-related business with the `WelcomeDemo-iOS` target which is, unsurprisingly, for iOS only.
-
-We'd definitely like to offer a more extensive showcase later on.
 
 ## Documentation
 
@@ -343,7 +312,6 @@ This project is licensed under the [MIT (Expat) license](https://choosealicense.
 [pia-url]: https://www.privateinternetaccess.com/
 [pia-wiki]: https://en.wikipedia.org/wiki/Private_Internet_Access
 
-[dep-cocoapods]: https://guides.cocoapods.org/using/getting-started.html
 [dep-swiftgen]: https://github.com/SwiftGen/SwiftGen
 [dep-jazzy]: https://github.com/realm/jazzy
 [dep-brew]: https://brew.sh/

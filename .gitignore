@@ -1,8 +1,12 @@
-.DS_Store
+*.DS_Store
 *.swp
 *.pbxuser
+*.swiftpm
+*.build
 **/*.xcworkspace/xcuserdata
 **/*.xcodeproj/project.xcworkspace
 **/*.xcodeproj/xcuserdata
 docs
 Pods
+.swiftpm
+Package.resolved

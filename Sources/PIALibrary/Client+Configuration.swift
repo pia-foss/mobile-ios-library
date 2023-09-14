@@ -32,8 +32,8 @@ extension Client {
         public static let showNewInitialScreen = "show-new-initial-screen"
         public static let disableSystemRatingDialog = "disable-system-rating-dialogue"
         public static let showLeakProtection = "ios_custom_leak_protection"
-        public static let showLeakProtectionNotifications = "ios_custom_leak_protection_notifications"
-        public static let showDynamicIslandLiveActivity = "ios_dynamic_island_live_activity"
+        public static let showLeakProtectionNotifications = "ios_custom_leak_protection_notifications_v2"
+        public static let showDynamicIslandLiveActivity = "ios_dynamic_island_live_activity_v2"
     }
     
     /// Encapsulates internal and public parameters of the client. When not specified otherwise, time intervals are in milliseconds.

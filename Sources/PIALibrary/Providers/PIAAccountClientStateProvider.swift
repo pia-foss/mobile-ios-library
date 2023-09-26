@@ -20,7 +20,7 @@
 //
 
 import Foundation
-import PIAAccount
+import account
 
 class PIAAccountClientStateProvider : IAccountEndpointProvider {
     func accountEndpoints() -> [AccountEndpoint] {

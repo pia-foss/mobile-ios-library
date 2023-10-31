@@ -269,7 +269,9 @@ class DefaultVPNProvider: VPNProvider, ConfigurationAccess, DatabaseAccess, Pref
         }
         let fallbackDelay = delay ?? accessedConfiguration.vpnReconnectionDelay
         
-        if activeProfile.vpnType != IKEv2Profile.vpnType {
+        let shouldDisconnectFirst = (activeProfile.vpnType != IKEv2Profile.vpnType || forceDisconnect)
+      
+        if shouldDisconnectFirst {
             activeProfile.disconnect { (error) in
                 if let _ = error {
                     callback?(error)

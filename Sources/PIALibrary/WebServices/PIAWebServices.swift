@@ -25,7 +25,7 @@ import Alamofire
 import Gloss
 import SwiftyBeaver
 import PIARegions
-import PIAAccount
+import account
 import PIACSI
 import PIARegions
 

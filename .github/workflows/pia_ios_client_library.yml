@@ -1,0 +1,41 @@
+name: pia_ios_client_library
+on:
+  pull_request:
+  workflow_dispatch:
+concurrency:
+  group: "${{ github.ref }}"
+  cancel-in-progress: true
+jobs:
+  macos:
+    name: build and test
+    runs-on: macos-13
+    timeout-minutes: 30
+    steps:
+      - name: Setup Git credentials
+        run: |
+          git config --global url."https://${{ secrets.ORG_GITHUB_USERNAME }}:${{ secrets.ORG_GITHUB_TOKEN }}@github.com/".insteadOf "git@github.com:"
+      - uses: actions/checkout@v3
+      - name: Select XCode version
+        run: sudo xcode-select -s /Applications/Xcode_15.0.app
+
+      - name: Install dependencies
+        run: |
+          swift package resolve
+    
+      - name: Build
+        run: | 
+          set -o pipefail
+          xcodebuild -scheme 'PIALibrary' -configuration Debug -destination "platform=iOS Simulator,OS=latest,name=iPhone 12" build | xcpretty
+          exit ${PIPESTATUS[0]}
+      
+      - name: Test
+        run: |
+          set -o pipefail
+          xcodebuild -scheme 'PIALibrary' -destination "platform=iOS Simulator,OS=latest,name=iPhone 12"  \
+            -skip-testing:PIALibraryTests/EndpointManagerTests \
+            -skip-testing:PIALibraryTests/AccountTests \
+            -skip-testing:PIALibraryTests/AccountInfoTests \
+            -skip-testing:PIALibraryTests/ProductTests \
+            -skip-testing:PIALibraryTests/DIPTokenKeychainTests \
+            test | xcpretty
+          exit ${PIPESTATUS[0]}

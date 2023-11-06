@@ -1,3 +1,4 @@
+
 // swift-tools-version:5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
@@ -19,19 +20,19 @@ let package = Package(
         ),
     ],
     dependencies: [
-      .package(url: "git@github.com:pia-foss/mobile-ios-releases-kpi.git", .exact("1.1.0")),
-      .package(url: "git@github.com:pia-foss/mobile-ios-releases-csi.git", .exact("1.2.0")),
-      .package(url: "git@github.com:pia-foss/mobile-ios-releases-account.git", .exact("1.4.4")),
-      .package(url: "git@github.com:pia-foss/mobile-ios-releases-regions.git", .exact("1.3.2")),
-        .package(url: "git@github.com:pia-foss/mobile-ios-openvpn.git", branch: "master"),
-        .package(url: "git@github.com:pia-foss/mobile-ios-wireguard.git", branch: "master"),
-        .package(url: "https://github.com/hkellaway/Gloss.git", from: "3.1.0"),
-        .package(url: "https://github.com/airbnb/lottie-ios.git", from: "3.4.1"),
-        .package(url: "https://github.com/huri000/SwiftEntryKit.git", from: "1.0.3"),
-        .package(url: "https://github.com/Orderella/PopupDialog.git", branch: "master"),
-        .package(url: "https://github.com/SwiftyBeaver/SwiftyBeaver.git", from: "1.9.0"),
-        .package(url: "https://github.com/ashleymills/Reachability.swift.git", from: "4.3.0"),
-        .package(url: "https://github.com/michaeltyson/TPKeyboardAvoiding.git", from: "1.3.5"),
+      .package(url: "git@github.com:pia-foss/mobile-ios-releases-kpi.git", exact: "1.1.0"),
+      .package(url: "git@github.com:pia-foss/mobile-ios-releases-csi.git", exact: "1.2.0"),
+      .package(url: "git@github.com:pia-foss/mobile-ios-releases-account.git", exact: "1.4.4"),
+      .package(url: "git@github.com:pia-foss/mobile-ios-releases-regions.git", exact: "1.3.2"),
+      .package(url: "git@github.com:pia-foss/mobile-ios-openvpn.git", branch: "master"),
+      .package(url: "git@github.com:pia-foss/mobile-ios-wireguard.git", branch: "master"),
+      .package(url: "https://github.com/hkellaway/Gloss.git", from: "3.1.0"),
+      .package(url: "https://github.com/airbnb/lottie-ios.git", from: "3.4.1"),
+      .package(url: "https://github.com/huri000/SwiftEntryKit.git", from: "1.0.3"),
+      .package(url: "https://github.com/Orderella/PopupDialog.git", branch: "master"),
+      .package(url: "https://github.com/SwiftyBeaver/SwiftyBeaver.git", from: "1.9.0"),
+      .package(url: "https://github.com/ashleymills/Reachability.swift.git", from: "4.3.0"),
+      .package(url: "https://github.com/michaeltyson/TPKeyboardAvoiding.git", from: "1.3.5"),
     ],
     targets: [
         .target(
@@ -72,4 +73,3 @@ let package = Package(
         ),
     ]
 )
-

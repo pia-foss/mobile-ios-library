@@ -24,10 +24,9 @@ import Foundation
 import Alamofire
 import Gloss
 import SwiftyBeaver
-import PIARegions
 import account
 import PIACSI
-import PIARegions
+import regions
 
 private let log = SwiftyBeaver.self
 

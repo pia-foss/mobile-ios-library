@@ -20,7 +20,7 @@
 //
 
 import Foundation
-import PIARegions
+import regions
 
 class PIARegionClientStateProvider : IRegionEndpointProvider {
 

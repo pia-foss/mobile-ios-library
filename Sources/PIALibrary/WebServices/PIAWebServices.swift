@@ -24,10 +24,9 @@ import Foundation
 import Alamofire
 import Gloss
 import SwiftyBeaver
-import PIARegions
+import regions
 import account
 import PIACSI
-import PIARegions
 
 private let log = SwiftyBeaver.self
 
@@ -462,8 +461,9 @@ class PIAWebServices: WebServices, ConfigurationAccess {
             callback?(bundle, nil)
             
         } else {
-            self.regionsAPI.fetchRegions(locale: Locale.current.identifier.replacingOccurrences(of: "_", with: "-")) { (response, errors) in
-                if !errors.isEmpty {
+            self.regionsAPI.fetchVpnRegions(locale: Locale.current.identifier.replacingOccurrences(of: "_", with: "-")) { (response, errors) in
+                
+                if errors != nil {
                     callback?(nil, ClientError.noRegions)
                     return
                 }

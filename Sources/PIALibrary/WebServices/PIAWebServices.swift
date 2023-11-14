@@ -24,10 +24,9 @@ import Foundation
 import Alamofire
 import Gloss
 import SwiftyBeaver
-import PIARegions
+import regions
 import account
 import PIACSI
-import PIARegions
 
 private let log = SwiftyBeaver.self
 
@@ -47,6 +46,9 @@ class PIAWebServices: WebServices, ConfigurationAccess {
             .setEndpointProvider(endpointsProvider: PIARegionClientStateProvider())
             .setCertificate(certificate: rsa4096Certificate)
             .setUserAgent(userAgent: PIAWebServices.userAgent)
+            .setMetadataRequestPath(metadataRequestPath: "/vpninfo/regions/v2")
+            .setVpnRegionsRequestPath(vpnRegionsRequestPath: "/vpninfo/servers/v6")
+            .setShadowsocksRegionsRequestPath(shadowsocksRegionsRequestPath: "/shadow_socks")
             .build()
         
         if Client.environment == .staging {
@@ -462,8 +464,8 @@ class PIAWebServices: WebServices, ConfigurationAccess {
             callback?(bundle, nil)
             
         } else {
-            self.regionsAPI.fetchRegions(locale: Locale.current.identifier.replacingOccurrences(of: "_", with: "-")) { (response, errors) in
-                if !errors.isEmpty {
+            self.regionsAPI.fetchVpnRegions(locale: Locale.current.identifier.replacingOccurrences(of: "_", with: "-")) { (response, error) in
+                if let _ = error {
                     callback?(nil, ClientError.noRegions)
                     return
                 }

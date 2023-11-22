@@ -24,7 +24,7 @@ import Foundation
 import Gloss
 
 extension Signup: JSONEncodable {
-    func toJSON() -> JSON? {
+    public func toJSON() -> JSON? {
         var json = jsonify([
             "email" ~~> email,
             "receipt" ~~> receipt.base64EncodedString(),

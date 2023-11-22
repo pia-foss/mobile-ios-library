@@ -20,7 +20,7 @@
 //
 
 import Foundation
-import PIAKPI
+import kpi
 
 class PIAKPIStagingClientStateProvider : KPIClientStateProvider {
 

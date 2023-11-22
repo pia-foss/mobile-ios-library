@@ -23,22 +23,22 @@
 import Foundation
 import UIKit
 
-struct SignupMetadata {
-    var email: String
+public struct SignupMetadata {
+    public var email: String
     
-    var user: UserAccount?
+    public var user: UserAccount?
 
-    var title: String?
+    public var title: String?
     
-    var bodyImage: UIImage?
+    public var bodyImage: UIImage?
     
-    var bodyImageOffset: CGPoint?
+    public var bodyImageOffset: CGPoint?
 
-    var bodyTitle: String?
+    public var bodyTitle: String?
     
-    var bodySubtitle: String?
+    public var bodySubtitle: String?
     
-    init(email: String, user: UserAccount? = nil) {
+    public init(email: String, user: UserAccount? = nil) {
         self.email = email
         self.user = user
     }

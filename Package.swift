@@ -8,20 +8,21 @@ let package = Package(
     name: "PIALibrary",
     defaultLocalization: "en",
     platforms: [
-        .iOS(.v12)
+        .iOS(.v12),
+        .tvOS(.v17)
     ],
     products: [
         .library(
             name: "PIALibrary",
             targets: [
                 "PIALibrary",
-                "PIALibraryUtilObjC",
+                "PIALibraryUtilObjC"
             ]
-        ),
+        )
     ],
     dependencies: [
-      .package(url: "git@github.com:pia-foss/mobile-ios-releases-kpi.git", exact: "1.1.0"),
-      .package(url: "git@github.com:pia-foss/mobile-ios-releases-csi.git", exact: "1.2.0"),
+      .package(url: "git@github.com:pia-foss/mobile-ios-releases-kpi.git", exact: "1.1.1"),
+      .package(url: "git@github.com:pia-foss/mobile-ios-releases-csi.git", exact: "1.2.1"),
       .package(url: "git@github.com:pia-foss/mobile-ios-releases-account.git", exact: "1.4.4"),
       .package(url: "git@github.com:pia-foss/mobile-ios-releases-regions.git", exact: "1.6.2"),
       .package(url: "git@github.com:pia-foss/mobile-ios-openvpn.git", branch: "master"),
@@ -41,8 +42,8 @@ let package = Package(
                 "SwiftyBeaver",
                 "Gloss",
                 "PIALibraryUtilObjC",
-                "SwiftEntryKit",
-                "PopupDialog",
+                .product(name: "PopupDialog", package: "PopupDialog", condition: .when(platforms: [.iOS])),
+                .product(name: "SwiftEntryKit", package: "SwiftEntryKit", condition: .when(platforms: [.iOS])),
                 .product(name: "Lottie", package: "lottie-ios"),
                 .product(name: "Reachability", package: "Reachability.swift"),
                 .product(name: "PIAKPI", package: "mobile-ios-releases-kpi"),
@@ -50,9 +51,9 @@ let package = Package(
                 .product(name: "PIARegions", package: "mobile-ios-releases-regions"),
                 .product(name: "PIAAccount", package: "mobile-ios-releases-account"),
                 .product(name: "PIAWireguard", package: "mobile-ios-wireguard"),
-                .product(name: "TunnelKit", package: "mobile-ios-openvpn"),
-                .product(name: "TunnelKitOpenVPN", package: "mobile-ios-openvpn"),
-                .product(name: "TunnelKitOpenVPNAppExtension", package: "mobile-ios-openvpn"),
+                .product(name: "TunnelKit", package: "mobile-ios-openvpn", condition: .when(platforms: [.iOS])),
+                .product(name: "TunnelKitOpenVPN", package: "mobile-ios-openvpn", condition: TargetDependencyCondition.when(platforms: [.iOS])),
+                .product(name: "TunnelKitOpenVPNAppExtension", package: "mobile-ios-openvpn", condition: TargetDependencyCondition.when(platforms: [.iOS]))
             ],
             resources: [
                 .process("Resources")

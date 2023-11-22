@@ -26,7 +26,7 @@ import Gloss
 import SwiftyBeaver
 import regions
 import account
-import PIACSI
+import csi
 
 private let log = SwiftyBeaver.self
 
@@ -377,7 +377,7 @@ class PIAWebServices: WebServices, ConfigurationAccess {
         }
     }
     
-    #if os(iOS)
+    #if os(iOS) || os(tvOS)
     func signup(with request: Signup, _ callback: ((Credentials?, Error?) -> Void)?) {
         var marketingJSON = ""
         if let json = request.marketing as? JSON {

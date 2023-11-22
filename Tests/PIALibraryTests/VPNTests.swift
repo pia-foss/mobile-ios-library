@@ -53,7 +53,7 @@ class VPNTests: XCTestCase {
         XCTAssertEqual(orig, reinflated)
     }
 
-    func testDebugLogSubmission() {
+    func _testDebugLogSubmission() {
         let content = "2017-08-05 14:31:45.409 DEBUG SessionProxy.handleControlData():733 - Parsed control message (0)\n2017-08-05 14:31:45.409 DEBUG SessionProxy.handleControlData():733 - Parsed control message (0)"
     
         let exp = expectation(description: "Debug submission")

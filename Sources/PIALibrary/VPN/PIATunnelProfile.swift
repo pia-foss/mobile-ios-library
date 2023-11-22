@@ -19,7 +19,7 @@
 //  You should have received a copy of the GNU General Public License along with the Private
 //  Internet Access iOS Client.  If not, see <https://www.gnu.org/licenses/>.
 //
-
+#if os(iOS)
 import Foundation
 import TunnelKitOpenVPN
 import NetworkExtension
@@ -346,3 +346,4 @@ public class PIATunnelProfile: NetworkExtensionProfile {
         return lines.joined(separator: "\n")
     }
 }
+#endif

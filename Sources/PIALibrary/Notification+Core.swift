@@ -60,17 +60,17 @@ extension Notification.Name {
 
     public static let PIAVPNDidFail = Notification.Name("PIAVPNDidFail")
 
-    #if os(iOS)
+    #if os(iOS) || os(tvOS)
     
     // MARK: InApp
     
-    static let __InAppDidFetchProducts = Notification.Name("__InAppDidFetchProducts")
+    public static let __InAppDidFetchProducts = Notification.Name("__InAppDidFetchProducts")
     
-    static let __InAppDidAddUncredited = Notification.Name("__InAppDidAddUncredited")
+    public static let __InAppDidAddUncredited = Notification.Name("__InAppDidAddUncredited")
     
     // MARK: Feature Flags
     
-    static let __AppDidFetchFeatureFlags = Notification.Name("__AppDidFetchFeatureFlags")
+    public static let __AppDidFetchFeatureFlags = Notification.Name("__AppDidFetchFeatureFlags")
     
     #endif
 }

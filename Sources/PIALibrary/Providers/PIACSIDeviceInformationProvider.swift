@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import PIACSI
+import csi
 import UIKit
 
 class PIACSIDeviceInformationProvider: ICSIProvider {

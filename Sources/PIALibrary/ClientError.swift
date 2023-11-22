@@ -55,7 +55,7 @@ public enum ClientError: Error, Equatable {
     /// Error while checking the dip token renewal.
     case dipTokenRenewalError
 
-    #if os(iOS)
+    #if os(iOS) || os(tvOS)
     /// No in-app history receipt is available.
     case noReceipt
     

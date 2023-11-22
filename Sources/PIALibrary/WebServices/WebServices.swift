@@ -66,7 +66,7 @@ protocol WebServices: class {
      */
     func deleteAccount(_ callback: LibraryCallback<Bool>?)
     
-    #if os(iOS)
+    #if os(iOS) || os(tvOS)
     func signup(with request: Signup, _ callback: LibraryCallback<Credentials>?)
 
     func processPayment(credentials: Credentials, request: Payment, _ callback: SuccessLibraryCallback?)

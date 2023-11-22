@@ -55,7 +55,7 @@ public struct Preset: ProvidersAccess {
     /// If `true`, doesn't persist state to current `Client.database`.
     public var isEphemeral = false
     
-    var accountProvider: AccountProvider {
+    public var accountProvider: AccountProvider {
         return (isEphemeral ? EphemeralAccountProvider() : accessedProviders.accountProvider)
     }
     

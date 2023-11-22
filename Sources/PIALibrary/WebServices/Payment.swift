@@ -34,7 +34,7 @@ struct Payment {
     }
 }
 
-#if os(iOS)
+#if os(iOS) || os(tvOS)
 extension RenewRequest {
     func payment(withStore store: InAppProvider) -> Payment? {
         guard let receipt = store.paymentReceipt else {

@@ -23,9 +23,9 @@
 import Foundation
 
 /// Business interface related to user account.
-public protocol AccountProvider: class {
+public protocol AccountProvider: AnyObject {
 
-    #if os(iOS)
+    #if os(iOS) || os(tvOS)
     /// The in-app products required to purchase a `Plan`.
     var planProducts: [Plan: InAppProduct]? { get }
     #endif
@@ -60,7 +60,7 @@ public protocol AccountProvider: class {
     /// The password reference object associated with the currentUser, or `nil` if logged out.
     var currentPasswordReference: Data? { get }
 
-    #if os(iOS)
+    #if os(iOS) || os(tvOS)
     /// The last pending signup request (useful for recovery).
     var lastSignupRequest: SignupRequest? { get }
     #endif
@@ -172,7 +172,7 @@ public protocol AccountProvider: class {
      */
     func featureFlags(_ callback: SuccessLibraryCallback?)
 
-    #if os(iOS)
+    #if os(iOS) || os(tvOS)
     /**
      Lists the available plans with their corresponding product to purchase in order to get them.
      

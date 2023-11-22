@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import PIACSI
+import csi
 
 class PIACSILastKnownExceptionProvider: ICSIProvider {
     

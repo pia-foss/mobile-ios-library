@@ -60,7 +60,7 @@ extension Client {
         providers.tileProvider = provider
     }
     
-    #if os(iOS)
+    #if os(iOS) || os(tvOS)
     /**
      Uses a mock in-app provider for testing purchases.
      */

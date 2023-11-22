@@ -22,7 +22,7 @@
 
 import Foundation
 
-#if os(iOS)
+#if os(iOS) || os(tvOS)
 private class MockProduct: InAppProduct {
     let identifier: String
     

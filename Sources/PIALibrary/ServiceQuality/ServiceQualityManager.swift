@@ -21,7 +21,7 @@
 
 import Foundation
 import UIKit
-import PIAKPI
+import kpi
 import SwiftyBeaver
 
 private let log = SwiftyBeaver.self
@@ -227,8 +227,10 @@ public class ServiceQualityManager: NSObject {
         switch Client.providers.vpnProvider.currentVPNType {
         case IKEv2Profile.vpnType:
             return KPIVpnProtocol.ipsec
+        #if(iOS)
         case PIATunnelProfile.vpnType:
             return KPIVpnProtocol.ovpn
+        #endif
         case PIAWGTunnelProfile.vpnType:
             return KPIVpnProtocol.wireguard
         default:

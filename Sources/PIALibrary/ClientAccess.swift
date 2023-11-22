@@ -30,7 +30,7 @@ protocol PreferencesAccess {
     var accessedPreferences: Client.Preferences { get }
 }
 
-protocol ConfigurationAccess {
+public protocol ConfigurationAccess {
     var accessedConfiguration: Client.Configuration { get }
 }
 
@@ -42,8 +42,8 @@ protocol WebServicesAccess {
     var accessedWebServices: WebServices { get }
 }
 
-protocol InAppAccess {
-    #if os(iOS)
+public protocol InAppAccess {
+    #if os(iOS) || os(tvOS)
     var accessedStore: InAppProvider { get }
     #endif
 }
@@ -60,7 +60,7 @@ extension PreferencesAccess {
     }
 }
 
-extension ConfigurationAccess {
+public extension ConfigurationAccess {
     var accessedConfiguration: Client.Configuration {
         return Client.configuration
     }
@@ -78,8 +78,8 @@ extension WebServicesAccess {
     }
 }
 
-extension InAppAccess {
-    #if os(iOS)
+public extension InAppAccess {
+    #if os(iOS) || os(tvOS)
     var accessedStore: InAppProvider {
         return Client.store
     }

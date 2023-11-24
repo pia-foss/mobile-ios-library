@@ -23,6 +23,7 @@
 import Foundation
 import TunnelKitOpenVPN
 import NetworkExtension
+import WireGuardKit
 
 /// Implementation of `VPNProfile` providing OpenVPN connectivity.
 public class PIATunnelProfile: NetworkExtensionProfile {
@@ -70,6 +71,7 @@ public class PIATunnelProfile: NetworkExtensionProfile {
     
     /// :nodoc:
     public func connect(withConfiguration configuration: VPNConfiguration, _ callback: SuccessLibraryCallback?) {
+      NSLog(">>> >> PIATunnelProfile connect called....")
         find { (vpn, error) in
             guard let vpn = vpn else {
                 callback?(error)
@@ -83,8 +85,10 @@ public class PIATunnelProfile: NetworkExtensionProfile {
                 do {
                     let session = vpn.connection as? NETunnelProviderSession
                     try session?.startTunnel(options: nil)
+                  NSLog(">>> >>> PIATunnelProfile: start session called ...")
                     callback?(nil)
                 } catch let e {
+                  NSLog(">>> >>> PIATunnelProfile: start session called with error: \(e)")
                     callback?(e)
                 }
             }

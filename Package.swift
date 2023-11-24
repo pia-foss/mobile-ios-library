@@ -26,7 +26,7 @@ let package = Package(
       .package(url: "git@github.com:pia-foss/mobile-ios-releases-account.git", exact: "1.4.4"),
       .package(url: "git@github.com:pia-foss/mobile-ios-releases-regions.git", exact: "1.6.2"),
       .package(url: "git@github.com:pia-foss/mobile-ios-openvpn.git", branch: "master"),
-      .package(url: "git@github.com:pia-foss/mobile-ios-wireguard.git", branch: "master"),
+      .package(url: "git@github.com:pia-foss/mobile-ios-wireguard.git", branch: "PIA-906_update_wireguard_apple"),
       .package(url: "https://github.com/hkellaway/Gloss.git", from: "3.1.0"),
       .package(url: "https://github.com/airbnb/lottie-ios.git", from: "3.4.1"),
       .package(url: "https://github.com/huri000/SwiftEntryKit.git", from: "1.0.3"),
@@ -34,6 +34,7 @@ let package = Package(
       .package(url: "https://github.com/SwiftyBeaver/SwiftyBeaver.git", from: "1.9.0"),
       .package(url: "https://github.com/ashleymills/Reachability.swift.git", from: "4.3.0"),
       .package(url: "https://github.com/michaeltyson/TPKeyboardAvoiding.git", from: "1.3.5"),
+      .package(url: "https://github.com/Alamofire/Alamofire.git", exact: "5.0.1"),
     ],
     targets: [
         .target(
@@ -42,6 +43,7 @@ let package = Package(
                 "SwiftyBeaver",
                 "Gloss",
                 "PIALibraryUtilObjC",
+                "Alamofire",
                 .product(name: "PopupDialog", package: "PopupDialog", condition: .when(platforms: [.iOS])),
                 .product(name: "SwiftEntryKit", package: "SwiftEntryKit", condition: .when(platforms: [.iOS])),
                 .product(name: "Lottie", package: "lottie-ios"),
@@ -50,7 +52,7 @@ let package = Package(
                 .product(name: "PIACSI", package: "mobile-ios-releases-csi"),
                 .product(name: "PIARegions", package: "mobile-ios-releases-regions"),
                 .product(name: "PIAAccount", package: "mobile-ios-releases-account"),
-                .product(name: "PIAWireguard", package: "mobile-ios-wireguard"),
+                .product(name: "PIAWireguard", package: "mobile-ios-wireguard", condition: .when(platforms: [.iOS])),
                 .product(name: "TunnelKit", package: "mobile-ios-openvpn", condition: .when(platforms: [.iOS])),
                 .product(name: "TunnelKitOpenVPN", package: "mobile-ios-openvpn", condition: TargetDependencyCondition.when(platforms: [.iOS])),
                 .product(name: "TunnelKitOpenVPNAppExtension", package: "mobile-ios-openvpn", condition: TargetDependencyCondition.when(platforms: [.iOS]))

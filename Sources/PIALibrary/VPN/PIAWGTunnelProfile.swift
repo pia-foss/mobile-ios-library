@@ -21,8 +21,9 @@
 //
 
 import Foundation
-import PIAWireguard
+import WireGuardKit
 import NetworkExtension
+
 
 /// Implementation of `VPNProfile` providing OpenVPN connectivity.
 public class PIAWGTunnelProfile: NetworkExtensionProfile {
@@ -35,7 +36,7 @@ public class PIAWGTunnelProfile: NetworkExtensionProfile {
         if let dnsServers = map[S.dnsServers] as? [String], let packetSize = map[S.packetSize] as? Int {
             return PIAWireguardConfiguration(customDNSServers: dnsServers, packetSize: packetSize)
         }
-        
+    
         return PIAWireguardConfiguration(customDNSServers: [], packetSize: defaultMTU)
 
     }
@@ -71,6 +72,7 @@ public class PIAWGTunnelProfile: NetworkExtensionProfile {
     
     public func requestDataUsage(withCustomConfiguration customConfiguration: VPNCustomConfiguration?, _ callback: LibraryCallback<Usage>?) {
         find { (vpn, error) in
+          
             guard let vpn = vpn else {
                 callback?(nil, error)
                 return
@@ -145,6 +147,7 @@ public class PIAWGTunnelProfile: NetworkExtensionProfile {
     
     /// :nodoc:
     public func connect(withConfiguration configuration: VPNConfiguration, _ callback: SuccessLibraryCallback?) {
+      NSLog(">>> >> PIAWGTunnelProfile connect called....")
         find { (vpn, error) in
             guard let vpn = vpn else {
                 callback?(error)

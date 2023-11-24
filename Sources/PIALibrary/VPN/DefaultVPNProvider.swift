@@ -220,6 +220,8 @@ class DefaultVPNProvider: VPNProvider, ConfigurationAccess, DatabaseAccess, Pref
     }
     
     func connect(_ callback: SuccessLibraryCallback?) {
+      NSLog(">>> >>> Connect called with Active profile: \(activeProfile)")
+      
         guard accessedProviders.accountProvider.isLoggedIn else {
             callback?(ClientError.unauthorized)
             return
@@ -231,6 +233,7 @@ class DefaultVPNProvider: VPNProvider, ConfigurationAccess, DatabaseAccess, Pref
     }
     
     func disconnect(_ callback: SuccessLibraryCallback?) {
+      NSLog(">>> >>> Default VPN Provider: disconnect is called...active profile: \(activeProfile)")
         guard accessedProviders.accountProvider.isLoggedIn else {
             callback?(ClientError.unauthorized)
             return

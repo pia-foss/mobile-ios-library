@@ -21,7 +21,30 @@
 //
 
 import Foundation
-import PIAWireguard
+
+
+public class PIAWireguardConfiguration: Codable {
+
+    public struct Keys {
+        public static let dnsServers = "customDNSServers"
+        public static let packetSize = "packetSize"
+        public static let token = "token"
+        public static let serial = "serial"
+        public static let ping = "ping"
+        public static let useIP = "use_ip"
+        public static let cn = "cn"
+    }
+
+    public private(set) var customDNSServers: [String]
+
+    public private(set) var packetSize: Int
+
+    public init(customDNSServers: [String], packetSize: Int) {
+        self.customDNSServers = customDNSServers
+        self.packetSize = packetSize
+    }
+
+}
 
 extension PIAWireguardConfiguration: VPNCustomConfiguration {
     public func serialized() -> [String: Any] {

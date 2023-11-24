@@ -21,7 +21,7 @@
 //
 
 import Foundation
-import PIAWireguard
+import WireGuardKit
 import NetworkExtension
 
 /// Implementation of `VPNProfile` providing OpenVPN connectivity.

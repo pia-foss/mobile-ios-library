@@ -23,6 +23,7 @@
 import Foundation
 import TunnelKitOpenVPN
 import NetworkExtension
+import WireGuardKit
 
 /// Implementation of `VPNProfile` providing OpenVPN connectivity.
 public class PIATunnelProfile: NetworkExtensionProfile {

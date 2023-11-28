@@ -1,5 +1,5 @@
 
-// swift-tools-version:5.9
+// swift-tools-version:5.8
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -9,7 +9,7 @@ let package = Package(
     defaultLocalization: "en",
     platforms: [
         .iOS(.v12),
-        .tvOS(.v17)
+        .tvOS(.v16)
     ],
     products: [
         .library(
@@ -50,7 +50,7 @@ let package = Package(
                 .product(name: "PIACSI", package: "mobile-ios-releases-csi"),
                 .product(name: "PIARegions", package: "mobile-ios-releases-regions"),
                 .product(name: "PIAAccount", package: "mobile-ios-releases-account"),
-                .product(name: "PIAWireguard", package: "mobile-ios-wireguard"),
+                .product(name: "PIAWireguard", package: "mobile-ios-wireguard", condition: .when(platforms: [.iOS])),
                 .product(name: "TunnelKit", package: "mobile-ios-openvpn", condition: .when(platforms: [.iOS])),
                 .product(name: "TunnelKitOpenVPN", package: "mobile-ios-openvpn", condition: TargetDependencyCondition.when(platforms: [.iOS])),
                 .product(name: "TunnelKitOpenVPNAppExtension", package: "mobile-ios-openvpn", condition: TargetDependencyCondition.when(platforms: [.iOS]))

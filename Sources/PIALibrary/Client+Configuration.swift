@@ -23,6 +23,7 @@
 import Foundation
 import Alamofire
 
+@available(tvOS 17.0, *)
 extension Client {
     
     public struct FeatureFlags {

@@ -23,6 +23,7 @@
 import Foundation
 
 #if os(iOS) || os(tvOS)
+@available(tvOS 17.0, *)
 private class MockProduct: InAppProduct {
     let identifier: String
     
@@ -38,12 +39,14 @@ private class MockProduct: InAppProduct {
     }
 }
 
+@available(tvOS 17.0, *)
 private class MockTransaction: InAppTransaction {
     let identifier: String? = "1234567890"
     
     let native: Any? = nil
 }
 
+@available(tvOS 17.0, *)
 class MockInAppProvider: InAppProvider, ConfigurationAccess {
     
     init(with receipt: Data? = Data()) {

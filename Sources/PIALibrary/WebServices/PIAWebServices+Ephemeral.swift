@@ -23,6 +23,7 @@
 import Foundation
 import Gloss
 
+@available(tvOS 17.0, *)
 extension PIAWebServices {
 
     func taskForConnectivityCheck(_ callback: ((ConnectivityStatus?, Error?) -> Void)?) {

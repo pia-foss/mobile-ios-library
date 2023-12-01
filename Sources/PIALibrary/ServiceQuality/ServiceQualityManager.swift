@@ -26,6 +26,7 @@ import SwiftyBeaver
 
 private let log = SwiftyBeaver.self
 
+@available(tvOS 17.0, *)
 public class ServiceQualityManager: NSObject {
 
     public static let shared = ServiceQualityManager()
@@ -230,9 +231,9 @@ public class ServiceQualityManager: NSObject {
         #if(iOS)
         case PIATunnelProfile.vpnType:
             return KPIVpnProtocol.ovpn
-        #endif
         case PIAWGTunnelProfile.vpnType:
             return KPIVpnProtocol.wireguard
+        #endif
         default:
             return KPIVpnProtocol.ipsec
         }

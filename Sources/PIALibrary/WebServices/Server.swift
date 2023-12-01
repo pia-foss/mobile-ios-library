@@ -238,6 +238,7 @@ public class Server: Hashable {
     
 }
 
+@available(tvOS 17.0, *)
 extension Server {
     
     public func addresses() -> [ServerAddressIP] {
@@ -248,9 +249,9 @@ extension Server {
         #if os(iOS)
         case PIATunnelProfile.vpnType:
             return openVPNAddressesForTCP ?? []
-        #endif
         case PIAWGTunnelProfile.vpnType:
             return wireGuardAddressesForUDP ?? []
+        #endif
         case "Mock":
             return iKEv2AddressesForUDP ?? []
         default:
@@ -294,6 +295,7 @@ extension Server {
     }
 }
 
+@available(tvOS 17.0, *)
 extension Server {
     
     func updateResponseTime(_ time: Int, forAddress address: ServerAddressIP) {
@@ -305,10 +307,10 @@ extension Server {
         case PIATunnelProfile.vpnType:
             let serverAddressIP = openVPNAddressesForUDP?.first(where: {$0.ip == address.ip })
             serverAddressIP?.updateResponseTime(time)
-        #endif
         case PIAWGTunnelProfile.vpnType:
             let serverAddressIP = wireGuardAddressesForUDP?.first(where: {$0.ip == address.ip })
             serverAddressIP?.updateResponseTime(time)
+        #endif
         default:
             break
         }
@@ -316,6 +318,7 @@ extension Server {
     
 }
 
+@available(tvOS 17.0, *)
 extension Server {
         
     func dipPassword() -> Data? {

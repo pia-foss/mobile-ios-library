@@ -23,6 +23,7 @@
 import Foundation
 
 /// Simulates server-related operations
+@available(tvOS 17.0, *)
 public class MockServerProvider: ServerProvider, DatabaseAccess, WebServicesConsumer {
 
     /// Fakes a `Server` list.

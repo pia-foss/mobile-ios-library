@@ -26,6 +26,7 @@ import __PIALibraryNative
 
 private let log = SwiftyBeaver.self
 
+@available(tvOS 17.0, *)
 class ServersPinger: DatabaseAccess {
     static let shared = ServersPinger()
 

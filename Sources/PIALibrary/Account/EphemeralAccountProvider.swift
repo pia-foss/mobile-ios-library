@@ -7,6 +7,7 @@
 
 import Foundation
 
+@available(tvOS 17.0, *)
 class EphemeralAccountProvider: AccountProvider, ProvidersAccess, InAppAccess {
 
     // XXX: we want legit web services calls, yet allow the option to mock them

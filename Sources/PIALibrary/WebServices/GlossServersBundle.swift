@@ -23,6 +23,7 @@
 import Foundation
 import Gloss
 
+@available(tvOS 17.0, *)
 class ServersResponse {
     private let originalLength: Int
 
@@ -57,6 +58,7 @@ class ServersResponse {
     
 }
 
+@available(tvOS 17.0, *)
 class GlossServersBundle: GlossParser {
     
     class Configuration: GlossParser {

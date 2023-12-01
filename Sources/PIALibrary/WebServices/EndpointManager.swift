@@ -21,6 +21,7 @@
 
 import Foundation
 
+@available(tvOS 17.0, *)
 public struct PinningEndpoint {
     let host: String
     let isProxy: Bool
@@ -35,6 +36,7 @@ public struct PinningEndpoint {
     }
 }
 
+@available(tvOS 17.0, *)
 public class EndpointManager {
     
     private let internalUrl = "10.0.0.1"

@@ -26,6 +26,7 @@ import SwiftyBeaver
 
 private let log = SwiftyBeaver.self
 
+@available(tvOS 17.0, *)
 class AppStoreProvider: NSObject, InAppProvider {
     private(set) var uncreditedTransactions: [InAppTransaction]
     
@@ -180,6 +181,7 @@ class AppStoreProvider: NSObject, InAppProvider {
     }
 }
 
+@available(tvOS 17.0, *)
 extension AppStoreProvider: SKProductsRequestDelegate {
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         guard (request == productsRequest) else {
@@ -200,6 +202,7 @@ extension AppStoreProvider: SKProductsRequestDelegate {
     }
 }
 
+@available(tvOS 17.0, *)
 extension AppStoreProvider: SKPaymentTransactionObserver {
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         log.debug("Transactions updated: \(transactions)")
@@ -262,6 +265,7 @@ extension AppStoreProvider: SKPaymentTransactionObserver {
     }
 }
 
+@available(tvOS 17.0, *)
 extension AppStoreProvider: SKRequestDelegate {
     func requestDidFinish(_ request: SKRequest) {
         guard (request == receiptRefreshRequest) else {

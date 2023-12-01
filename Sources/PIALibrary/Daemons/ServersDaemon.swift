@@ -26,6 +26,7 @@ import UIKit
 
 private let log = SwiftyBeaver.self
 
+@available(tvOS 17.0, *)
 class ServersDaemon: Daemon, ConfigurationAccess, DatabaseAccess, ProvidersAccess {
     static let shared = ServersDaemon()
     

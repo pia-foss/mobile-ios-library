@@ -21,10 +21,12 @@
 //
 
 import Foundation
+#if os(iOS)
 import PIAWireguard
 import NetworkExtension
 
 /// Implementation of `VPNProfile` providing OpenVPN connectivity.
+
 public class PIAWGTunnelProfile: NetworkExtensionProfile {
     
     public func parsedCustomConfiguration(from map: [String : Any]) -> VPNCustomConfiguration? {
@@ -306,3 +308,4 @@ public class PIAWGTunnelProfile: NetworkExtensionProfile {
     }
 
 }
+#endif

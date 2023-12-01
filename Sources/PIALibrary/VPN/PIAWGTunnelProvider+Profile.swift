@@ -21,7 +21,9 @@
 //
 
 import Foundation
+#if os(iOS)
 import PIAWireguard
+
 
 extension PIAWireguardConfiguration: VPNCustomConfiguration {
     public func serialized() -> [String: Any] {
@@ -41,3 +43,5 @@ extension PIAWireguardConfiguration: VPNCustomConfiguration {
         return true
     }
 }
+
+#endif

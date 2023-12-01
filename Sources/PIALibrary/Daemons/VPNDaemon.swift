@@ -26,6 +26,7 @@ import SwiftyBeaver
 
 private let log = SwiftyBeaver.self
 
+@available(tvOS 17.0, *)
 class VPNDaemon: Daemon, DatabaseAccess, ProvidersAccess {
     static let shared = VPNDaemon()
 

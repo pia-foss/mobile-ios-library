@@ -9,6 +9,7 @@
 import Foundation
 import csi
 
+@available(tvOS 17.0, *)
 class PIACSIClientStateProvider : IEndPointProvider {
     
     var endpoints: [CSIEndpoint] {

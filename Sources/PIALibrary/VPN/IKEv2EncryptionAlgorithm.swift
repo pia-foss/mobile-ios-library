@@ -23,6 +23,7 @@
 import Foundation
 import NetworkExtension
 
+@available(tvOS 17.0, *)
 public enum IKEv2EncryptionAlgorithm: String, EnumsBuilder {
 
     public static let defaultAlgorithm: IKEv2EncryptionAlgorithm = .algorithmAES256GCM

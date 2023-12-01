@@ -26,6 +26,7 @@ import UIKit
 
 private let log = SwiftyBeaver.self
 
+@available(tvOS 17.0, *)
 class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAccess, WebServicesAccess, InAppAccess, WebServicesConsumer {
     
     private let customWebServices: WebServices?

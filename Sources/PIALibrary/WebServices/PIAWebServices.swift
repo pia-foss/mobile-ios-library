@@ -30,6 +30,7 @@ import csi
 
 private let log = SwiftyBeaver.self
 
+@available(tvOS 17.0, *)
 class PIAWebServices: WebServices, ConfigurationAccess {
     
     private static let serversVersion = 1002

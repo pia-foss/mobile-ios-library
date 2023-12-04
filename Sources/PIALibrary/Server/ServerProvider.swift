@@ -23,6 +23,7 @@
 import Foundation
 
 /// Business interface related to VPN servers.
+@available(tvOS 17.0, *)
 public protocol ServerProvider: class {
 
     /// The `ServersBundle.Configuration` associated with this provider.

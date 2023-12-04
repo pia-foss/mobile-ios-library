@@ -34,6 +34,7 @@ let package = Package(
       .package(url: "https://github.com/SwiftyBeaver/SwiftyBeaver.git", from: "1.9.0"),
       .package(url: "https://github.com/ashleymills/Reachability.swift.git", from: "4.3.0"),
       .package(url: "https://github.com/michaeltyson/TPKeyboardAvoiding.git", from: "1.3.5"),
+      .package(url: "https://github.com/Alamofire/Alamofire.git", exact: "5.0.1")
     ],
     targets: [
         .target(
@@ -42,6 +43,7 @@ let package = Package(
                 "SwiftyBeaver",
                 "Gloss",
                 "PIALibraryUtilObjC",
+                "Alamofire",
                 .product(name: "PopupDialog", package: "PopupDialog", condition: .when(platforms: [.iOS])),
                 .product(name: "SwiftEntryKit", package: "SwiftEntryKit", condition: .when(platforms: [.iOS])),
                 .product(name: "Lottie", package: "lottie-ios"),

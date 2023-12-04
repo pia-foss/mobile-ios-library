@@ -28,6 +28,7 @@ private let log = SwiftyBeaver.self
 
 /// Implementation of `VPNProfile` providing IPsec connectivity.
 /// Deprecated
+@available(tvOS 17.0, *)
 public class IPSecProfile {
 
     private var currentVPN: NEVPNManager {

@@ -25,6 +25,7 @@ import SwiftyBeaver
 
 private let log = SwiftyBeaver.self
 
+@available(tvOS 17.0, *)
 private protocol PreferencesStore: class {
     var preferredServer: Server? { get set }
     
@@ -78,6 +79,7 @@ private protocol PreferencesStore: class {
     
 }
 
+@available(tvOS 17.0, *)
 private extension PreferencesStore {
     var activeVPNCustomConfiguration: VPNCustomConfiguration? {
         return vpnCustomConfiguration(for: vpnType)
@@ -110,6 +112,7 @@ private extension PreferencesStore {
     }
 }
 
+@available(tvOS 17.0, *)
 extension Client {
 
     /// The persistent preferences of the client.
@@ -462,7 +465,7 @@ extension Client {
 }
 
 // MARK: Editable
-
+@available(tvOS 17.0, *)
 extension Client.Preferences {
 
     /// Provides a means to edit `Client.Preferences` in a buffered way. Changes can be committed or reverted.

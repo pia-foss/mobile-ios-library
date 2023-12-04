@@ -26,6 +26,7 @@ import __PIALibraryNative
 
 private let log = SwiftyBeaver.self
 
+@available(tvOS 17.0, *)
 class PingTask {
     
     let timeout = 3000
@@ -122,6 +123,7 @@ enum PingTaskState {
     }
 }
 
+@available(tvOS 17.0, *)
 extension Array where Element == PingTask {
     
     func indexOfTaskWith(identifier: String) -> Int? {

@@ -23,6 +23,7 @@
 import Foundation
 
 /// Command pattern for prioritized and descriptive VPN operations.
+@available(tvOS 17.0, *)
 public protocol VPNAction {
 
     /// The priority to order this action against.
@@ -40,6 +41,7 @@ public protocol VPNAction {
     func execute(_ callback: SuccessLibraryCallback?)
 }
 
+@available(tvOS 17.0, *)
 class VPNActionReconnect: VPNAction, ProvidersAccess {
     let priority = 10
     
@@ -55,6 +57,7 @@ class VPNActionReconnect: VPNAction, ProvidersAccess {
     }
 }
 
+@available(tvOS 17.0, *)
 class VPNActionReinstall: VPNAction, ProvidersAccess {
     let priority = 20
 
@@ -83,6 +86,7 @@ class VPNActionReinstall: VPNAction, ProvidersAccess {
     }
 }
 
+@available(tvOS 17.0, *)
 class VPNActionDisconnectAndReinstall: VPNAction, ProvidersAccess {
     let priority = 30
     

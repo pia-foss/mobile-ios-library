@@ -24,6 +24,7 @@ import Foundation
 import __PIALibraryNative
 import NetworkExtension
 
+@available(tvOS 17.0, *)
 class DefaultVPNProvider: VPNProvider, ConfigurationAccess, DatabaseAccess, PreferencesAccess, ProvidersAccess, WebServicesAccess {
     
     private static let forcedStatuses: [VPNStatus] = [

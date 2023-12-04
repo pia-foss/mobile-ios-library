@@ -22,10 +22,12 @@
 
 import Foundation
 
+@available(tvOS 17.0, *)
 protocol Endpoint: ConfigurationAccess {
     var url: URL { get }
 }
 
+@available(tvOS 17.0, *)
 enum VPNEndpoint: String, Endpoint {
     case servers
     

@@ -22,6 +22,7 @@
 import Foundation
 import regions
 
+@available(tvOS 17.0, *)
 class PIARegionClientStateProvider : IRegionEndpointProvider {
 
     func regionEndpoints() -> [RegionEndpoint] {

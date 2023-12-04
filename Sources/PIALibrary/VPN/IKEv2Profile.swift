@@ -27,6 +27,7 @@ import SwiftyBeaver
 private let log = SwiftyBeaver.self
 
 /// Implementation of `VPNProfile` providing IKEv2 connectivity.
+@available(tvOS 17.0, *)
 public class IKEv2Profile: NetworkExtensionProfile {
         
     private var currentVPN: NEVPNManager {

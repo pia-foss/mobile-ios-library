@@ -27,6 +27,7 @@ import UIKit
 private let log = SwiftyBeaver.self
 
 /// The entry point for client initialization and usage.
+@available(tvOS 17.0, *)
 public final class Client {
 
     // MARK: Strategies

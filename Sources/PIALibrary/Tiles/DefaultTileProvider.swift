@@ -25,6 +25,7 @@ import SwiftyBeaver
 
 private let log = SwiftyBeaver.self
 
+@available(tvOS 17.0, *)
 class DefaultTileProvider: TileProvider, DatabaseAccess {
     
     // MARK: TileProvider

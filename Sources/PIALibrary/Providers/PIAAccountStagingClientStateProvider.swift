@@ -22,6 +22,7 @@
 import Foundation
 import account
 
+@available(tvOS 17.0, *)
 class PIAAccountStagingClientStateProvider : IAccountEndpointProvider {
     func accountEndpoints() -> [AccountEndpoint] {
         return [

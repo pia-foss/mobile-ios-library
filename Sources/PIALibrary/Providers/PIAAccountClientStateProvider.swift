@@ -22,6 +22,7 @@
 import Foundation
 import account
 
+@available(tvOS 17.0, *)
 class PIAAccountClientStateProvider : IAccountEndpointProvider {
     func accountEndpoints() -> [AccountEndpoint] {
         let validEndpoints = EndpointManager.shared.availableEndpoints()

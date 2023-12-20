@@ -27,7 +27,7 @@ import UIKit
 private let log = SwiftyBeaver.self
 
 @available(tvOS 17.0, *)
-class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAccess, WebServicesAccess, InAppAccess, WebServicesConsumer {
+open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAccess, WebServicesAccess, InAppAccess, WebServicesConsumer {
     
     private let customWebServices: WebServices?
 
@@ -42,7 +42,7 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
     // MARK: AccountProvider
     
     #if os(iOS) || os(tvOS)
-    var planProducts: [Plan: InAppProduct]? {
+    public var planProducts: [Plan: InAppProduct]? {
         guard let products = accessedStore.availableProducts else {
             return nil
         }
@@ -57,14 +57,14 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
     }
     #endif
     
-    var isLoggedIn: Bool {
+    public var isLoggedIn: Bool {
         guard let username = accessedDatabase.secure.username() else {
             return false
         }
         return (accessedDatabase.secure.password(for: username) != nil)
     }
     
-    var shouldCleanAccount: Bool {
+    public var shouldCleanAccount: Bool {
         if self.accessedDatabase.plain.accountInfo == nil,
             self.isLoggedIn {
             return true
@@ -72,37 +72,37 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
         return false
     }
     
-    var oldToken: String? {
+    public var oldToken: String? {
         guard let username = accessedDatabase.secure.username() else {
             return nil
         }
         return accessedDatabase.secure.token(for: accessedDatabase.secure.tokenKey(for: username))
     }
 
-    var apiToken: String? {
+    public var apiToken: String? {
         return webServices.apiToken
     }
 
-    var vpnToken: String? {
+    public var vpnToken: String? {
         return webServices.vpnToken
     }
     
-    var vpnTokenUsername: String? {
+    public var vpnTokenUsername: String? {
         return getVpnTokenUsernameAndPassword()?.username
     }
     
-    var vpnTokenPassword: String? {
+    public var vpnTokenPassword: String? {
         return getVpnTokenUsernameAndPassword()?.password
     }
     
-    var publicUsername: String? {
+    public var publicUsername: String? {
         guard let username = accessedDatabase.secure.publicUsername() else {
             return nil
         }
         return username
     }
     
-    var currentUser: UserAccount? {
+    public var currentUser: UserAccount? {
         get {
             guard let username = accessedDatabase.secure.username() else {
                 return nil
@@ -131,7 +131,7 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
         }
     }
     
-    var currentPasswordReference: Data? {
+    public var currentPasswordReference: Data? {
         guard let username = accessedDatabase.secure.username() else {
             return nil
         }
@@ -139,7 +139,7 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
     }
     
     #if os(iOS) || os(tvOS)
-    var lastSignupRequest: SignupRequest? {
+    public var lastSignupRequest: SignupRequest? {
         guard let email = accessedDatabase.plain.lastSignupEmail else {
             return nil
         }
@@ -158,7 +158,7 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
         }
     }
 
-    func migrateOldTokenIfNeeded(_ callback: SuccessLibraryCallback?) {
+    public func migrateOldTokenIfNeeded(_ callback: SuccessLibraryCallback?) {
 
         // If it was already migrated
         if (self.accessedDatabase.plain.tokenMigrated) {
@@ -189,7 +189,7 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
         }
     }
     
-    func login(with receiptRequest: LoginReceiptRequest, _ callback: ((UserAccount?, Error?) -> Void)?) {
+    public func login(with receiptRequest: LoginReceiptRequest, _ callback: ((UserAccount?, Error?) -> Void)?) {
         guard !isLoggedIn else {
             preconditionFailure()
         }
@@ -200,7 +200,7 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
         }
     }
 
-    func login(with linkToken: String, _ callback: ((UserAccount?, Error?) -> Void)?) {
+    public func login(with linkToken: String, _ callback: ((UserAccount?, Error?) -> Void)?) {
         guard !isLoggedIn else {
             preconditionFailure()
         }
@@ -211,7 +211,7 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
         }
     }
 
-    func login(with request: LoginRequest, _ callback: ((UserAccount?, Error?) -> Void)?) {
+    public func login(with request: LoginRequest, _ callback: ((UserAccount?, Error?) -> Void)?) {
         guard !isLoggedIn else {
             preconditionFailure()
         }
@@ -262,7 +262,7 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
         }
     }
     
-    func refreshAccountInfo(_ callback: ((AccountInfo?, Error?) -> Void)?) {
+    public func refreshAccountInfo(_ callback: ((AccountInfo?, Error?) -> Void)?) {
         guard isLoggedIn,
             let _ = self.publicUsername else {
             guard let user = currentUser else {
@@ -296,7 +296,7 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
         }
     }
     
-    func update(with request: UpdateAccountRequest, resetPassword reset: Bool, andPassword password: String, _ callback: ((AccountInfo?, Error?) -> Void)?) {
+    public func update(with request: UpdateAccountRequest, resetPassword reset: Bool, andPassword password: String, _ callback: ((AccountInfo?, Error?) -> Void)?) {
         guard let user = currentUser else {
             preconditionFailure()
         }
@@ -322,7 +322,7 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
         }
     }
     
-    func logout(_ callback: SuccessLibraryCallback?) {
+    public func logout(_ callback: SuccessLibraryCallback?) {
         guard isLoggedIn else {
             preconditionFailure()
         }
@@ -333,7 +333,7 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
         }
     }
     
-    func deleteAccount(_ callback: SuccessLibraryCallback?) {
+    public func deleteAccount(_ callback: SuccessLibraryCallback?) {
         guard isLoggedIn else {
             preconditionFailure()
         }
@@ -346,7 +346,7 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
         }
     }
     
-    func featureFlags(_ callback: SuccessLibraryCallback?) {
+    public func featureFlags(_ callback: SuccessLibraryCallback?) {
         webServices.featureFlags { (features, nil) in
             Client.configuration.featureFlags.removeAll()
             if let features = features, !features.isEmpty {
@@ -358,7 +358,7 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
     }
     
     #if os(iOS) || os(tvOS)
-    func subscriptionInformation(_ callback: LibraryCallback<AppStoreInformation>?) {
+    public func subscriptionInformation(_ callback: LibraryCallback<AppStoreInformation>?) {
         log.debug("Fetching available product keys...")
         
         let receipt = accessedStore.paymentReceipt
@@ -379,7 +379,7 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
         })
     }
     
-    func listPlanProducts(_ callback: (([Plan : InAppProduct]?, Error?) -> Void)?) {
+    public func listPlanProducts(_ callback: (([Plan : InAppProduct]?, Error?) -> Void)?) {
         log.debug("Fetching available products...")
         
         if let products = planProducts {
@@ -400,7 +400,7 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
         }
     }
 
-    func purchase(plan: Plan, _ callback: ((InAppTransaction?, Error?) -> Void)?) {
+    public func purchase(plan: Plan, _ callback: ((InAppTransaction?, Error?) -> Void)?) {
         listPlanProducts { (map, error) in
             guard let product = map?[plan] else {
                 callback?(nil, ClientError.productUnavailable)
@@ -417,15 +417,15 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
         }
     }
     
-    func restorePurchases(_ callback: SuccessLibraryCallback?) {
+    public func restorePurchases(_ callback: SuccessLibraryCallback?) {
         accessedStore.refreshPaymentReceipt(callback)
     }
     
-    func loginUsingMagicLink(withEmail email: String, _ callback: SuccessLibraryCallback?) {
+    public func loginUsingMagicLink(withEmail email: String, _ callback: SuccessLibraryCallback?) {
         self.webServices.loginLink(email: email, callback)
     }
 
-    func signup(with request: SignupRequest, _ callback: ((UserAccount?, Error?) -> Void)?) {
+    public func signup(with request: SignupRequest, _ callback: ((UserAccount?, Error?) -> Void)?) {
         guard !isLoggedIn else {
             preconditionFailure()
         }
@@ -486,7 +486,7 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
         }
     }
 
-    func listRenewablePlans(_ callback: (([Plan]?, Error?) -> Void)?) {
+    public func listRenewablePlans(_ callback: (([Plan]?, Error?) -> Void)?) {
         guard let info = currentUser?.info else {
             preconditionFailure()
         }
@@ -521,7 +521,7 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
         }
     }
     
-    func renew(with request: RenewRequest, _ callback: ((UserAccount?, Error?) -> Void)?) {
+    public func renew(with request: RenewRequest, _ callback: ((UserAccount?, Error?) -> Void)?) {
         guard isLoggedIn else {
             preconditionFailure()
         }
@@ -563,7 +563,7 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
     /**
      Remove all data from the plain and secure internal database
      */
-    func cleanDatabase() {
+    public func cleanDatabase() {
         if let username = accessedDatabase.secure.username() {
             accessedDatabase.secure.setPassword(nil, for: username)
             accessedDatabase.secure.setUsername(nil)
@@ -586,7 +586,7 @@ class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAcce
         return customWebServices ?? accessedWebServices
     }
     
-    func isAPIEndpointAvailable(_ callback: LibraryCallback<Bool>?) {
+    public func isAPIEndpointAvailable(_ callback: LibraryCallback<Bool>?) {
         webServices.taskForConnectivityCheck { (_, error) in
             callback?(error == nil, error)
         }

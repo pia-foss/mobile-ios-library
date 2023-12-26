@@ -24,7 +24,7 @@ import Foundation
 import __PIALibraryNative
 
 @available(tvOS 17.0, *)
-class DefaultServerProvider: ServerProvider, ConfigurationAccess, DatabaseAccess, PreferencesAccess, WebServicesAccess, WebServicesConsumer {
+open class DefaultServerProvider: ServerProvider, ConfigurationAccess, DatabaseAccess, PreferencesAccess, WebServicesAccess, WebServicesConsumer {
     
     private let customWebServices: WebServices?
     
@@ -38,11 +38,11 @@ class DefaultServerProvider: ServerProvider, ConfigurationAccess, DatabaseAccess
 
     // MARK: ServerProvider
     
-    var currentServersConfiguration: ServersBundle.Configuration {
+    public var currentServersConfiguration: ServersBundle.Configuration {
         return accessedDatabase.transient.serversConfiguration
     }
     
-    var historicalServers: [Server] {
+    public var historicalServers: [Server] {
         get {
             if let dipTokens = dipTokens {
                 return accessedDatabase.plain.historicalServers.filter({$0.dipToken == nil || dipTokens.contains($0.dipToken ?? "")})
@@ -54,7 +54,7 @@ class DefaultServerProvider: ServerProvider, ConfigurationAccess, DatabaseAccess
         }
     }
     
-    var currentServers: [Server] {
+    public var currentServers: [Server] {
         get {
             return accessedDatabase.plain.cachedServers
         }
@@ -69,7 +69,7 @@ class DefaultServerProvider: ServerProvider, ConfigurationAccess, DatabaseAccess
         }
     }
     
-    var bestServer: Server? {
+    public var bestServer: Server? {
         var bestIdentifier: String?
         var bestResponseTime: Int = .max
         
@@ -110,7 +110,7 @@ class DefaultServerProvider: ServerProvider, ConfigurationAccess, DatabaseAccess
         return find(withIdentifier: bestIdentifier!)
     }
     
-    var targetServer: Server {
+    public var targetServer: Server {
         guard let server = accessedPreferences.preferredServer ?? bestServer ?? accessedDatabase.plain.lastConnectedRegion else {
             guard let fallbackServer = currentServers.first else {
                 fatalError("No servers available")
@@ -120,11 +120,11 @@ class DefaultServerProvider: ServerProvider, ConfigurationAccess, DatabaseAccess
         return server
     }
     
-    var dipTokens: [String]? {
+    public var dipTokens: [String]? {
         return accessedDatabase.secure.dipTokens()
     }
     
-    func loadLocalJSON(fromJSON jsonData: Data) {
+    public func loadLocalJSON(fromJSON jsonData: Data) {
         guard let bundle = GlossServersBundle(jsonData: jsonData) else {
             return
         }
@@ -137,7 +137,7 @@ class DefaultServerProvider: ServerProvider, ConfigurationAccess, DatabaseAccess
         }
     }
 
-    func load(fromJSON jsonData: Data) {
+    public func load(fromJSON jsonData: Data) {
         guard let bundle = GlossServersBundle(jsonData: jsonData) else {
             return
         }
@@ -149,7 +149,7 @@ class DefaultServerProvider: ServerProvider, ConfigurationAccess, DatabaseAccess
         }
     }
     
-    func download(_ callback: (([Server]?, Error?) -> Void)?) {
+    public func download(_ callback: (([Server]?, Error?) -> Void)?) {
         webServices.downloadServers { (bundle, error) in
             guard let bundle = bundle else {
                 callback?(nil, error)
@@ -190,7 +190,7 @@ class DefaultServerProvider: ServerProvider, ConfigurationAccess, DatabaseAccess
         }
     }
     
-    func activateDIPToken(_ token: String, _ callback: LibraryCallback<Server?>?) {
+    public func activateDIPToken(_ token: String, _ callback: LibraryCallback<Server?>?) {
         guard Client.providers.accountProvider.isLoggedIn else {
             preconditionFailure()
         }
@@ -208,7 +208,7 @@ class DefaultServerProvider: ServerProvider, ConfigurationAccess, DatabaseAccess
         }
     }
 
-    func activateDIPTokens(_ tokens: [String], _ callback: LibraryCallback<[Server]>?) {
+    public func activateDIPTokens(_ tokens: [String], _ callback: LibraryCallback<[Server]>?) {
         guard Client.providers.accountProvider.isLoggedIn else {
             preconditionFailure()
         }
@@ -226,7 +226,7 @@ class DefaultServerProvider: ServerProvider, ConfigurationAccess, DatabaseAccess
         }
     }
     
-    func removeDIPToken(_ dipToken: String) {
+    public func removeDIPToken(_ dipToken: String) {
         guard Client.providers.accountProvider.isLoggedIn else {
             preconditionFailure()
         }
@@ -234,18 +234,18 @@ class DefaultServerProvider: ServerProvider, ConfigurationAccess, DatabaseAccess
         //self.currentServers = self.currentServers.filter({$0.dipToken != dipToken})
     }
     
-    func handleDIPTokenExpiration(dipToken: String, _ callback: SuccessLibraryCallback?) {
+    public func handleDIPTokenExpiration(dipToken: String, _ callback: SuccessLibraryCallback?) {
         guard Client.providers.accountProvider.isLoggedIn else {
             preconditionFailure()
         }
         webServices.handleDIPTokenExpiration(dipToken: dipToken, nil)
     }
     
-    func find(withIdentifier identifier: String) -> Server? {
+    public func find(withIdentifier identifier: String) -> Server? {
         return currentServers.first { $0.identifier == identifier }
     }
     
-    func resetCurrentServers() {
+    public func resetCurrentServers() {
         currentServers = []
     }
     // MARK: WebServicesConsumer

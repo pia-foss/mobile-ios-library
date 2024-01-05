@@ -25,7 +25,7 @@ import __PIALibraryNative
 import NetworkExtension
 
 @available(tvOS 17.0, *)
-class DefaultVPNProvider: VPNProvider, ConfigurationAccess, DatabaseAccess, PreferencesAccess, ProvidersAccess, WebServicesAccess {
+open class DefaultVPNProvider: VPNProvider, ConfigurationAccess, DatabaseAccess, PreferencesAccess, ProvidersAccess, WebServicesAccess {
     
     private static let forcedStatuses: [VPNStatus] = [
         .connected,
@@ -48,19 +48,19 @@ class DefaultVPNProvider: VPNProvider, ConfigurationAccess, DatabaseAccess, Pref
     
     // MARK: VPNProvider
     
-    var availableVPNTypes: [String] {
+    public var availableVPNTypes: [String] {
         return accessedConfiguration.availableVPNTypes()
     }
     
-    var currentVPNType: String {
+    public var currentVPNType: String {
         return accessedPreferences.vpnType
     }
     
-    var vpnStatus: VPNStatus {
+    public var vpnStatus: VPNStatus {
         return accessedDatabase.transient.vpnStatus
     }
     
-    var profileServer: Server? {
+    public var profileServer: Server? {
         guard let identifier = activeProfile?.serverIdentifier else {
             return nil
         }
@@ -88,7 +88,7 @@ class DefaultVPNProvider: VPNProvider, ConfigurationAccess, DatabaseAccess, Pref
         }
     }
     
-    func prepare() {
+    public func prepare() {
         
         var profile = activeProfileRemovingInactive()
         var force = false
@@ -134,7 +134,7 @@ class DefaultVPNProvider: VPNProvider, ConfigurationAccess, DatabaseAccess, Pref
 
     }
     
-    func install(force forceInstall: Bool, _ callback: SuccessLibraryCallback?) {
+    public func install(force forceInstall: Bool, _ callback: SuccessLibraryCallback?) {
         guard accessedProviders.accountProvider.isLoggedIn else {
             callback?(ClientError.unauthorized)
             return
@@ -188,7 +188,7 @@ class DefaultVPNProvider: VPNProvider, ConfigurationAccess, DatabaseAccess, Pref
         }
     }
     
-    func disable(_ callback: SuccessLibraryCallback?) {
+    public func disable(_ callback: SuccessLibraryCallback?) {
         guard let activeProfile = activeProfile else {
             preconditionFailure()
         }
@@ -196,7 +196,7 @@ class DefaultVPNProvider: VPNProvider, ConfigurationAccess, DatabaseAccess, Pref
         activeProfile.disable(callback)
     }
     
-    func uninstall(_ callback: SuccessLibraryCallback?) {
+    public func uninstall(_ callback: SuccessLibraryCallback?) {
         guard let activeProfile = activeProfile else {
             preconditionFailure()
         }
@@ -208,7 +208,7 @@ class DefaultVPNProvider: VPNProvider, ConfigurationAccess, DatabaseAccess, Pref
         }
     }
     
-    func uninstallAll() {
+    public func uninstallAll() {
         activeProfile = nil
         accessedDatabase.transient.vpnStatus = .disconnected
         for vpnType in availableVPNTypes {
@@ -220,7 +220,7 @@ class DefaultVPNProvider: VPNProvider, ConfigurationAccess, DatabaseAccess, Pref
         }
     }
     
-    func connect(_ callback: SuccessLibraryCallback?) {
+    public func connect(_ callback: SuccessLibraryCallback?) {
         guard accessedProviders.accountProvider.isLoggedIn else {
             callback?(ClientError.unauthorized)
             return
@@ -231,7 +231,7 @@ class DefaultVPNProvider: VPNProvider, ConfigurationAccess, DatabaseAccess, Pref
         activeProfile.connect(withConfiguration: vpnClientConfiguration(), callback)
     }
     
-    func disconnect(_ callback: SuccessLibraryCallback?) {
+    public func disconnect(_ callback: SuccessLibraryCallback?) {
         guard accessedProviders.accountProvider.isLoggedIn else {
             callback?(ClientError.unauthorized)
             return
@@ -249,7 +249,7 @@ class DefaultVPNProvider: VPNProvider, ConfigurationAccess, DatabaseAccess, Pref
         
     }
     
-    func updatePreferences(_ callback: SuccessLibraryCallback?) {
+    public func updatePreferences(_ callback: SuccessLibraryCallback?) {
         guard accessedProviders.accountProvider.isLoggedIn else {
             callback?(ClientError.unauthorized)
             return
@@ -260,7 +260,7 @@ class DefaultVPNProvider: VPNProvider, ConfigurationAccess, DatabaseAccess, Pref
         activeProfile.updatePreferences(callback)
     }
 
-    func reconnect(after delay: Int?, forceDisconnect: Bool = false,  _ callback: SuccessLibraryCallback?) {
+    public func reconnect(after delay: Int?, forceDisconnect: Bool = false,  _ callback: SuccessLibraryCallback?) {
         guard accessedProviders.accountProvider.isLoggedIn else {
             callback?(ClientError.unauthorized)
             return
@@ -291,7 +291,7 @@ class DefaultVPNProvider: VPNProvider, ConfigurationAccess, DatabaseAccess, Pref
         }
     }
     
-    func submitDebugReport(_ shouldSendPersistedData: Bool, _ callback: LibraryCallback<String>?) {
+    public func submitDebugReport(_ shouldSendPersistedData: Bool, _ callback: LibraryCallback<String>?) {
         guard let activeProfile = activeProfile else {
             preconditionFailure()
         }
@@ -307,7 +307,7 @@ class DefaultVPNProvider: VPNProvider, ConfigurationAccess, DatabaseAccess, Pref
         }
     }
     
-    func dataUsage(_ callback: LibraryCallback<Usage>?) {
+    public func dataUsage(_ callback: LibraryCallback<Usage>?) {
         guard let activeProfile = activeProfile else {
             preconditionFailure()
         }
@@ -379,7 +379,7 @@ class DefaultVPNProvider: VPNProvider, ConfigurationAccess, DatabaseAccess, Pref
     }
     
     // MARK: Migration
-    func needsMigrationToGEN4() -> Bool {
+    public func needsMigrationToGEN4() -> Bool {
         if isVPNConnected {
             let manager = NEVPNManager.shared()
             if let protocolConfiguration = manager.protocolConfiguration,

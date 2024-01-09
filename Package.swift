@@ -21,10 +21,10 @@ let package = Package(
         )
     ],
     dependencies: [
-      .package(url: "git@github.com:pia-foss/mobile-ios-releases-kpi.git", exact: "1.1.1"),
-      .package(url: "git@github.com:pia-foss/mobile-ios-releases-csi.git", exact: "1.2.1"),
+      .package(url: "git@github.com:pia-foss/mobile-ios-releases-kpi.git", exact: "1.2.3"),
+      .package(url: "git@github.com:pia-foss/mobile-ios-releases-csi.git", exact: "1.3.3"),
       .package(url: "git@github.com:pia-foss/mobile-ios-releases-account.git", exact: "1.4.4"),
-      .package(url: "git@github.com:pia-foss/mobile-ios-releases-regions.git", exact: "1.6.2"),
+      .package(url: "git@github.com:pia-foss/mobile-ios-releases-regions.git", exact: "1.6.3"),
       .package(url: "git@github.com:pia-foss/mobile-ios-openvpn.git", branch: "master"),
       .package(url: "git@github.com:pia-foss/mobile-ios-wireguard.git", revision: "5a26bb3611281654a1f7f35c35ec4d07d21390a0"),
       .package(url: "https://github.com/hkellaway/Gloss.git", from: "3.1.0"),

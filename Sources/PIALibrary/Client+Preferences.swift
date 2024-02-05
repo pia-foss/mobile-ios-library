@@ -307,6 +307,12 @@ extension Client {
             allMaps[vpnType] = customConfiguration.serialized()
             accessedDatabase.plain.vpnCustomConfigurationMaps = allMaps
         }
+
+        #if os(iOS)
+        public func setVpnTypeToWireguard() {
+            self.vpnType = PIAWGTunnelProfile.vpnType
+        }
+        #endif
         
         /// The `String` array of available WiFi networks
         public fileprivate(set) var availableNetworks: [String] {
@@ -399,6 +405,16 @@ extension Client {
                 accessedDatabase.plain.timeToConnectVPN = newValue
             }
         }
+
+        /// Store a bool that represents whether we already attempted to migrate to wireguard
+        public var wireguardMigrationPerformed: Bool {
+            get {
+                return accessedDatabase.plain.wireguardMigrationPerformed
+            }
+            set {
+                accessedDatabase.plain.wireguardMigrationPerformed = newValue
+            }
+        }
         
         /// Store a bool that represents the status of leak protection property
         public var leakProtection: Bool {
@@ -481,7 +497,15 @@ extension Client.Preferences {
             useWiFiProtection = true
             trustCellularData = false
             nmtMigrationSuccess = false
+
+            #if os(iOS)
+            vpnType = PIAWGTunnelProfile.vpnType
+            #endif
+
+            #if os(tvOS)
             vpnType = IKEv2Profile.vpnType
+            #endif
+
             vpnDisconnectsOnSleep = false
             vpnCustomConfigurations = [:]
             availableNetworks = []

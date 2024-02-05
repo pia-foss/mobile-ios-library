@@ -75,6 +75,7 @@ public class PIATunnelProfile: NetworkExtensionProfile {
                 callback?(error)
                 return
             }
+
             self.doSave(vpn, withConfiguration: configuration, force: true) { (error) in
                 if let _ = error {
                     callback?(error)

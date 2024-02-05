@@ -72,6 +72,8 @@ protocol PlainStore: class {
     var lastVPNConnectionAttempt: Double { get set }
     
     var timeToConnectVPN: Double { get set }
+
+    var wireguardMigrationPerformed: Bool { get set }
     
     var leakProtection: Bool { get set }
     

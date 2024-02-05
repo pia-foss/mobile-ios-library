@@ -34,7 +34,7 @@ public class IKEv2Profile: NetworkExtensionProfile {
         return NEVPNManager.shared()
     }
     
-    init() {
+    public init() {
     }
     
     // MARK: VPNProfile

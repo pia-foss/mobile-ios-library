@@ -106,6 +106,8 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
         static let lastVPNConnectionAttempt = "lastVPNConnectionAttempt"
         
         static let timeToConnectVPN = "timeToConnectVPN"
+
+        static let wireguardMigrationPerformed = "WireguardMigrationPerformed"
         
         static let leakProtection = "LeakProtection"
         
@@ -439,6 +441,18 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
         }
         set {
             backend.set(newValue, forKey: Entries.timeToConnectVPN)
+        }
+    }
+
+    var wireguardMigrationPerformed: Bool {
+        get {
+            if backend.object(forKey: Entries.wireguardMigrationPerformed) == nil {
+                backend.set(false, forKey: Entries.wireguardMigrationPerformed)
+            }
+            return backend.bool(forKey: Entries.wireguardMigrationPerformed)
+        }
+        set {
+            backend.set(newValue, forKey: Entries.wireguardMigrationPerformed)
         }
     }
     

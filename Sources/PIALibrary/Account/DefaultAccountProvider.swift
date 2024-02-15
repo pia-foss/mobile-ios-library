@@ -333,6 +333,19 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
         }
     }
     
+    public func logOutWithoutPrecondition(_ callback: SuccessLibraryCallback?) {
+        
+        if !isLoggedIn {
+            NSLog(">>> >>> PIALibrary logOut: user is not logged In! ")
+        }
+
+        webServices.logout { [weak self] (result, error) in
+            self?.cleanDatabase()
+            Macros.postNotification(.PIAAccountDidLogout)
+            callback?(nil)
+        }
+    }
+    
     public func deleteAccount(_ callback: SuccessLibraryCallback?) {
         guard isLoggedIn else {
             preconditionFailure()

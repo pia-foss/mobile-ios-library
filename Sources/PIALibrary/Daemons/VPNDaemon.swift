@@ -220,6 +220,7 @@ class VPNDaemon: Daemon, DatabaseAccess, ProvidersAccess {
             fatalError("Missing NEVPNConnection object?")
         }
         DispatchQueue.main.async {
+            print("WGPacketTunnel neStatusDidChange status: \(connection.status)")
             self.tryUpdateStatus(via: connection)
         }
     }

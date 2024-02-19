@@ -147,22 +147,29 @@ public class PIAWGTunnelProfile: NetworkExtensionProfile {
     
     /// :nodoc:
     public func connect(withConfiguration configuration: VPNConfiguration, _ callback: SuccessLibraryCallback?) {
+        print("WGPacketTunnel connect pre find")
         find { (vpn, error) in
+            print("WGPacketTunnel connect post find vpn: \(vpn) error: \(error)")
             guard let vpn = vpn else {
                 callback?(error)
                 return
             }
 
+            print("WGPacketTunnel connect pre doSave")
             self.doSave(vpn, withConfiguration: configuration, force: true) { (error) in
+                print("WGPacketTunnel connect post doSave error: \(error)")
                 if let _ = error {
                     callback?(error)
                     return
                 }
                 do {
+                    print("WGPacketTunnel connect NETunnelProviderSession try")
                     let session = vpn.connection as? NETunnelProviderSession
-                    try session?.startTunnel(options: nil)
+                    let result = try session?.startTunnel(options: nil)
+                    print("WGPacketTunnel connect NETunnelProviderSession startTunnel \(result)")
                     callback?(nil)
                 } catch let e {
+                    print("WGPacketTunnel connect NETunnelProviderSession catch error: \(e)")
                     callback?(e)
                 }
             }
@@ -260,8 +267,8 @@ public class PIAWGTunnelProfile: NetworkExtensionProfile {
             }
 
             cfg.providerConfiguration = [PIAWireguardConfiguration.Keys.token: token,
-                                         PIAWireguardConfiguration.Keys.ping: configuration.server.bestAddress()?.description,
-                                         PIAWireguardConfiguration.Keys.serial: configuration.server.serial,
+                                         PIAWireguardConfiguration.Keys.ping: configuration.server.bestAddress()?.ip,
+//                                         PIAWireguardConfiguration.Keys.serial: configuration.server.serial,
                                          PIAWireguardConfiguration.Keys.cn: serverCN,
                                          PIAWireguardConfiguration.Keys.useIP: true]
 

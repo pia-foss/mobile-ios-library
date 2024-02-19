@@ -96,7 +96,7 @@ public class EndpointManager {
         }
         
         var availableEndpoints = [PinningEndpoint]()
-        availableMetaEndpoints(&availableEndpoints)
+//        availableMetaEndpoints(&availableEndpoints)
         
         availableEndpoints.append(PinningEndpoint(host: region))
         
@@ -111,7 +111,7 @@ public class EndpointManager {
         }
         
         var availableEndpoints = [PinningEndpoint]()
-        availableMetaEndpoints(&availableEndpoints)
+//        availableMetaEndpoints(&availableEndpoints)
         
         availableEndpoints.append(PinningEndpoint(host: pia))
         availableEndpoints.append(PinningEndpoint(host: proxy, isProxy: true))

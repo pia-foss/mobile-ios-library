@@ -113,7 +113,7 @@ open class DefaultServerProvider: ServerProvider, ConfigurationAccess, DatabaseA
     public var targetServer: Server {
         guard let server = accessedPreferences.preferredServer ?? bestServer ?? accessedDatabase.plain.lastConnectedRegion else {
             guard let fallbackServer = currentServers.first else {
-                fatalError("No servers available")
+                return Server.automatic
             }
             return fallbackServer
         }
@@ -262,4 +262,16 @@ extension Server: DatabaseAccess {
     public var pingTime: Int? {
         return accessedDatabase.plain.ping(forServerIdentifier: identifier)
     }
+}
+
+fileprivate extension Server {
+    static let automatic = Server(
+        serial: "",
+        name: "Automatic",
+        country: "universal",
+        hostname: "auto.bogus.domain",
+        pingAddress: nil,
+        regionIdentifier: "auto"
+    )
+    
 }

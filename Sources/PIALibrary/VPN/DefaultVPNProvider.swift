@@ -79,7 +79,7 @@ open class DefaultVPNProvider: VPNProvider, ConfigurationAccess, DatabaseAccess,
         return accessedDatabase.transient.vpnLog
     }
     
-    private var activeProfile: VPNProfile? {
+    public var activeProfile: VPNProfile? {
         get {
             return accessedDatabase.transient.activeVPNProfile
         }
@@ -346,7 +346,7 @@ open class DefaultVPNProvider: VPNProvider, ConfigurationAccess, DatabaseAccess,
         return activeProfile
     }
 
-    private func vpnClientConfiguration(for profile: VPNProfile? = nil) -> VPNConfiguration {
+    public func vpnClientConfiguration(for profile: VPNProfile? = nil) -> VPNConfiguration {
         guard let currentUser = accessedProviders.accountProvider.currentUser else {
             preconditionFailure("Not logged in")
         }

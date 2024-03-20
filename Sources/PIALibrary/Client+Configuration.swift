@@ -178,6 +178,9 @@ extension Client {
 
         /// Enabled features
         public var featureFlags: [String]
+        
+        /// tvOS token to bind with api token in order to Sign in on PIA Apple TV
+        public var tvOSBindToken: String?
 
         // MARK: Initialization
         

@@ -83,9 +83,7 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
         return webServices.apiToken
     }
 
-    public var vpnToken: String? {
-        return webServices.vpnToken
-    }
+    public var vpnToken: String?
     
     public var vpnTokenUsername: String? {
         return getVpnTokenUsernameAndPassword()?.username

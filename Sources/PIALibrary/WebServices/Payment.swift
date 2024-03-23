@@ -22,7 +22,7 @@
 
 import Foundation
 
-struct Payment {
+public struct Payment {
     let receipt: Data
     
     var marketing: [String: Any]?

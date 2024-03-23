@@ -26,7 +26,7 @@ import Gloss
 @available(tvOS 17.0, *)
 extension PIAWebServices {
 
-    func taskForConnectivityCheck(_ callback: ((ConnectivityStatus?, Error?) -> Void)?) {
+    public func taskForConnectivityCheck(_ callback: ((ConnectivityStatus?, Error?) -> Void)?) {
                 
         self.accountAPI.clientStatus { (information, errors) in
             DispatchQueue.main.async {
@@ -45,7 +45,7 @@ extension PIAWebServices {
         
     }
     
-    func submitDebugReport(_ shouldSendPersistedData: Bool, _ protocolLogs: String, _ callback: LibraryCallback<String>?) {
+    public func submitDebugReport(_ shouldSendPersistedData: Bool, _ protocolLogs: String, _ callback: LibraryCallback<String>?) {
         csiProtocolInformationProvider.setProtocolLogs(protocolLogs: protocolLogs)
         self.csiAPI.send(shouldSendPersistedData: shouldSendPersistedData) { (reportIdentifier, errors) in
             if !errors.isEmpty {

@@ -31,7 +31,7 @@ import csi
 private let log = SwiftyBeaver.self
 
 @available(tvOS 17.0, *)
-class PIAWebServices: WebServices, ConfigurationAccess {
+public class PIAWebServices: WebServices, ConfigurationAccess {
     
     private static let serversVersion = 1002
     private static let store = "apple_app_store"
@@ -124,21 +124,21 @@ class PIAWebServices: WebServices, ConfigurationAccess {
     /***
      The token to use for protocol authentication.
      */
-    var vpnToken: String? {
+    public var vpnToken: String? {
         return self.accountAPI.vpnToken()
     }
 
     /***
      The token to use for api authentication.
      */
-    var apiToken: String? {
+    public var apiToken: String? {
         return self.accountAPI.apiToken()
     }
 
     /***
      Generates a new auth expiring token based on a previous non-expiry one.
      */
-    func migrateToken(token: String, _ callback: ((Error?) -> Void)?) {
+    public func migrateToken(token: String, _ callback: ((Error?) -> Void)?) {
         self.accountAPI.migrateApiToken(apiToken: token) { (errors) in
             if !errors.isEmpty {
                 callback?(ClientError.unauthorized)
@@ -152,7 +152,7 @@ class PIAWebServices: WebServices, ConfigurationAccess {
     /***
      Generates a new auth token for the specific user
      */
-    func token(credentials: Credentials, _ callback: ((Error?) -> Void)?) {
+    public func token(credentials: Credentials, _ callback: ((Error?) -> Void)?) {
         self.accountAPI.loginWithCredentials(username: credentials.username,
                                              password: credentials.password) { [weak self] (errors) in
             self?.handleLoginResponse(errors: errors, callback: callback, mapError: self?.mapLoginError)
@@ -162,7 +162,7 @@ class PIAWebServices: WebServices, ConfigurationAccess {
     /***
      Generates a new auth token for the specific user
      */
-    func token(receipt: Data, _ callback: ((Error?) -> Void)?) {
+    public func token(receipt: Data, _ callback: ((Error?) -> Void)?) {
         self.accountAPI.loginWithReceipt(receiptBase64: receipt.base64EncodedString()) { [weak self] (errors) in
             self?.handleLoginResponse(errors: errors, callback: callback, mapError: self?.mapLoginFromReceiptError)
         }
@@ -209,7 +209,7 @@ class PIAWebServices: WebServices, ConfigurationAccess {
         return mapLoginLinkError(error)
     }
 
-    func info(_ callback: ((AccountInfo?, Error?) -> Void)?) {
+    public func info(_ callback: ((AccountInfo?, Error?) -> Void)?) {
         self.accountAPI.accountDetails() { [weak self] (response, errors) in
             if !errors.isEmpty {
                 callback?(nil, self?.mapAccountDetailsError(errors.last!))
@@ -225,7 +225,7 @@ class PIAWebServices: WebServices, ConfigurationAccess {
         }
     }
     
-    func update(credentials: Credentials, resetPassword reset: Bool, email: String, _ callback: SuccessLibraryCallback?) {
+    public func update(credentials: Credentials, resetPassword reset: Bool, email: String, _ callback: SuccessLibraryCallback?) {
         if reset {
             //Reset password, we use the token within accounts
             self.accountAPI.setEmail(email: email, resetPassword: reset) { [weak self] (newPassword, errors) in
@@ -250,7 +250,7 @@ class PIAWebServices: WebServices, ConfigurationAccess {
         }
     }
     
-    func loginLink(email: String, _ callback: SuccessLibraryCallback?) {
+    public func loginLink(email: String, _ callback: SuccessLibraryCallback?) {
         
         self.accountAPI.loginLink(email: email) { [weak self] (errors) in
             if !errors.isEmpty {
@@ -262,7 +262,7 @@ class PIAWebServices: WebServices, ConfigurationAccess {
         }
     }
     
-    func logout(_ callback: LibraryCallback<Bool>?) {
+    public func logout(_ callback: LibraryCallback<Bool>?) {
         self.accountAPI.logout() { (errors) in
             if !errors.isEmpty {
                 if errors.last?.code == 401 {
@@ -276,7 +276,7 @@ class PIAWebServices: WebServices, ConfigurationAccess {
         }
     }
     
-    func deleteAccount(_ callback: LibraryCallback<Bool>?) {
+    public func deleteAccount(_ callback: LibraryCallback<Bool>?) {
         self.accountAPI.deleteAccount(callback: { errors in
             if !errors.isEmpty {
                 callback?(false, ClientError.invalidParameter)
@@ -286,7 +286,7 @@ class PIAWebServices: WebServices, ConfigurationAccess {
         })
     }
     
-    func handleDIPTokenExpiration(dipToken: String, _ callback: SuccessLibraryCallback?) {
+    public func handleDIPTokenExpiration(dipToken: String, _ callback: SuccessLibraryCallback?) {
         self.accountAPI.renewDedicatedIP(ipToken: dipToken) { (errors) in
             if !errors.isEmpty {
                 callback?(errors.last?.code == 401 ? ClientError.unauthorized : ClientError.dipTokenRenewalError)
@@ -310,7 +310,7 @@ class PIAWebServices: WebServices, ConfigurationAccess {
         }
     }
     
-    func activateDIPToken(tokens: [String], _ callback: LibraryCallback<[Server]>?) {
+    public func activateDIPToken(tokens: [String], _ callback: LibraryCallback<[Server]>?) {
         self.accountAPI.dedicatedIPs(ipTokens: tokens) { (dedicatedIps, errors) in
             if !errors.isEmpty {
                 callback?([], self.mapDIPError(errors.last))
@@ -368,7 +368,7 @@ class PIAWebServices: WebServices, ConfigurationAccess {
         }
     }
     
-    func featureFlags(_ callback: LibraryCallback<[String]>?) {
+    public func featureFlags(_ callback: LibraryCallback<[String]>?) {
         self.accountAPI.featureFlags { (info, errors) in
             if let flags = info?.flags {
                 callback?(flags, nil)
@@ -379,7 +379,7 @@ class PIAWebServices: WebServices, ConfigurationAccess {
     }
     
     #if os(iOS) || os(tvOS)
-    func signup(with request: Signup, _ callback: ((Credentials?, Error?) -> Void)?) {
+    public func signup(with request: Signup, _ callback: ((Credentials?, Error?) -> Void)?) {
         var marketingJSON = ""
         if let json = request.marketing as? JSON {
             marketingJSON = stringify(json: json)
@@ -426,7 +426,7 @@ class PIAWebServices: WebServices, ConfigurationAccess {
         return ""
     }
 
-    func processPayment(credentials: Credentials, request: Payment, _ callback: SuccessLibraryCallback?) {
+    public func processPayment(credentials: Credentials, request: Payment, _ callback: SuccessLibraryCallback?) {
         var marketingJSON = ""
         if let json = request.marketing as? JSON {
             marketingJSON = stringify(json: json)
@@ -449,7 +449,7 @@ class PIAWebServices: WebServices, ConfigurationAccess {
     }
     #endif
     
-    func downloadServers(_ callback: ((ServersBundle?, Error?) -> Void)?) {
+    public func downloadServers(_ callback: ((ServersBundle?, Error?) -> Void)?) {
         if Client.environment == .staging {
             guard let url = Bundle(for: Self.self).url(forResource: "staging", withExtension: "json"),
                   let jsonData = try? Data(contentsOf: url) else {
@@ -487,7 +487,7 @@ class PIAWebServices: WebServices, ConfigurationAccess {
     }
     
     // MARK: Store
-    func subscriptionInformation(with receipt: Data?, _ callback: LibraryCallback<AppStoreInformation>?) {
+    public func subscriptionInformation(with receipt: Data?, _ callback: LibraryCallback<AppStoreInformation>?) {
         self.accountAPI.subscriptions(receipt: nil) { (response, errors) in
             if !errors.isEmpty {
                 callback?(nil, errors.last?.code == 400 ? ClientError.badReceipt : ClientError.invalidParameter)

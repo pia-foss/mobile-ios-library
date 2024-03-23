@@ -24,7 +24,7 @@ import Foundation
 import Gloss
 
 extension Payment: JSONEncodable {
-    func toJSON() -> JSON? {
+    public func toJSON() -> JSON? {
         return jsonify([
             "receipt" ~~> receipt.base64EncodedString(),
             "marketing" ~~> marketing,

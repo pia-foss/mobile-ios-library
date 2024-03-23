@@ -28,7 +28,7 @@ protocol WebServicesConsumer {
 }
 
 @available(tvOS 17.0, *)
-protocol WebServices: class {
+public protocol WebServices: class {
     
     // MARK: Account
 

@@ -57,14 +57,14 @@ class PIAWebServices: WebServices, ConfigurationAccess {
                 .setPlatform(platform: .ios)
                 .setEndpointProvider(endpointsProvider: PIAAccountStagingClientStateProvider())
                 .setUserAgentValue(userAgentValue: PIAWebServices.userAgent)
-                .setCertificate(certificate: rsa4096Certificate)
+                //.setCertificate(certificate: rsa4096Certificate)
                 .build() as? IOSAccountAPI
         } else {
             self.accountAPI = AccountBuilder<IOSAccountAPI>()
                 .setPlatform(platform: .ios)
                 .setEndpointProvider(endpointsProvider: PIAAccountClientStateProvider())
                 .setUserAgentValue(userAgentValue: PIAWebServices.userAgent)
-                .setCertificate(certificate: rsa4096Certificate)
+                //.setCertificate(certificate: rsa4096Certificate)
                 .build() as? IOSAccountAPI
         }
         

@@ -43,8 +43,11 @@ class PIAWebServices: WebServices, ConfigurationAccess {
     
     init() {
         let rsa4096Certificate = Client.configuration.rsa4096Certificate
+        let endpointsProvider: IRegionEndpointProvider = Client.environment == .staging ? PIARegionStagingClientStateProvider()
+        : PIARegionClientStateProvider()
+        
         self.regionsAPI = RegionsBuilder()
-            .setEndpointProvider(endpointsProvider: PIARegionClientStateProvider())
+            .setEndpointProvider(endpointsProvider: endpointsProvider)
             .setCertificate(certificate: rsa4096Certificate)
             .setUserAgent(userAgent: PIAWebServices.userAgent)
             .setMetadataRequestPath(metadataRequestPath: "/vpninfo/regions/v2")

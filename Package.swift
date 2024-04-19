@@ -26,7 +26,7 @@ let package = Package(
       .package(url: "git@github.com:pia-foss/mobile-ios-releases-account.git", exact: "1.4.4"),
       .package(url: "git@github.com:pia-foss/mobile-ios-releases-regions.git", exact: "1.6.3"),
       .package(url: "git@github.com:pia-foss/mobile-ios-openvpn.git", branch: "master"),
-      .package(url: "git@github.com:pia-foss/mobile-ios-wireguard.git", revision: "5a26bb3611281654a1f7f35c35ec4d07d21390a0"),
+      .package(url: "git@github.com:pia-foss/mobile-ios-wireguard.git", revision: "39a2272118ac6c4005709a5773febc16bd0f1cdc"),
       .package(url: "https://github.com/hkellaway/Gloss.git", from: "3.1.0"),
       .package(url: "https://github.com/airbnb/lottie-ios.git", from: "3.4.1"),
       .package(url: "https://github.com/huri000/SwiftEntryKit.git", from: "1.0.3"),

@@ -135,6 +135,8 @@ class PIAWebServices: WebServices, ConfigurationAccess {
      The token to use for api authentication.
      */
     var apiToken: String? {
+        let keychain = Keychain()
+        let token = try? keychain.token(for: "API_TOKEN_KEY")
         return self.accountAPI.apiToken()
     }
 

@@ -575,3 +575,27 @@ extension Keychain {
         return (status == errSecSuccess)
     }
 }
+
+
+// MARK: - API and Vpn Tokens updates
+
+extension Keychain {
+    
+    // TODO: This is not necessary, we can probably use setPassword(_ password: String?, for username: String)
+    func setTokenData(_ tokenData: Data, for tokenKey: String) throws {
+        
+        removeToken(for: tokenKey)
+        
+        var query = [String: Any]()
+        setScope(query: &query)
+        query[kSecClass as String] = kSecClassGenericPassword
+        query[kSecAttrAccount as String] = tokenKey
+        query[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlock
+        query[kSecValueData as String] = tokenData
+        
+        let status = SecItemAdd(query as CFDictionary, nil)
+        guard (status == errSecSuccess) else {
+            throw KeychainError.add
+        }
+    }
+}

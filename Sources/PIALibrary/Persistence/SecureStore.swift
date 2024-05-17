@@ -39,6 +39,9 @@ protocol SecureStore: class {
     func passwordReference(for username: String) -> Data?
 
     func token(for username: String) -> String?
+    
+    // TODO: This is not necessary, we can probably use setPassword(_ password: String?, for username: String)
+    func setTokenData(_ tokenData: Data, for tokenKey: String)
 
     func clearToken(for username: String)
     

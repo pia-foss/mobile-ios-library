@@ -138,3 +138,13 @@ extension KeychainStore {
         return try? backend.passwordReference(for: dip)
     }
 }
+
+extension KeychainStore {
+    func setTokenData(_ tokenData: Data, for tokenKey: String) {
+        do {
+            try backend.setTokenData(tokenData, for: tokenKey)
+        } catch {
+            NSLog("KeychainStore: error setting token data: \(error)")
+        }
+    }
+}

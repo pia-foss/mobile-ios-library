@@ -85,7 +85,6 @@ class AccountRequestURLProviderTests: XCTestCase {
         
         // WHEN calculating the request URL
         let url = sut.getURL(for: currentEndpoint, path: .vpnToken, query: nil)
-        print(">>> URL: \(url)")
         
         // THEN the url is not nil
         XCTAssertNotNil(url)

@@ -2,18 +2,18 @@
 import Foundation
 
 public struct VpnToken: Codable {
-    let username: String
-    let password: String
-    let expiration: Date
+    let vpnUsernameToken: String
+    let vpnPasswordToken: String
+    let expiresAt: Date
     
     enum CodingKeys: String, CodingKey {
-        case username = "vpn_secret1"
-        case password = "vpn_secret2"
-        case expiration = "expires_at"
+        case vpnUsernameToken = "vpn_secret1"
+        case vpnPasswordToken = "vpn_secret2"
+        case expiresAt = "expires_at"
     }
     
     var isExpired: Bool {
-        expiration.timeIntervalSinceNow.sign == .minus
+        expiresAt.timeIntervalSinceNow.sign == .minus
     }
 }
 

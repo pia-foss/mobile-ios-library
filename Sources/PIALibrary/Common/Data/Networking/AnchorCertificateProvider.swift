@@ -1,13 +1,13 @@
 
 import Foundation
 
-class AccountAnchorCertificateProvider {
+class AnchorCertificateProvider {
     static func getAnchorCertificate() -> SecCertificate? {
         
 #if SWIFT_PACKAGE
             let bundle = Bundle.module
 #else
-            let bundle = Bundle(for: AccountNetworkRequestsUseCase.self)
+            let bundle = Bundle(for: NetworkRequestClient.self)
 #endif
         
        guard let certURL = bundle.url(forResource: "PIA", withExtension: "der"),

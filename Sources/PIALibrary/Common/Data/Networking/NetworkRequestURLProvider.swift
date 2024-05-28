@@ -1,17 +1,17 @@
 
 import Foundation
 
-protocol AccountRequestURLProviderType {
-    func getURL(for endpoint: PinningEndpoint, path: AccountAPI.Path, query: [String: String]?) -> URL?
+protocol NetworkRequestURLProviderType {
+    func getURL(for endpoint: PinningEndpoint, path: RequestAPI.Path, query: [String: String]?) -> URL?
 }
 
-class AccountRequestURLProvider: AccountRequestURLProviderType {
+class NetworkRequestURLProvider: NetworkRequestURLProviderType {
    
     private let stagingSubdomain = "staging"
     private let domainRegex = "^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\\.)+[A-Za-z]{2,6}$"
     private let ipv4Regex = "^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\\.(?!$)|$)){4}$"
     
-    func getURL(for endpoint: PinningEndpoint, path: AccountAPI.Path, query: [String: String]?) -> URL? {
+    func getURL(for endpoint: PinningEndpoint, path: RequestAPI.Path, query: [String: String]?) -> URL? {
         
         let scheme = "https"
         
@@ -24,7 +24,7 @@ class AccountRequestURLProvider: AccountRequestURLProviderType {
         if isStagingEndpoint || isIPEndpoint {
             urlString = "\(scheme)://\(endpoint.host)\(path.rawValue)"
         } else {
-            let subdomain = AccountAPI.subdomain(for: path)
+            let subdomain = RequestAPI.subdomain(for: path)
             urlString = "\(scheme)://\(subdomain).\(endpoint.host)\(path.rawValue)"
         }
 

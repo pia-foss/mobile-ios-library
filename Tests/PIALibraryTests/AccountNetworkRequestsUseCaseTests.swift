@@ -10,7 +10,7 @@ class AccountNetworkRequestsUseCaseTests: XCTestCase {
         var connectionMock1 = NWHttpConnectionMock()
         var connectionMock2 = NWHttpConnectionMock()
         
-        static let successResponse = NWHttpConnectionDataResponseMock(statusCode: 200, dataFormat: .jsonData, data: nil)
+        static let successResponse = NetworkRequestResponseMock(statusCode: 200, dataFormat: .jsonData, data: nil)
         
         func stubConnectionResponse(_ response: NWHttpConnectionDataResponseType, on connection: NWHttpConnectionMock) {
             connection.connectionResponse = response
@@ -22,7 +22,7 @@ class AccountNetworkRequestsUseCaseTests: XCTestCase {
     }
     
     var fixture: Fixture!
-    var sut: AccountNetworkRequestsUseCase!
+    var sut: NetworkRequestClient!
     
     override func setUp() {
         fixture = Fixture()

@@ -13,11 +13,11 @@ class AccountRequestURLProviderTests: XCTestCase {
     }
     
     var fixture: Fixture!
-    var sut: AccountRequestURLProvider!
+    var sut: NetworkRequestURLProvider!
     
     override func setUp() {
         fixture = Fixture()
-        sut = AccountRequestURLProvider()
+        sut = NetworkRequestURLProvider()
     }
     
     override func tearDown() {

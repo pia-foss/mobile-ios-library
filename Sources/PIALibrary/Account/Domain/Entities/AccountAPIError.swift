@@ -10,6 +10,8 @@ public enum AccountAPIError: Error, Equatable {
     case noErrorAndNoResponse
     case unableToDecodeVpnToken
     case unableToSaveVpnToken
+    case unableToDecodeAPIToken
+    case unableToSaveAPIToken
     case connectionCompletedWithNoResponse
     case unknown
 }

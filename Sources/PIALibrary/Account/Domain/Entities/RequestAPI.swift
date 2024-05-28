@@ -2,7 +2,8 @@
 
 import Foundation
 
-enum AccountAPI {
+
+enum RequestAPI {
     enum Path: String {
         case login = "/api/client/v5/api_token"
         case vpnToken = "/api/client/v5/vpn_token" //refreshes the vpn token
@@ -26,7 +27,7 @@ enum AccountAPI {
         case iosFeatureFlag = "/clients/desktop/ios-flags"
     }
     
-    static func subdomain(for path: AccountAPI.Path) -> String {
+    static func subdomain(for path: RequestAPI.Path) -> String {
         switch path {
         case .login:
             return "apiv5"

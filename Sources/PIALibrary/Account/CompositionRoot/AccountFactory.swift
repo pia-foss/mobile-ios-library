@@ -8,7 +8,7 @@ public class AccountFactory {
     }
     
     public static func makeVpnTokenUseCase() -> VpnTokenUseCaseType {
-        VpnTokenUseCase(keychainStore: makeSecureStore(), tokenSerializer: makeAuthTokenSerializer(), endpointManager: makeEndpointManager(), accountRequestURLProvider: makeAccountURLRequestProvider(), accountRequestUseCase: makeAccountNetworkRequestUseCase(), apiTokenUseCase: makeAPITokenUseCase())
+        VpnTokenUseCase(keychainStore: makeSecureStore(), tokenSerializer: makeAuthTokenSerializer(), endpointManager: makeEndpointManager(), accountConnectionRequestProvider: makeAccountConnectionRequestProvider(), accountRequestUseCase: makeAccountNetworkRequestUseCase())
     }
     
     static func makeSecureStore() -> SecureStore {
@@ -27,7 +27,12 @@ public class AccountFactory {
         AccountRequestURLProvider()
     }
     
+    static func makeAccountConnectionRequestProvider() -> AccountConnectionRequestProviderType {
+        AccountConnectionRequestProvider(apiTokenUseCase: makeAPITokenUseCase(), accountRequestURLProvider: makeAccountURLRequestProvider())
+    }
+    
     static func makeAccountNetworkRequestUseCase() -> AccountNetworkRequestsUseCaseType {
         AccountNetworkRequestsUseCase()
     }
+    
 }

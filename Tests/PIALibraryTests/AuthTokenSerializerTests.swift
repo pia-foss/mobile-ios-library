@@ -11,9 +11,9 @@ class AuthTokenSerializerTests: XCTestCase {
         let validVpnTokenJsonString = "{\"vpn_secret1\":\"vpn_token_username\",\"vpn_secret2\":\"vpn_token_password\",\"expires_at\":\"2034-08-08T00:00:00Z\"}"
         let expiredVpnTokenJsonString = "{\"vpn_secret1\":\"vpn_token_username\",\"vpn_secret2\":\"vpn_token_password\",\"expires_at\":\"2023-06-08T00:00:00Z\"}"
         
-        let apiToken = APIToken(token: "other_api_token", expiration: Date.init(timeIntervalSinceNow: 1000))
+        let apiToken = APIToken(apiToken: "other_api_token", expiresAt: Date.init(timeIntervalSinceNow: 1000))
         
-        let vpnToken = VpnToken(username: "other_vpn_token_username", password: "other_vpn_token_password", expiration: Date.init(timeIntervalSinceNow: 1000))
+        let vpnToken = VpnToken(vpnUsernameToken: "other_vpn_token_username", vpnPasswordToken: "other_vpn_token_password", expiresAt: Date.init(timeIntervalSinceNow: 1000))
         
     }
 
@@ -39,7 +39,7 @@ class AuthTokenSerializerTests: XCTestCase {
         let decodedAPIToken = sut.decodeAPIToken(from: apiTokenData)!
 
         // THEN the decoded api value is 'some_api_token'
-        XCTAssertEqual(decodedAPIToken.token, "some_api_token")
+        XCTAssertEqual(decodedAPIToken.apiToken, "some_api_token")
         // AND the decoded API token is NOT expired
         XCTAssertFalse(decodedAPIToken.isExpired)
     }
@@ -53,7 +53,7 @@ class AuthTokenSerializerTests: XCTestCase {
 
         
         // THEN the decoded api value is 'some_api_token'
-        XCTAssertEqual(decodedAPIToken.token, "some_api_token")
+        XCTAssertEqual(decodedAPIToken.apiToken, "some_api_token")
         // AND the decoded API token is expired
         XCTAssertTrue(decodedAPIToken.isExpired)
     
@@ -67,8 +67,8 @@ class AuthTokenSerializerTests: XCTestCase {
         let decodedVpnToken = sut.decodeVpnToken(from: tokenData)!
 
         // THEN the decoded values are
-        XCTAssertEqual(decodedVpnToken.username, "vpn_token_username")
-        XCTAssertEqual(decodedVpnToken.password, "vpn_token_password")
+        XCTAssertEqual(decodedVpnToken.vpnUsernameToken, "vpn_token_username")
+        XCTAssertEqual(decodedVpnToken.vpnPasswordToken, "vpn_token_password")
         // AND the decoded token is NOT expired
         XCTAssertFalse(decodedVpnToken.isExpired)
     }
@@ -81,8 +81,8 @@ class AuthTokenSerializerTests: XCTestCase {
         let decodedVpnToken = sut.decodeVpnToken(from: tokenData)!
 
         // THEN the decoded values are
-        XCTAssertEqual(decodedVpnToken.username, "vpn_token_username")
-        XCTAssertEqual(decodedVpnToken.password, "vpn_token_password")
+        XCTAssertEqual(decodedVpnToken.vpnUsernameToken, "vpn_token_username")
+        XCTAssertEqual(decodedVpnToken.vpnPasswordToken, "vpn_token_password")
         // AND the decoded token is expired
         XCTAssertTrue(decodedVpnToken.isExpired)
     
@@ -92,7 +92,7 @@ class AuthTokenSerializerTests: XCTestCase {
         // WHEN encoding a valid Vpn Token into a JSON string
         let encodedTokenString = sut.encode(vpnToken: fixture.vpnToken)
         
-        let expirationDate = fixture.vpnToken.expiration
+        let expirationDate = fixture.vpnToken.expiresAt
         let dateFormatter = ISO8601DateFormatter()
         let expirationDateString = dateFormatter.string(from: expirationDate)
         
@@ -111,7 +111,7 @@ class AuthTokenSerializerTests: XCTestCase {
         // WHEN encoding a valid Api Token into a JSON string
         let encodedTokenString = sut.encode(apiToken: fixture.apiToken)
         
-        let expirationDate = fixture.apiToken.expiration
+        let expirationDate = fixture.apiToken.expiresAt
         let dateFormatter = ISO8601DateFormatter()
         let expirationDateString = dateFormatter.string(from: expirationDate)
         

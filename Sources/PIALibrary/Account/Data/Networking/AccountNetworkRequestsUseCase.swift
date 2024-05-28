@@ -2,8 +2,17 @@
 import Foundation
 import NWHttpConnection
 
+
+protocol AccountNetworkRequestResponseType {
+    var statusCode: Int? { get }
+    var data: Data? { get }
+}
+
+extension NWHttpConnectionDataResponse: AccountNetworkRequestResponseType {
+}
+
 protocol AccountNetworkRequestsUseCaseType {
-    typealias Completion = ((AccountAPIError?, NWHttpConnectionDataResponse?) -> Void)
+    typealias Completion = ((AccountAPIError?, AccountNetworkRequestResponseType?) -> Void)
     func callAsFunction(connections: [NWHttpConnectionType], completion: @escaping Completion)
 }
 
@@ -56,7 +65,7 @@ private extension AccountNetworkRequestsUseCase {
                 if let error {
                     connectionHandled = true
                     completion(AccountAPIError.connectionError(message: error.localizedDescription), nil)
-                } else if let dataResponse {
+                } else if let dataResponse = dataResponse as? AccountNetworkRequestResponseType {
                     connectionHandled = true
                     completion(nil, dataResponse)
                 } else {

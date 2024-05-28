@@ -1,6 +1,5 @@
 
 import Foundation
-import NWHttpConnection
 
 public protocol VpnTokenUseCaseType {
     typealias Completion = ((AccountAPIError?) -> Void)
@@ -16,18 +15,17 @@ class VpnTokenUseCase: VpnTokenUseCaseType {
     let keychainStore: SecureStore
     let tokenSerializer: AuthTokenSerializerType
     let endpointManager: EndpointManagerType
-    let accountRequestURLProvider: AccountRequestURLProviderType
+    let accountConnectionRequestProvider: AccountConnectionRequestProviderType
     let accountRequestUseCase: AccountNetworkRequestsUseCaseType
-    let apiTokenUseCase: APITokenUseCaseType
     
-    init(keychainStore: SecureStore, tokenSerializer: AuthTokenSerializerType, endpointManager: EndpointManagerType, accountRequestURLProvider: AccountRequestURLProviderType,
-         accountRequestUseCase: AccountNetworkRequestsUseCaseType, apiTokenUseCase: APITokenUseCaseType) {
+    init(keychainStore: SecureStore, tokenSerializer: AuthTokenSerializerType, endpointManager: EndpointManagerType, accountConnectionRequestProvider: AccountConnectionRequestProviderType,
+         accountRequestUseCase: AccountNetworkRequestsUseCaseType) {
         self.keychainStore = keychainStore
         self.tokenSerializer = tokenSerializer
         self.endpointManager = endpointManager
-        self.accountRequestURLProvider = accountRequestURLProvider
+        self.accountConnectionRequestProvider = accountConnectionRequestProvider
         self.accountRequestUseCase = accountRequestUseCase
-        self.apiTokenUseCase = apiTokenUseCase
+        
     }
     
     public func getVpnToken() -> VpnToken? {
@@ -38,8 +36,9 @@ class VpnTokenUseCase: VpnTokenUseCaseType {
     
     public func refreshVpnToken(completion: @escaping VpnTokenUseCaseType.Completion) {
         
-        var endpoints = endpointManager.availableEndpoints()
-        let connections = endpoints.compactMap { self.makeRefreshTokenNHttpConnection(for: $0)}
+        let endpoints = endpointManager.availableEndpoints()
+        let connections = endpoints.compactMap { endpoint in self.accountConnectionRequestProvider.getAccountConnection(for: endpoint, path: AccountAPI.Path.vpnToken, method: .post, includeAuthHeader: true, body: nil, timeout: 20, queue: connectionQueue)
+        }
         
         // Execute the connections in order to refresh the vpn token
         accountRequestUseCase(connections: connections) { [weak self] error, dataResponse in
@@ -63,9 +62,8 @@ class VpnTokenUseCase: VpnTokenUseCaseType {
 }
 
 
-
 private extension VpnTokenUseCase {
-    private func handleDataResponse(_ dataResponse: NWHttpConnectionDataResponse, completion: @escaping VpnTokenUseCaseType.Completion) {
+    private func handleDataResponse(_ dataResponse: AccountNetworkRequestResponseType, completion: @escaping VpnTokenUseCaseType.Completion) {
         
         guard let dataResponseContent = dataResponse.data else {
             completion(AccountAPIError.noDataContent)
@@ -82,29 +80,5 @@ private extension VpnTokenUseCase {
         completion(nil)
     }
     
-    func makeCertificateValidation(for endpoint: PinningEndpoint, anchorCertificate: SecCertificate) -> CertificateValidation {
-        if endpoint.useCertificatePinning {
-            return CertificateValidation.anchor(certificate: anchorCertificate, commonName: endpoint.commonName)
-        } else {
-            return CertificateValidation.trustedCA
-        }
-    }
-    
-    func makeRefreshTokenNHttpConnection(for endpoint: PinningEndpoint) -> NWHttpConnectionType? {
-        guard let requestURL = accountRequestURLProvider.getURL(for: endpoint, path: .vpnToken, query: nil) else {
-            return nil
-        }
-        guard let apiToken = apiTokenUseCase.getAPIToken() else {
-            return nil
-        }
-        
-        guard let anchorCertificate = AccountAnchorCertificateProvider.getAnchorCertificate() else {
-            return nil
-        }
-        
-        let connectionConfiguration = NWConnectionConfiguration(url: requestURL, method: NWConnectionHTTPMethod.post, headers: ["Authorization": "Token \(apiToken.token)"] ,body: nil, certificateValidation: makeCertificateValidation(for: endpoint, anchorCertificate: anchorCertificate), dataResponseType: .jsonData, timeout: 20, queue: connectionQueue)
-        
-        return NWHttpConnectionFactory.makeNWHttpConnection(with: connectionConfiguration)
-        
-    }
+
 }

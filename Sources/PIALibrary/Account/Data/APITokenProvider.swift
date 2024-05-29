@@ -1,35 +1,26 @@
 
 import Foundation
 
-public protocol APITokenUseCaseType {
-    typealias Completion = (() -> Void)
+protocol APITokenProviderType {
     func getAPIToken() -> APIToken?
-    func refreshAPIToken(completion: APITokenUseCaseType.Completion)
+    func save(apiToken: APIToken)
+    func saveAPIToken(from data: Data) throws
 }
 
-class APITokenUseCase: APITokenUseCaseType {
-    
-    private let apiTokenKey = "API_TOKEN_KEY"
-    
-    let keychainStore: SecureStore
+class APITokenProvider: APITokenProviderType {
+    private let keychainStore: SecureStore
     let tokenSerializer: AuthTokenSerializerType
+    private let apiTokenKey = "API_TOKEN_KEY"
     
     init(keychainStore: SecureStore, tokenSerializer: AuthTokenSerializerType) {
         self.keychainStore = keychainStore
         self.tokenSerializer = tokenSerializer
     }
     
-    
-    public func getAPIToken() -> APIToken? {
+    func getAPIToken() -> APIToken? {
         guard let tokenDataString = keychainStore.token(for: apiTokenKey),
               let tokenData = tokenDataString.data(using: .utf8) else { return nil }
         return tokenSerializer.decodeAPIToken(from: tokenData)
-    }
-    
-    public func refreshAPIToken(completion: () -> Void) {
-        // TODO: Implement me
-        // 1. Call API to refresh API Token
-        // 2. Save refreshed token in the keychain
     }
     
     func save(apiToken: APIToken) {
@@ -37,5 +28,12 @@ class APITokenUseCase: APITokenUseCaseType {
         keychainStore.setPassword(encodedToken, for: apiTokenKey)
     }
     
+    func saveAPIToken(from data: Data) throws {
+        guard let apiToken = tokenSerializer.decodeAPIToken(from: data) else {
+            throw AccountAPIError.unableToDecodeAPIToken
+        }
+        
+        save(apiToken: apiToken)
+    }
     
 }

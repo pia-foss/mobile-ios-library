@@ -3,16 +3,16 @@ import Foundation
 
 
 public struct APIToken: Codable {
-    let token: String
-    let expiration: Date
+    let apiToken: String
+    let expiresAt: Date
     
     enum CodingKeys: String, CodingKey {
-        case token = "api_token"
-        case expiration = "expires_at"
+        case apiToken = "api_token"
+        case expiresAt = "expires_at"
     }
     
     var isExpired: Bool {
-        expiration.timeIntervalSinceNow.sign == .minus
+        expiresAt.timeIntervalSinceNow.sign == .minus
     }
 }
 

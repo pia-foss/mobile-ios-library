@@ -561,6 +561,7 @@ extension Keychain {
         guard let favorites = try? decoder.decode([String].self, from: data) else {
             throw KeychainError.notFound
         }
+        
         return favorites
     }
 

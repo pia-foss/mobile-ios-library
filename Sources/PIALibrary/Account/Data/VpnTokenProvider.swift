@@ -1,34 +1,27 @@
 
 import Foundation
 
-public protocol VpnTokenUseCaseType {
-    typealias Completion = (() -> Void)
+protocol VpnTokenProviderType {
     func getVpnToken() -> VpnToken?
-    func refreshVpnToken(completion: VpnTokenUseCaseType.Completion)
+    func save(vpnToken: VpnToken)
+    func saveVpnToken(from data: Data) throws
 }
 
-class VpnTokenUseCase: VpnTokenUseCaseType {
-    
-    private let vpnTokenKey = "VPN_TOKEN_KEY"
-    
-    let keychainStore: SecureStore
+
+class VpnTokenProvider: VpnTokenProviderType {
+    private let keychainStore: SecureStore
     let tokenSerializer: AuthTokenSerializerType
+    private let vpnTokenKey = "VPN_TOKEN_KEY"
     
     init(keychainStore: SecureStore, tokenSerializer: AuthTokenSerializerType) {
         self.keychainStore = keychainStore
         self.tokenSerializer = tokenSerializer
     }
     
-    public func getVpnToken() -> VpnToken? {
+    func getVpnToken() -> VpnToken? {
         guard let tokenDataString = keychainStore.token(for: vpnTokenKey),
               let tokenData = tokenDataString.data(using: .utf8) else { return nil }
         return tokenSerializer.decodeVpnToken(from: tokenData)
-    }
-    
-    public func refreshVpnToken(completion: () -> Void) {
-        // TODO: Implement me
-        // 1. Call API to refresh Vpn Token
-        // 2. Save refreshed token in the keychain
     }
     
     func save(vpnToken: VpnToken) {
@@ -36,5 +29,12 @@ class VpnTokenUseCase: VpnTokenUseCaseType {
         keychainStore.setPassword(encodedToken, for: vpnTokenKey)
     }
     
-    
+    func saveVpnToken(from data: Data) throws {
+        guard let vpnToken = tokenSerializer.decodeVpnToken(from: data) else {
+            throw AccountAPIError.unableToDecodeVpnToken
+        }
+        
+        save(vpnToken: vpnToken)
+    }
+        
 }

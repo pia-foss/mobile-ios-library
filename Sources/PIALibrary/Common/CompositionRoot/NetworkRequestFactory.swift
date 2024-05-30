@@ -11,7 +11,7 @@ public class NetworkRequestFactory {
 
 private extension NetworkRequestFactory {
     static var networkRequestClientShared: NetworkRequestClientType = {
-        NetworkRequestClient(networkConnectionRequestProvider: makeNetworkConnectionRequestProvider(), endpointManager: makeEndpointManager())
+        NetworkRequestClient(networkConnectionRequestProvider: makeNetworkConnectionRequestProvider(), endpointManager: makeEndpointManager(), refreshAuthTokensChecker: AccountFactory.makeRefreshAuthTokensChecker())
     }()
     
     static func makeEndpointManager() -> EndpointManagerType {

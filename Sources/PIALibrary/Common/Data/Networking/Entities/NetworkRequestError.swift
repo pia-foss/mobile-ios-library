@@ -1,7 +1,7 @@
 
 import Foundation
 
-public enum AccountAPIError: Error, Equatable {
+public enum NetworkRequestError: Error, Equatable {
     case apiTokenNotFound
     case anchorCertificateNotFound
     case connectionError(message: String?)

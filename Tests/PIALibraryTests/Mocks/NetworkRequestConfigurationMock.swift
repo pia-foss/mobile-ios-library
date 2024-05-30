@@ -6,6 +6,10 @@ import NWHttpConnection
 
 struct NetworkRequestConfigurationMock: NetworkRequestConfigurationType {
     
+    var networkRequestModule: NetworkRequestModule = .account
+    var refreshAuthTokensIfNeeded: Bool = false
+    
+    
     var path: RequestAPI.Path = .vpnToken
     var httpMethod: NWHttpConnection.NWConnectionHTTPMethod = .get
     var inlcudeAuthHeaders: Bool = true

@@ -12,13 +12,16 @@ public class AccountFactory {
         
     }
     
-    
     static func makeAPITokenProvider() -> APITokenProviderType {
         APITokenProvider(keychainStore: makeSecureStore(), tokenSerializer: makeAuthTokenSerializer())
     }
     
     static func makeVpnTokenProvider() -> VpnTokenProviderType {
         VpnTokenProvider(keychainStore: makeSecureStore(), tokenSerializer: makeAuthTokenSerializer())
+    }
+    
+    static func makeRefreshAuthTokensChecker() -> RefreshAuthTokensCheckerType {
+        RefreshAuthTokensChecker(apiTokenProvider: makeAPITokenProvider(), vpnTokenProvier: makeVpnTokenProvider(), refreshAPITokenUseCase: makeRefreshAPITokenUseCase(), refreshVpnTokenUseCase: makeRefreshVpnTokenUseCase())
     }
 }
 

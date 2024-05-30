@@ -31,7 +31,7 @@ class VpnTokenProvider: VpnTokenProviderType {
     
     func saveVpnToken(from data: Data) throws {
         guard let vpnToken = tokenSerializer.decodeVpnToken(from: data) else {
-            throw AccountAPIError.unableToDecodeVpnToken
+            throw NetworkRequestError.unableToDecodeVpnToken
         }
         
         save(vpnToken: vpnToken)

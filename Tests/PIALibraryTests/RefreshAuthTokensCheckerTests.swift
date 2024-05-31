@@ -11,6 +11,7 @@ class RefreshAuthTokensCheckerTests: XCTestCase {
         
         let expirationDateIn10Days = Calendar.current.date(byAdding: .day, value: 10, to: Date())!
         let expirationDateIn31Days = Calendar.current.date(byAdding: .day, value: 31, to: Date())!
+        let expired1DayAgo = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
         
         func stubAPIToken(with expirationDate: Date) {
             let apiToken = APIToken(apiToken: "some_api_token", expiresAt: expirationDate)
@@ -178,6 +179,58 @@ class RefreshAuthTokensCheckerTests: XCTestCase {
         
         // THEN Only the Vpn token is refreshed
         XCTAssertEqual(fixture.refreshAPITokenUseCaseMock.callAsFunctionCalledAttempt, 0)
+        XCTAssertEqual(fixture.refreshVpnTokenUseCaseMock.callAsFunctionCalledAttempt, 1)
+        
+        // AND no error is returned
+        XCTAssertNil(capturedError)
+        
+        wait(for: [expectation], timeout: 3)
+    }
+    
+    func testRefreshTokens_WhenBothTokensHaveExpired() {
+        // GIVEN that both the API token and Vpn token have expired
+        fixture.stubAPIToken(with: fixture.expired1DayAgo)
+        fixture.stubVpnToken(with: fixture.expired1DayAgo)
+        
+        instantiateSut()
+        
+        let expectation = expectation(description: "Refresh call is finished")
+        var capturedError: NetworkRequestError? = nil
+        
+        // WHEN calling refresh if needed
+        sut.refreshIfNeeded { error in
+            capturedError = error
+            expectation.fulfill()
+        }
+        
+        // THEN both tokens are refreshed
+        XCTAssertEqual(fixture.refreshAPITokenUseCaseMock.callAsFunctionCalledAttempt, 1)
+        XCTAssertEqual(fixture.refreshVpnTokenUseCaseMock.callAsFunctionCalledAttempt, 1)
+        
+        // AND no error is returned
+        XCTAssertNil(capturedError)
+        
+        wait(for: [expectation], timeout: 3)
+    }
+    
+    func testRefreshTokens_WhenNoneOfTheTokensAreFound() {
+        // GIVEN that there is no API token and Vpn token saved
+        fixture.apiTokenProviderMock.getAPITokenResult = nil
+        fixture.vpnTokenProviderMock.getVpnTokenResult = nil
+        
+        instantiateSut()
+        
+        let expectation = expectation(description: "Refresh call is finished")
+        var capturedError: NetworkRequestError? = nil
+        
+        // WHEN calling refresh if needed
+        sut.refreshIfNeeded { error in
+            capturedError = error
+            expectation.fulfill()
+        }
+        
+        // THEN both tokens are refreshed
+        XCTAssertEqual(fixture.refreshAPITokenUseCaseMock.callAsFunctionCalledAttempt, 1)
         XCTAssertEqual(fixture.refreshVpnTokenUseCaseMock.callAsFunctionCalledAttempt, 1)
         
         // AND no error is returned

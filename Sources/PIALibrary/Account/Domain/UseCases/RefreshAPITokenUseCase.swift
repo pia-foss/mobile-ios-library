@@ -3,7 +3,7 @@ import Foundation
 import NWHttpConnection
 
 public protocol RefreshAPITokenUseCaseType {
-    typealias Completion = ((AccountAPIError?) -> Void)
+    typealias Completion = ((NetworkRequestError?) -> Void)
     func callAsFunction(completion: @escaping RefreshAPITokenUseCaseType.Completion)
 }
 
@@ -29,7 +29,7 @@ class RefreshAPITokenUseCase: RefreshAPITokenUseCaseType {
             } else if let dataResponse {
                 self.handleDataResponse(dataResponse, completion: completion)
             } else {
-                completion(AccountAPIError.allConnectionAttemptsFailed)
+                completion(NetworkRequestError.allConnectionAttemptsFailed)
             }
         }
         
@@ -43,7 +43,7 @@ private extension RefreshAPITokenUseCase {
     private func handleDataResponse(_ dataResponse: NetworkRequestResponseType, completion: @escaping RefreshVpnTokenUseCaseType.Completion) {
         
         guard let dataResponseContent = dataResponse.data else {
-            completion(AccountAPIError.noDataContent)
+            completion(NetworkRequestError.noDataContent)
             return
         }
         
@@ -51,7 +51,7 @@ private extension RefreshAPITokenUseCase {
             try apiTokenProvider.saveAPIToken(from: dataResponseContent)
             completion(nil)
         } catch {
-            completion(AccountAPIError.unableToSaveAPIToken)
+            completion(NetworkRequestError.unableToSaveAPIToken)
         }
         
     }

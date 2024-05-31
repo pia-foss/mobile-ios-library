@@ -30,7 +30,7 @@ class APITokenProvider: APITokenProviderType {
     
     func saveAPIToken(from data: Data) throws {
         guard let apiToken = tokenSerializer.decodeAPIToken(from: data) else {
-            throw AccountAPIError.unableToDecodeAPIToken
+            throw NetworkRequestError.unableToDecodeAPIToken
         }
         
         save(apiToken: apiToken)

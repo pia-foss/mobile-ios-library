@@ -215,11 +215,6 @@ class PIAWebServices: WebServices, ConfigurationAccess {
     }
 
     func info(_ callback: ((AccountInfo?, Error?) -> Void)?) {
-        NSLog(">>> >>> Will refresh token..")
-        let uc = AccountFactory.makeRefreshVpnTokenUseCase()
-        uc.callAsFunction(with: NetworkRequestFactory.maketNetworkRequestClient()) { error in
-            NSLog(">>> >>> Refresh token error: \(error)")
-        }
         
         self.accountAPI.accountDetails() { [weak self] (response, errors) in
             if !errors.isEmpty {

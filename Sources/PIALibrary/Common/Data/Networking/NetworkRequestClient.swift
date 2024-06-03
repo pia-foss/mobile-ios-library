@@ -47,7 +47,7 @@ private extension NetworkRequestClient {
     
     func startRequest(with configuration: NetworkRequestConfigurationType, completion: @escaping Completion) {
         let endpoints = getEndpoints(for: configuration.networkRequestModule)
-        
+
         let connections = endpoints.compactMap { endpoint in
             self.networkConnectionRequestProvider.makeNetworkRequestConnection(for: endpoint, with: configuration)
         }
@@ -73,6 +73,7 @@ private extension NetworkRequestClient {
         }
         
         execute(connection: nextConnection) { error, responseData in
+
             if error != nil {
                 tryNextConnectionOrFail()
             } else if let responseData {

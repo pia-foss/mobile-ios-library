@@ -30,17 +30,16 @@ class NetworkConnectionRequestProvider: NetworkConnectionRequestProviderType {
             return nil
         }
         
-        var authHeaders: [String: String]?
+        var headers: [String: String] = ["Content-Type": configuration.contentType.rawValue]
+        
         if configuration.inlcudeAuthHeaders {
             guard let apiToken = apiTokenProvider.getAPIToken() else {
                 return nil
             }
-            authHeaders = [
-                "Authorization": "Token \(apiToken.apiToken)"
-            ]
+            headers["Authorization"] = "Token \(apiToken.apiToken)"
         }
         
-        let connectionConfiguration = NWConnectionConfiguration(url: requestURL, method: configuration.httpMethod, headers: authHeaders, body: configuration.body, certificateValidation: makeCertificateValidation(for: endpoint, anchorCertificate: anchorCertificate), dataResponseType: configuration.responseDataType, timeout: configuration.timeout, queue: configuration.requestQueue)
+        let connectionConfiguration = NWConnectionConfiguration(url: requestURL, method: configuration.httpMethod, headers: headers, body: configuration.body, certificateValidation: makeCertificateValidation(for: endpoint, anchorCertificate: anchorCertificate), dataResponseType: configuration.responseDataType, timeout: configuration.timeout, queue: configuration.requestQueue)
         
         return NWHttpConnectionFactory.makeNWHttpConnection(with: connectionConfiguration)
         

@@ -13,6 +13,7 @@ struct NetworkRequestConfigurationMock: NetworkRequestConfigurationType {
     var path: RequestAPI.Path = .vpnToken
     var httpMethod: NWHttpConnection.NWConnectionHTTPMethod = .get
     var inlcudeAuthHeaders: Bool = true
+    var contentType: NetworkRequestContentType = .json
     var urlQueryParameters: [String : String]? = nil
     var responseDataType: NWHttpConnection.NWDataResponseType = .jsonData
     var body: Data? = nil

@@ -6,6 +6,7 @@ struct RefreshApiTokenRequestConfiguration: NetworkRequestConfigurationType {
     let networkRequestModule: NetworkRequestModule = .account
     let path: RequestAPI.Path = .refreshApiToken
     let httpMethod: NWHttpConnection.NWConnectionHTTPMethod = .post
+    let contentType: NetworkRequestContentType = .json
     let inlcudeAuthHeaders: Bool = true
     
     // Refreshing the auth tokens is not needed before executing the refresh API token request

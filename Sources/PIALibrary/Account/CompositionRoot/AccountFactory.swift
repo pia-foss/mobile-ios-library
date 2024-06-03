@@ -2,6 +2,9 @@
 import Foundation
 
 public class AccountFactory {
+    public static func makeLoginUseCase() -> LoginUseCaseType {
+        LoginUseCase(networkClient: NetworkRequestFactory.maketNetworkRequestClient(), apiTokenProvider: makeAPITokenProvider(), refreshVpnTokenUseCase: makeRefreshVpnTokenUseCase())
+    }
     
     static func makeRefreshAPITokenUseCase() -> RefreshAPITokenUseCaseType {
         RefreshAPITokenUseCase(apiTokenProvider: makeAPITokenProvider())

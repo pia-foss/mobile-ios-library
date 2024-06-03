@@ -19,9 +19,8 @@ class RefreshVpnTokenUseCase: RefreshVpnTokenUseCaseType {
         let configuration = RefreshVpnTokenRequestConfiguration()
         
         networkClient.executeRequest(with: configuration) { [weak self] error, dataResponse in
-            NSLog(">>> Refresh vpn token use case, request with config: \(configuration)")
             guard let self else { return }
-            NSLog(">>> Refresh vpn token use case, data response: \(dataResponse) -- error: \(error)")
+            
             if let error {
                 completion(error)
             } else if let dataResponse {

@@ -24,7 +24,7 @@ class NetworkRequestClient: NetworkRequestClientType {
 
         if configuration.refreshAuthTokensIfNeeded {
             // 1. Refresh the auth tokens before executing the request
-            refreshAuthTokensChecker.refreshIfNeeded { error in
+            refreshAuthTokensChecker.refreshIfNeeded(with: self) { error in
                 if let error {
                     // The request fails if refreshing the tokens have failed
                     completion(error, nil)

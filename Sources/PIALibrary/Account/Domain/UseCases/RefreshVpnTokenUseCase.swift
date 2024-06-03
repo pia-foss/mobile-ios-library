@@ -1,30 +1,27 @@
 
 import Foundation
 
-public protocol RefreshVpnTokenUseCaseType {
+protocol RefreshVpnTokenUseCaseType {
     typealias Completion = ((NetworkRequestError?) -> Void)
-    func callAsFunction(completion: @escaping RefreshVpnTokenUseCaseType.Completion)
+    func callAsFunction(with networkClient: NetworkRequestClientType, completion: @escaping RefreshVpnTokenUseCaseType.Completion)
 }
 
 class RefreshVpnTokenUseCase: RefreshVpnTokenUseCaseType {
     
     private let vpnTokenProvider: VpnTokenProviderType
-    private let networkClient: NetworkRequestClientType
     
-    init(vpnTokenProvider: VpnTokenProviderType,
-         networkRequestClient: NetworkRequestClientType) {
+    init(vpnTokenProvider: VpnTokenProviderType) {
         self.vpnTokenProvider = vpnTokenProvider
-        self.networkClient = networkRequestClient
     }
     
-    func callAsFunction(completion: @escaping RefreshVpnTokenUseCaseType.Completion) {
+    func callAsFunction(with networkClient: NetworkRequestClientType, completion: @escaping RefreshVpnTokenUseCaseType.Completion) {
         
         let configuration = RefreshVpnTokenRequestConfiguration()
         
         networkClient.executeRequest(with: configuration) { [weak self] error, dataResponse in
-            
+            NSLog(">>> Refresh vpn token use case, request with config: \(configuration)")
             guard let self else { return }
-            
+            NSLog(">>> Refresh vpn token use case, data response: \(dataResponse) -- error: \(error)")
             if let error {
                 completion(error)
             } else if let dataResponse {

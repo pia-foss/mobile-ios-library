@@ -3,12 +3,12 @@ import Foundation
 
 public class AccountFactory {
     
-    public static func makeRefreshAPITokenUseCase() -> RefreshAPITokenUseCaseType {
-        RefreshAPITokenUseCase(apiTokenProvider: makeAPITokenProvider(), networkClient: NetworkRequestFactory.maketNetworkRequestClient())
+    static func makeRefreshAPITokenUseCase() -> RefreshAPITokenUseCaseType {
+        RefreshAPITokenUseCase(apiTokenProvider: makeAPITokenProvider())
     }
     
-    public static func makeRefreshVpnTokenUseCase() -> RefreshVpnTokenUseCaseType {
-        RefreshVpnTokenUseCase(vpnTokenProvider: makeVpnTokenProvider(), networkRequestClient: NetworkRequestFactory.maketNetworkRequestClient())
+    static func makeRefreshVpnTokenUseCase() -> RefreshVpnTokenUseCaseType {
+        RefreshVpnTokenUseCase(vpnTokenProvider: makeVpnTokenProvider())
         
     }
     

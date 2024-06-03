@@ -3,7 +3,7 @@ import Foundation
 
 protocol RefreshAuthTokensCheckerType {
     typealias Completion = ((NetworkRequestError?) -> Void)
-    func refreshIfNeeded(completion: @escaping Completion)
+    func refreshIfNeeded(with networkClient: NetworkRequestClientType, completion: @escaping Completion)
 }
 
 class RefreshAuthTokensChecker: RefreshAuthTokensCheckerType {
@@ -23,15 +23,15 @@ class RefreshAuthTokensChecker: RefreshAuthTokensCheckerType {
         self.refreshVpnTokenUseCase = refreshVpnTokenUseCase
     }
     
-    func refreshIfNeeded(completion: @escaping Completion) {
+    func refreshIfNeeded(with networkClient: NetworkRequestClientType, completion: @escaping Completion) {
         
         switch (shouldRefreshApiToken(), shouldRefreshVpnToken()) {
         case (true, true):
-            refreshBothTokens(with: completion)
+            refreshBothTokens(with: networkClient, and: completion)
         case (true, false):
-            refreshApiToken(with: completion)
+            refreshApiToken(with: networkClient, and: completion)
         case(false, true):
-            refreshVpnToken(with: completion)
+            refreshVpnToken(with: networkClient, and: completion)
         case(false, false):
             completion(nil)
         }
@@ -43,26 +43,26 @@ class RefreshAuthTokensChecker: RefreshAuthTokensCheckerType {
 
 private extension RefreshAuthTokensChecker {
     
-    func refreshBothTokens(with completion: @escaping Completion) {
-        refreshAPITokenUseCase() { refreshApiTokenError in
+    func refreshBothTokens(with networkClient: NetworkRequestClientType, and completion: @escaping Completion) {
+        refreshAPITokenUseCase(with: networkClient) { refreshApiTokenError in
             if let refreshApiTokenError {
                 completion(refreshApiTokenError)
             } else {
-                self.refreshVpnTokenUseCase() { refreshVpnTokenError in
+                self.refreshVpnTokenUseCase(with: networkClient) { refreshVpnTokenError in
                     completion(refreshApiTokenError)
                 }
             }
         }
     }
     
-    func refreshApiToken(with completion: @escaping Completion) {
-        refreshAPITokenUseCase() { error in
+    func refreshApiToken(with networkClient: NetworkRequestClientType, and completion: @escaping Completion) {
+        refreshAPITokenUseCase(with: networkClient) { error in
             completion(error)
         }
     }
     
-    func refreshVpnToken(with completion: @escaping Completion) {
-        refreshVpnTokenUseCase() { error in
+    func refreshVpnToken(with networkClient: NetworkRequestClientType, and completion: @escaping Completion) {
+        refreshVpnTokenUseCase(with: networkClient) { error in
             completion(error)
         }
     }

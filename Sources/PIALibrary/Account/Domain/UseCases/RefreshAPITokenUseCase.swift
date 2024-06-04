@@ -4,18 +4,20 @@ import NWHttpConnection
 
 protocol RefreshAPITokenUseCaseType {
     typealias Completion = ((NetworkRequestError?) -> Void)
-    func callAsFunction(with networkClient: NetworkRequestClientType, completion: @escaping RefreshAPITokenUseCaseType.Completion)
+    func callAsFunction(completion: @escaping RefreshAPITokenUseCaseType.Completion)
 }
 
 class RefreshAPITokenUseCase: RefreshAPITokenUseCaseType {
     
     private let apiTokenProvider: APITokenProviderType
+    private let networkClient: NetworkRequestClientType
     
-    init(apiTokenProvider: APITokenProviderType) {
+    init(apiTokenProvider: APITokenProviderType, networkClient: NetworkRequestClientType) {
         self.apiTokenProvider = apiTokenProvider
+        self.networkClient = networkClient
     }
     
-    func callAsFunction(with networkClient: NetworkRequestClientType, completion: @escaping RefreshAPITokenUseCaseType.Completion) {
+    func callAsFunction(completion: @escaping RefreshAPITokenUseCaseType.Completion) {
         
         let configuration = RefreshApiTokenRequestConfiguration()
         

@@ -61,7 +61,7 @@ private extension LoginUseCase {
             try apiTokenProvider.saveAPIToken(from: dataResponseContent)
 
             // Refresh the Vpn token after successfully login
-           refreshVpnTokenUseCase(with: self.networkClient) { error in
+           refreshVpnTokenUseCase() { error in
                 completion(error)
             }
             

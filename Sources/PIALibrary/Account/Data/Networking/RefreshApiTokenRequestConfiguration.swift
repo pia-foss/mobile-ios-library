@@ -8,10 +8,6 @@ struct RefreshApiTokenRequestConfiguration: NetworkRequestConfigurationType {
     let httpMethod: NWHttpConnection.NWConnectionHTTPMethod = .post
     let contentType: NetworkRequestContentType = .json
     let inlcudeAuthHeaders: Bool = true
-    
-    // Refreshing the auth tokens is not needed before executing the refresh API token request
-    let refreshAuthTokensIfNeeded: Bool = false
-    
     let urlQueryParameters: [String : String]? = nil
     let responseDataType: NWDataResponseType = .jsonData
     let body: Data? = nil

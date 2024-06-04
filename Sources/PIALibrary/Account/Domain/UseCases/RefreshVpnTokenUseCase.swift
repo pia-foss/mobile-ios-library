@@ -3,18 +3,20 @@ import Foundation
 
 protocol RefreshVpnTokenUseCaseType {
     typealias Completion = ((NetworkRequestError?) -> Void)
-    func callAsFunction(with networkClient: NetworkRequestClientType, completion: @escaping RefreshVpnTokenUseCaseType.Completion)
+    func callAsFunction(completion: @escaping RefreshVpnTokenUseCaseType.Completion)
 }
 
 class RefreshVpnTokenUseCase: RefreshVpnTokenUseCaseType {
     
     private let vpnTokenProvider: VpnTokenProviderType
+    private let networkClient: NetworkRequestClientType
     
-    init(vpnTokenProvider: VpnTokenProviderType) {
+    init(vpnTokenProvider: VpnTokenProviderType, networkClient: NetworkRequestClientType) {
         self.vpnTokenProvider = vpnTokenProvider
+        self.networkClient = networkClient
     }
     
-    func callAsFunction(with networkClient: NetworkRequestClientType, completion: @escaping RefreshVpnTokenUseCaseType.Completion) {
+    func callAsFunction(completion: @escaping RefreshVpnTokenUseCaseType.Completion) {
         
         let configuration = RefreshVpnTokenRequestConfiguration()
         

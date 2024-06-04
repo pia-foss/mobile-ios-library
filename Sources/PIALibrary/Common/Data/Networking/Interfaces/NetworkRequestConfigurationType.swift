@@ -19,7 +19,6 @@ protocol NetworkRequestConfigurationType {
     var httpMethod: NWConnectionHTTPMethod { get }
     var inlcudeAuthHeaders: Bool { get }
     var contentType: NetworkRequestContentType { get }
-    var refreshAuthTokensIfNeeded: Bool { get }
     var urlQueryParameters: [String: String]? { get }
     var responseDataType: NWDataResponseType { get }
     var body: Data? { get }

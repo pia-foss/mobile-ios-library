@@ -63,7 +63,7 @@ class RefreshAuthTokensCheckerTests: XCTestCase {
         var capturedError: NetworkRequestError? = nil
         
         // WHEN calling refresh if needed
-        sut.refreshIfNeeded(with: fixture.networkClientMock) { error in
+        sut.refreshIfNeeded() { error in
             capturedError = error
             expectation.fulfill()
         }
@@ -92,7 +92,7 @@ class RefreshAuthTokensCheckerTests: XCTestCase {
         var capturedError: NetworkRequestError? = nil
         
         // WHEN calling refresh if needed
-        sut.refreshIfNeeded(with: fixture.networkClientMock) { error in
+        sut.refreshIfNeeded() { error in
             capturedError = error
             expectation.fulfill()
         }
@@ -119,7 +119,7 @@ class RefreshAuthTokensCheckerTests: XCTestCase {
         var capturedError: NetworkRequestError? = nil
         
         // WHEN calling refresh if needed
-        sut.refreshIfNeeded(with: fixture.networkClientMock) { error in
+        sut.refreshIfNeeded() { error in
             capturedError = error
             expectation.fulfill()
         }
@@ -146,7 +146,7 @@ class RefreshAuthTokensCheckerTests: XCTestCase {
         var capturedError: NetworkRequestError? = nil
         
         // WHEN calling refresh if needed
-        sut.refreshIfNeeded(with: fixture.networkClientMock) { error in
+        sut.refreshIfNeeded() { error in
             capturedError = error
             expectation.fulfill()
         }
@@ -173,7 +173,7 @@ class RefreshAuthTokensCheckerTests: XCTestCase {
         var capturedError: NetworkRequestError? = nil
         
         // WHEN calling refresh if needed
-        sut.refreshIfNeeded(with: fixture.networkClientMock) { error in
+        sut.refreshIfNeeded() { error in
             capturedError = error
             expectation.fulfill()
         }
@@ -199,7 +199,7 @@ class RefreshAuthTokensCheckerTests: XCTestCase {
         var capturedError: NetworkRequestError? = nil
         
         // WHEN calling refresh if needed
-        sut.refreshIfNeeded(with: fixture.networkClientMock) { error in
+        sut.refreshIfNeeded() { error in
             capturedError = error
             expectation.fulfill()
         }
@@ -225,7 +225,7 @@ class RefreshAuthTokensCheckerTests: XCTestCase {
         var capturedError: NetworkRequestError? = nil
         
         // WHEN calling refresh if needed
-        sut.refreshIfNeeded(with: fixture.networkClientMock) { error in
+        sut.refreshIfNeeded() { error in
             capturedError = error
             expectation.fulfill()
         }

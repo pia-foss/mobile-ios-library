@@ -7,11 +7,11 @@ public class AccountFactory {
     }
     
     static func makeRefreshAPITokenUseCase() -> RefreshAPITokenUseCaseType {
-        RefreshAPITokenUseCase(apiTokenProvider: makeAPITokenProvider())
+        RefreshAPITokenUseCase(apiTokenProvider: makeAPITokenProvider(), networkClient: NetworkRequestFactory.maketNetworkRequestClient())
     }
     
     static func makeRefreshVpnTokenUseCase() -> RefreshVpnTokenUseCaseType {
-        RefreshVpnTokenUseCase(vpnTokenProvider: makeVpnTokenProvider())
+        RefreshVpnTokenUseCase(vpnTokenProvider: makeVpnTokenProvider(), networkClient: NetworkRequestFactory.maketNetworkRequestClient())
         
     }
     

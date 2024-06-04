@@ -10,10 +10,6 @@ struct LoginRequestConfiguration: NetworkRequestConfigurationType {
     let httpMethod: NWHttpConnection.NWConnectionHTTPMethod = .post
     let contentType: NetworkRequestContentType = .json
     let inlcudeAuthHeaders: Bool = false
-    
-    // Refreshing the auth tokens is not needed before executing the login request
-    let refreshAuthTokensIfNeeded: Bool = false
-    
     let urlQueryParameters: [String : String]? = nil
     let responseDataType: NWDataResponseType = .jsonData
     var body: Data? = nil

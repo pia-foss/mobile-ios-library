@@ -12,31 +12,15 @@ protocol NetworkRequestClientType {
 class NetworkRequestClient: NetworkRequestClientType {
     private let networkConnectionRequestProvider: NetworkConnectionRequestProviderType
     private let endpointManager: EndpointManagerType
-    private let refreshAuthTokensChecker: RefreshAuthTokensCheckerType
     
-    init(networkConnectionRequestProvider: NetworkConnectionRequestProviderType, endpointManager: EndpointManagerType, refreshAuthTokensChecker: RefreshAuthTokensCheckerType) {
+    init(networkConnectionRequestProvider: NetworkConnectionRequestProviderType, endpointManager: EndpointManagerType) {
         self.networkConnectionRequestProvider = networkConnectionRequestProvider
         self.endpointManager = endpointManager
-        self.refreshAuthTokensChecker = refreshAuthTokensChecker
     }
     
     func executeRequest(with configuration: NetworkRequestConfigurationType, completion: @escaping Completion) {
 
-        if configuration.refreshAuthTokensIfNeeded {
-            // 1. Refresh the auth tokens before executing the request
-            refreshAuthTokensChecker.refreshIfNeeded(with: self) { error in
-                if let error {
-                    // The request fails if refreshing the tokens have failed
-                    completion(error, nil)
-                } else {
-                    // 2. Execute the request
-                    self.startRequest(with: configuration, completion: completion)
-                }
-            }
-        } else {
-            startRequest(with: configuration, completion: completion)
-        }
-        
+        startRequest(with: configuration, completion: completion)
     }
     
 }

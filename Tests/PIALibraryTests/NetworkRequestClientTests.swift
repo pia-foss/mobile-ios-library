@@ -11,7 +11,6 @@ class NetworkRequestClientTests: XCTestCase {
         let endpointManagerMock = EndpointManagerMock()
         var configurationMock = NetworkRequestConfigurationMock()
         let endpointMock = PinningEndpoint(host: "mock-endpoint")
-        let refreshAuthTokensCheckerMock = RefreshAuthTokensCheckerMock()
         
         init() {
         }
@@ -73,61 +72,12 @@ class NetworkRequestClientTests: XCTestCase {
     }
     
     private func instantiateSut() {
-        sut = NetworkRequestClient(networkConnectionRequestProvider: fixture.networkConnectionRequestProviderMock, endpointManager: fixture.endpointManagerMock, refreshAuthTokensChecker: fixture.refreshAuthTokensCheckerMock)
+        sut = NetworkRequestClient(networkConnectionRequestProvider: fixture.networkConnectionRequestProviderMock, endpointManager: fixture.endpointManagerMock)
         
     }
     
-    func testMakeSuccessfulRequest_WhenRefreshTokensEnalbed() {
-        // GIVEN that the network request config has refresh auth tokens enabled
-        fixture.configurationMock.refreshAuthTokensIfNeeded = true
-        
-        // AND GIVEN that we have 2 successfull connections
-        let connection1 = fixture.makeSuccessConnection()
-        let connection2 = fixture.makeSuccessConnection()
-        
-        fixture.stubMakeConnections(connections: [connection1, connection2])
-        
-        instantiateSut()
-        
-        let expectation = expectation(description: "The request was executed")
-        
-        var capturedError: NetworkRequestError?
-        var capturedResponse: NetworkRequestResponseType?
-        
-        // The refresh tokens call has no been executed
-        XCTAssertEqual(fixture.refreshAuthTokensCheckerMock.refreshIfNeededCalledAttempt, 0)
-        
-        // WHEN we execute the request
-        sut.executeRequest(with: fixture.configurationMock) { error, dataResponse in
-            // THEN the call to refresh the tokens is executed
-            XCTAssertEqual(self.fixture.refreshAuthTokensCheckerMock.refreshIfNeededCalledAttempt, 1)
-            
-            capturedError = error
-            capturedResponse = dataResponse
-            
-            expectation.fulfill()
-        }
-        
-        wait(for: [expectation], timeout: 3)
-        
-        
-        // AND only the first connection is executed
-        XCTAssertEqual(connection1.connectCalledAttempt, 1)
-        XCTAssertEqual(connection2.connectCalledAttempt, 0)
-        
-        // AND No error is returned
-        XCTAssertNil(capturedError)
-        
-        // AND a sucessful response is returned
-        XCTAssertNotNil(capturedResponse)
-        XCTAssertEqual(capturedResponse!.statusCode!, 200)
-    }
-    
-    func testMakeSuccessfulRequest_AndRefreshTokenDisabled() {
-        // GIVEN that the network request config has refresh auth tokens disabled
-        fixture.configurationMock.refreshAuthTokensIfNeeded = false
-        
-        // AND GIVEN that we have 2 connections and the first one succees
+    func testMakeSuccessfulRequest() {
+        // GIVEN that we have 2 connections and both succeed
         let connection1 = fixture.makeSuccessConnection()
         let connection2 = fixture.makeSuccessConnection()
         
@@ -150,9 +100,6 @@ class NetworkRequestClientTests: XCTestCase {
         }
         
         wait(for: [expectation], timeout: 3)
-        
-        // THEN the call to refresh the tokens is NEVER executed
-        XCTAssertEqual(self.fixture.refreshAuthTokensCheckerMock.refreshIfNeededCalledAttempt, 0)
         
         // AND only the first connection is executed
         XCTAssertEqual(connection1.connectCalledAttempt, 1)

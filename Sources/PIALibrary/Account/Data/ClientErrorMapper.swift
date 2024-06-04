@@ -2,58 +2,53 @@
 
 import Foundation
 
-enum UseCaseType {
-    case login
-    case logout
-}
-
 /// Maps an Network Error with a ClientError
 /// The idea is to use this mapper on `PIAWebServices` to map the errors returned from the Swift implementation of the Accounts Lib with the ones that the app expects
 struct ClientErrorMapper {
-    static func map(networkRequestError: NetworkRequestError, useCase: UseCaseType) -> ClientError {
-        switch (networkRequestError, useCase) {
-        case (.connectionError(let statusCode, let message), _):
-            return getClientError(from: statusCode, useCase: useCase) ?? .unexpectedReply
+    static func map(networkRequestError: NetworkRequestError) -> ClientError {
+        switch networkRequestError {
+        case .connectionError(let statusCode, let message):
+            return getClientError(from: statusCode) ?? .unexpectedReply
                
-        case (.allConnectionAttemptsFailed(let statusCode), _):
-            return getClientError(from: statusCode, useCase: useCase) ?? .unexpectedReply
+        case .allConnectionAttemptsFailed(let statusCode):
+            return getClientError(from: statusCode) ?? .unexpectedReply
             
-        case (.noDataContent, _):
+        case .noDataContent:
             return .malformedResponseData
             
-        case (.noErrorAndNoResponse, _):
+        case .noErrorAndNoResponse:
             return .unexpectedReply
             
-        case (.unableToSaveVpnToken, _):
+        case .unableToSaveVpnToken:
             return .unexpectedReply
             
-        case (.unableToSaveAPIToken, _):
+        case .unableToSaveAPIToken:
             return .unexpectedReply
 
-        case (.connectionCompletedWithNoResponse, _):
+        case .connectionCompletedWithNoResponse:
             return .malformedResponseData
             
-        case (.unknown(message: let message), _):
+        case .unknown(message: let message):
             return .unexpectedReply
             
-        case (.unableToDecodeAPIToken, _):
+        case .unableToDecodeAPIToken, .unableToDecodeDataContent:
             return .malformedResponseData
             
-        case (.unableToDecodeVpnToken, _):
+        case .unableToDecodeVpnToken:
             return .malformedResponseData
         }
     }
     
-    static func getClientError(from statusCode: Int?, useCase: UseCaseType) -> ClientError? {
+    static func getClientError(from statusCode: Int?) -> ClientError? {
         
         guard let statusCode,
               let httpStatusCode = HttpResponseStatusCode(rawValue: statusCode) else {
             return nil
         }
-        switch (httpStatusCode, useCase) {
-        case (.unauthorized, _):
+        switch httpStatusCode {
+        case .unauthorized:
             return .unauthorized
-        case (.throttled, _):
+        case .throttled:
             return .throttled(retryAfter: 60)
         default:
             return nil

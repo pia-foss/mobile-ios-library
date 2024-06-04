@@ -12,31 +12,15 @@ protocol NetworkRequestClientType {
 class NetworkRequestClient: NetworkRequestClientType {
     private let networkConnectionRequestProvider: NetworkConnectionRequestProviderType
     private let endpointManager: EndpointManagerType
-    private let refreshAuthTokensChecker: RefreshAuthTokensCheckerType
     
-    init(networkConnectionRequestProvider: NetworkConnectionRequestProviderType, endpointManager: EndpointManagerType, refreshAuthTokensChecker: RefreshAuthTokensCheckerType) {
+    init(networkConnectionRequestProvider: NetworkConnectionRequestProviderType, endpointManager: EndpointManagerType) {
         self.networkConnectionRequestProvider = networkConnectionRequestProvider
         self.endpointManager = endpointManager
-        self.refreshAuthTokensChecker = refreshAuthTokensChecker
     }
     
     func executeRequest(with configuration: NetworkRequestConfigurationType, completion: @escaping Completion) {
 
-        if configuration.refreshAuthTokensIfNeeded {
-            // 1. Refresh the auth tokens before executing the request
-            refreshAuthTokensChecker.refreshIfNeeded { error in
-                if let error {
-                    // The request fails if refreshing the tokens have failed
-                    completion(error, nil)
-                } else {
-                    // 2. Execute the request
-                    self.startRequest(with: configuration, completion: completion)
-                }
-            }
-        } else {
-            startRequest(with: configuration, completion: completion)
-        }
-        
+        startRequest(with: configuration, completion: completion)
     }
     
 }
@@ -47,7 +31,7 @@ private extension NetworkRequestClient {
     
     func startRequest(with configuration: NetworkRequestConfigurationType, completion: @escaping Completion) {
         let endpoints = getEndpoints(for: configuration.networkRequestModule)
-        
+
         let connections = endpoints.compactMap { endpoint in
             self.networkConnectionRequestProvider.makeNetworkRequestConnection(for: endpoint, with: configuration)
         }
@@ -73,6 +57,7 @@ private extension NetworkRequestClient {
         }
         
         execute(connection: nextConnection) { error, responseData in
+
             if error != nil {
                 tryNextConnectionOrFail()
             } else if let responseData {

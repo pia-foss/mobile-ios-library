@@ -3,6 +3,7 @@ import Foundation
 @testable import PIALibrary
 
 class RefreshAPITokenUseCaseMock: RefreshAPITokenUseCaseType {
+    
     var callAsFunctionCalledAttempt = 0
     var completionError: NetworkRequestError?
     

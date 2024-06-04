@@ -49,11 +49,7 @@ private extension RefreshAuthTokensChecker {
                 completion(refreshApiTokenError)
             } else {
                 self.refreshVpnTokenUseCase() { refreshVpnTokenError in
-                    if let refreshVpnTokenError {
-                        completion(refreshVpnTokenError)
-                    } else {
-                        completion(nil)
-                    }
+                    completion(refreshApiTokenError)
                 }
             }
         }
@@ -61,23 +57,16 @@ private extension RefreshAuthTokensChecker {
     
     func refreshApiToken(with completion: @escaping Completion) {
         refreshAPITokenUseCase() { error in
-            self.handleRefreshResponse(with: error, completion: completion)
+            completion(error)
         }
     }
     
     func refreshVpnToken(with completion: @escaping Completion) {
         refreshVpnTokenUseCase() { error in
-            self.handleRefreshResponse(with: error, completion: completion)
+            completion(error)
         }
     }
     
-    func handleRefreshResponse(with error: NetworkRequestError?, completion: @escaping Completion) {
-        if let error {
-            completion(error)
-        } else {
-            completion(nil)
-        }
-    }
 }
 
 // MARK: - Refresh time intervals utils

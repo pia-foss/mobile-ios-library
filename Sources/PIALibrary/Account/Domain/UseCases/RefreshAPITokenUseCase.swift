@@ -2,7 +2,7 @@
 import Foundation
 import NWHttpConnection
 
-public protocol RefreshAPITokenUseCaseType {
+protocol RefreshAPITokenUseCaseType {
     typealias Completion = ((NetworkRequestError?) -> Void)
     func callAsFunction(completion: @escaping RefreshAPITokenUseCaseType.Completion)
 }

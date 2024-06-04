@@ -215,6 +215,7 @@ class PIAWebServices: WebServices, ConfigurationAccess {
     }
 
     func info(_ callback: ((AccountInfo?, Error?) -> Void)?) {
+        
         self.accountAPI.accountDetails() { [weak self] (response, errors) in
             if !errors.isEmpty {
                 callback?(nil, self?.mapAccountDetailsError(errors.last!))

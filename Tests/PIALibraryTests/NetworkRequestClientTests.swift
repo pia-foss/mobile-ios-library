@@ -25,7 +25,7 @@ class NetworkRequestClientTests: XCTestCase {
         
         func makeFailedConnectionWithErrorAndNoResponse() -> NWHttpConnectionMock {
             let failConnectionWithNoResponse = NWHttpConnectionMock()
-            failConnectionWithNoResponse.connectionError = NWHttpConnectionError.unknown(NetworkRequestError.unknown)
+            failConnectionWithNoResponse.connectionError = NWHttpConnectionError.unknown(NetworkRequestError.unknown(message: "unknown error"))
             failConnectionWithNoResponse.connectionResponse = nil
             return failConnectionWithNoResponse
             
@@ -179,7 +179,7 @@ class NetworkRequestClientTests: XCTestCase {
         
         // AND an error is returned
         XCTAssertNotNil(capturedError)
-        XCTAssertEqual(capturedError!, NetworkRequestError.allConnectionAttemptsFailed)
+        XCTAssertEqual(capturedError!, NetworkRequestError.allConnectionAttemptsFailed(statusCode: 401))
         
         // AND a response is not returned
         XCTAssertNil(capturedResponse)
@@ -216,7 +216,7 @@ class NetworkRequestClientTests: XCTestCase {
         
         // AND an error is returned
         XCTAssertNotNil(capturedError)
-        XCTAssertEqual(capturedError!, NetworkRequestError.allConnectionAttemptsFailed)
+        XCTAssertEqual(capturedError!, NetworkRequestError.allConnectionAttemptsFailed())
         
         // AND a response is not returned
         XCTAssertNil(capturedResponse)

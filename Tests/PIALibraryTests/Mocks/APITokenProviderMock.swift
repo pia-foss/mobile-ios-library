@@ -20,8 +20,12 @@ class APITokenProviderMock: APITokenProviderType {
     
     var saveAPITokenFromDataCalledAttempt = 0
     var saveAPITokenFromDataCalledWithArg: Data?
+    var saveAPITokenFromDataError: NetworkRequestError? = nil
     func saveAPIToken(from data: Data) throws {
         saveAPITokenFromDataCalledAttempt += 1
         saveAPITokenFromDataCalledWithArg = data
+        if let saveAPITokenFromDataError {
+            throw saveAPITokenFromDataError
+        }
     }
 }

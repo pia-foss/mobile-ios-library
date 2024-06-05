@@ -8,7 +8,6 @@ public protocol LoginUseCaseType {
     func loginLink(with email: String, completion: @escaping Completion)
 }
 
-
 class LoginUseCase: LoginUseCaseType {
     private let networkClient: NetworkRequestClientType
     private let apiTokenProvider: APITokenProviderType
@@ -66,35 +65,40 @@ class LoginUseCase: LoginUseCaseType {
 
 private extension LoginUseCase {
     
-    private func executeNetworkRequest(with configuration: NetworkRequestConfigurationType, completion: @escaping Completion) {
+    func executeNetworkRequest(with configuration: NetworkRequestConfigurationType, completion: @escaping Completion) {
         
         networkClient.executeRequest(with: configuration) {[weak self] error, dataResponse in
             
-            NSLog(">>> >>> Login use case error: \(error) -- dataResponse: \(dataResponse)")
             guard let self else { return }
             
             if let error {
                 completion(error)
             } else if let dataResponse {
-                self.handleDataResponse(dataResponse, completion: completion)
+                let shouldSaveToken = configuration.path == .login
+                self.handleDataResponse(dataResponse, shouldSaveTokenFromResponse: shouldSaveToken, completion: completion)
             } else {
-                completion(NetworkRequestError.allConnectionAttemptsFailed)
+                completion(NetworkRequestError.allConnectionAttemptsFailed())
             }
         }
     }
     
-    private func handleDataResponse(_ dataResponse: NetworkRequestResponseType, completion: @escaping RefreshVpnTokenUseCaseType.Completion) {
+    func handleDataResponse(_ dataResponse: NetworkRequestResponseType, shouldSaveTokenFromResponse: Bool, completion: @escaping RefreshVpnTokenUseCaseType.Completion) {
         
-        guard let dataResponseContent = dataResponse.data else {
-            completion(NetworkRequestError.noDataContent)
-            return
-        }
-        if let data = dataResponse.data {
-            NSLog(">>> >>> LoginUseCase: handle data resp data: \(String(data: data, encoding: .utf8))")
+        if shouldSaveTokenFromResponse {
+            guard let dataResponseContent = dataResponse.data else {
+                completion(NetworkRequestError.noDataContent)
+                return
+            }
+            saveAPIToken(from: dataResponseContent, completion: completion)
+        } else {
+            completion(nil)
         }
         
+    }
+    
+    func saveAPIToken(from data: Data, completion: @escaping Completion) {
         do {
-            try apiTokenProvider.saveAPIToken(from: dataResponseContent)
+            try apiTokenProvider.saveAPIToken(from: data)
 
             // Refresh the Vpn token after successfully login
            refreshVpnTokenUseCase() { error in
@@ -102,7 +106,6 @@ private extension LoginUseCase {
             }
             
         } catch {
-            // TODO: Map error to the ones that the app is expecting/handling
             completion(NetworkRequestError.unableToSaveAPIToken)
         }
     }

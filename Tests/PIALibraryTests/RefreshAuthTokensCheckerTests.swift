@@ -84,7 +84,7 @@ class RefreshAuthTokensCheckerTests: XCTestCase {
         fixture.stubVpnToken(with: fixture.expirationDateIn10Days)
         
         // AND GIVEN that refreshing the API token request fails
-        fixture.stubRefreshAPIToken(with: .apiTokenNotFound)
+        fixture.stubRefreshAPIToken(with: .unableToSaveAPIToken)
         
         instantiateSut()
         

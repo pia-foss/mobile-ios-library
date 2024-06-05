@@ -19,9 +19,13 @@ class VpnTokenProviderMock: VpnTokenProviderType {
     
     var saveVpnTokenFromDataCalledAttempt = 0
     var saveVpnTokenFromDataCalledWithArg: Data?
+    var saveVpnTokenFromDataError: NetworkRequestError?
     func saveVpnToken(from data: Data) throws {
         saveVpnTokenFromDataCalledAttempt += 1
         saveVpnTokenFromDataCalledWithArg = data
+        if let saveVpnTokenFromDataError {
+            throw saveVpnTokenFromDataError
+        }
     }
 }
 

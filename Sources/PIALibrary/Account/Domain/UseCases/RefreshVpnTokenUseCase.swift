@@ -28,7 +28,7 @@ class RefreshVpnTokenUseCase: RefreshVpnTokenUseCaseType {
             } else if let dataResponse {
                 self.handleDataResponse(dataResponse, completion: completion)
             } else {
-                completion(NetworkRequestError.allConnectionAttemptsFailed)
+                completion(NetworkRequestError.allConnectionAttemptsFailed())
             }
             
         }

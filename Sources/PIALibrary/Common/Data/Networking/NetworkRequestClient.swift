@@ -59,10 +59,12 @@ private extension NetworkRequestClient {
         execute(connection: nextConnection) { error, responseData in
 
             if error != nil {
+                NSLog(">>> >>> NetworkRequestClient: execute req error: \(error)")
                 tryNextConnectionOrFail()
             } else if let responseData {
                 let statusCode: Int = responseData.statusCode ?? -1
                 let isSuccessStatusCode = statusCode > 199 && statusCode < 300
+                NSLog(">>> >>> NetworkRequestClient: status code: \(statusCode)")
                 if isSuccessStatusCode {
                     completion(nil, responseData)
                 } else {

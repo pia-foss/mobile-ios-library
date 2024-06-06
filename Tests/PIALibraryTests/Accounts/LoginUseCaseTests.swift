@@ -94,6 +94,8 @@ class LoginUseCaseTests: XCTestCase {
             expectation.fulfill()
         }
         
+        wait(for: [expectation], timeout: 3)
+        
         // THEN the login request is executed
         XCTAssertEqual(fixture.networkClientMock.executeRequestCalledAttempt, 1)
         XCTAssertEqual(fixture.networkClientMock.executeRequestWithConfiguation?.path, RequestAPI.Path.login)
@@ -110,8 +112,6 @@ class LoginUseCaseTests: XCTestCase {
         
         // AND no error is returned
         XCTAssertNil(capturedError)
-        
-        wait(for: [expectation], timeout: 3)
         
     }
     
@@ -130,6 +130,8 @@ class LoginUseCaseTests: XCTestCase {
             expectation.fulfill()
         }
         
+        wait(for: [expectation], timeout: 3)
+        
         // THEN the login request is executed
         XCTAssertEqual(fixture.networkClientMock.executeRequestCalledAttempt, 1)
         XCTAssertEqual(fixture.networkClientMock.executeRequestWithConfiguation?.path, RequestAPI.Path.login)
@@ -143,7 +145,6 @@ class LoginUseCaseTests: XCTestCase {
         // AND an error is returned
         XCTAssertNotNil(capturedError)
         
-        wait(for: [expectation], timeout: 3)
     }
     
     func testLoginWithCredentialsWhenResponseFailsWithServerError() {
@@ -161,6 +162,8 @@ class LoginUseCaseTests: XCTestCase {
             expectation.fulfill()
         }
         
+        wait(for: [expectation], timeout: 3)
+        
         // THEN the login request is executed
         XCTAssertEqual(fixture.networkClientMock.executeRequestCalledAttempt, 1)
         XCTAssertEqual(fixture.networkClientMock.executeRequestWithConfiguation?.path, RequestAPI.Path.login)
@@ -174,7 +177,6 @@ class LoginUseCaseTests: XCTestCase {
         // AND an error is returned
         XCTAssertNotNil(capturedError)
         
-        wait(for: [expectation], timeout: 3)
     }
     
     func testLoginWithReceiptWhenRequestSucceeds() {
@@ -191,6 +193,8 @@ class LoginUseCaseTests: XCTestCase {
             capturedError = error
             expectation.fulfill()
         }
+        
+        wait(for: [expectation], timeout: 3)
         
         // THEN the login request is executed
         XCTAssertEqual(fixture.networkClientMock.executeRequestCalledAttempt, 1)
@@ -209,8 +213,6 @@ class LoginUseCaseTests: XCTestCase {
         // AND no error is returned
         XCTAssertNil(capturedError)
         
-        wait(for: [expectation], timeout: 3)
-        
     }
     
     func testLoginWithReceiptWhenResponseFailsWith401() {
@@ -228,6 +230,8 @@ class LoginUseCaseTests: XCTestCase {
             expectation.fulfill()
         }
         
+        wait(for: [expectation], timeout: 3)
+        
         // THEN the login request is executed
         XCTAssertEqual(fixture.networkClientMock.executeRequestCalledAttempt, 1)
         XCTAssertEqual(fixture.networkClientMock.executeRequestWithConfiguation?.path, RequestAPI.Path.login)
@@ -240,7 +244,6 @@ class LoginUseCaseTests: XCTestCase {
         // AND an error is returned
         XCTAssertNotNil(capturedError)
         
-        wait(for: [expectation], timeout: 3)
     }
     
     func testLoginWithReceiptWhenResponseFailsWithServerError() {
@@ -258,6 +261,8 @@ class LoginUseCaseTests: XCTestCase {
             expectation.fulfill()
         }
         
+        wait(for: [expectation], timeout: 3)
+        
         // THEN the login request is executed
         XCTAssertEqual(fixture.networkClientMock.executeRequestCalledAttempt, 1)
         XCTAssertEqual(fixture.networkClientMock.executeRequestWithConfiguation?.path, RequestAPI.Path.login)
@@ -270,7 +275,6 @@ class LoginUseCaseTests: XCTestCase {
         // AND an error is returned
         XCTAssertNotNil(capturedError)
         
-        wait(for: [expectation], timeout: 3)
     }
     
     func testLoginLinkWhenRequestSucceeds() {
@@ -287,6 +291,9 @@ class LoginUseCaseTests: XCTestCase {
             capturedError = error
             expectation.fulfill()
         }
+        
+        wait(for: [expectation], timeout: 3)
+        
         // THEN the login link request is executed
         XCTAssertEqual(fixture.networkClientMock.executeRequestCalledAttempt, 1)
         XCTAssertEqual(fixture.networkClientMock.executeRequestWithConfiguation?.path, RequestAPI.Path.loginLink)
@@ -299,8 +306,6 @@ class LoginUseCaseTests: XCTestCase {
 
         // AND no error is returned
         XCTAssertNil(capturedError)
-        
-        wait(for: [expectation], timeout: 3)
         
     }
     
@@ -320,6 +325,8 @@ class LoginUseCaseTests: XCTestCase {
             expectation.fulfill()
         }
         
+        wait(for: [expectation], timeout: 3)
+        
         // THEN the login link request is executed
         XCTAssertEqual(fixture.networkClientMock.executeRequestCalledAttempt, 1)
         XCTAssertEqual(fixture.networkClientMock.executeRequestWithConfiguation?.path, RequestAPI.Path.loginLink)
@@ -327,7 +334,6 @@ class LoginUseCaseTests: XCTestCase {
         // AND an error is returned
         XCTAssertNotNil(capturedError)
         
-        wait(for: [expectation], timeout: 3)
     }
     
     

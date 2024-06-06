@@ -27,5 +27,10 @@ class VpnTokenProviderMock: VpnTokenProviderType {
             throw saveVpnTokenFromDataError
         }
     }
+    
+    var clearVpnTokenCalledAttempt = 0
+    func clearVpnToken() {
+        clearVpnTokenCalledAttempt += 1
+    }
 }
 

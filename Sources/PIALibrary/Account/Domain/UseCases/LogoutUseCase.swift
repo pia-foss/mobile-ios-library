@@ -1,22 +1,45 @@
 
 import Foundation
 
-protocol LogoutUseCaseType {
+public protocol LogoutUseCaseType {
     typealias Completion = ((NetworkRequestError?) -> Void)
-    func logout(completion: @escaping Completion)
+    func callAsFunction(completion: @escaping Completion)
 }
 
 class LogoutUseCase: LogoutUseCaseType {
     
-    let networkClient: NetworkRequestClientType
+    private let networkClient: NetworkRequestClientType
+    private let apiTokenProvider: APITokenProviderType
+    private let vpnTokenProvider: VpnTokenProviderType
+    private let refreshAuthTokensChecker: RefreshAuthTokensCheckerType
     
-    init(networkClient: NetworkRequestClientType) {
+    init(networkClient: NetworkRequestClientType, apiTokenProvider: APITokenProviderType, vpnTokenProvider: VpnTokenProviderType, refreshAuthTokensChecker: RefreshAuthTokensCheckerType) {
         self.networkClient = networkClient
+        self.apiTokenProvider = apiTokenProvider
+        self.vpnTokenProvider = vpnTokenProvider
+        self.refreshAuthTokensChecker = refreshAuthTokensChecker
     }
     
-    func logout(completion: @escaping Completion) {
-            // TODO: Implement me
+    func callAsFunction(completion: @escaping Completion) {
+        let requestConfiguration = LogoutRequestConfiguration()
+        
+        refreshAuthTokensChecker.refreshIfNeeded { [weak self] refreshTokensError in
+            guard let self else { return }
+            
+            self.networkClient.executeRequest(with: requestConfiguration) { error, response in
+                self.clearAuthTokens(with: completion)
+            }
+            
+        }
     }
     
+}
+
+private extension LogoutUseCase {
     
+    func clearAuthTokens(with completion: @escaping Completion) {
+        apiTokenProvider.clearAPIToken()
+        vpnTokenProvider.clearVpnToken()
+        completion(nil)
+    }
 }

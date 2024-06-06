@@ -41,6 +41,7 @@ class PIAWebServices: WebServices, ConfigurationAccess {
     let csiAPI: CSIAPI!
     let csiProtocolInformationProvider = PIACSIProtocolInformationProvider()
     
+    
     init() {
         let rsa4096Certificate = Client.configuration.rsa4096Certificate
         let endpointsProvider: IRegionEndpointProvider = Client.environment == .staging ? PIARegionStagingClientStateProvider()
@@ -265,20 +266,6 @@ class PIAWebServices: WebServices, ConfigurationAccess {
             }
 
             callback?(nil)
-        }
-    }
-    
-    func logout(_ callback: LibraryCallback<Bool>?) {
-        self.accountAPI.logout() { (errors) in
-            if !errors.isEmpty {
-                if errors.last?.code == 401 {
-                    callback?(true, nil)
-                    return
-                }
-                callback?(false, ClientError.invalidParameter)
-                return
-            }
-            callback?(true, nil)
         }
     }
     

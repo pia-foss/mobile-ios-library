@@ -97,7 +97,7 @@ public class MockAccountProvider: AccountProvider, WebServicesConsumer {
     public init() {
         let webServices = MockWebServices()
         self.webServices = webServices
-        delegate = DefaultAccountProvider(webServices: webServices)
+        delegate = DefaultAccountProvider(webServices: webServices, logoutUseCase: AccountFactory.makeLogoutUseCase())
 
         webServices.credentials = {
             return Credentials(

@@ -30,8 +30,12 @@ private let log = SwiftyBeaver.self
 open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAccess, WebServicesAccess, InAppAccess, WebServicesConsumer {
     
     private let customWebServices: WebServices?
-
-    init(webServices: WebServices? = nil) {
+    
+    // MARK: - UseCases
+    private let logoutUseCase: LogoutUseCaseType
+    
+    init(webServices: WebServices? = nil, logoutUseCase: LogoutUseCaseType) {
+        self.logoutUseCase = logoutUseCase
         if let webServices = webServices {
             customWebServices = webServices
         } else {
@@ -249,7 +253,7 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
     private func updateUserAccount(credentials: Credentials, callback: ((UserAccount?, Error?) -> Void)?) {
         self.webServices.info() { (accountInfo, error) in
             guard let accountInfo = accountInfo else {
-                self.webServices.logout(nil)
+                self.logout(nil)
                 self.cleanDatabase()
                 callback?(nil,ClientError.unauthorized)
                 return
@@ -326,10 +330,14 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
         guard isLoggedIn else {
             preconditionFailure()
         }
-        webServices.logout { [weak self] (result, error) in
+        
+        logoutUseCase() { [weak self] error in
             self?.cleanDatabase()
-            Macros.postNotification(.PIAAccountDidLogout)
-            callback?(nil)
+            DispatchQueue.main.async {
+                Macros.postNotification(.PIAAccountDidLogout)
+                callback?(nil)
+            }
+            
         }
     }
     

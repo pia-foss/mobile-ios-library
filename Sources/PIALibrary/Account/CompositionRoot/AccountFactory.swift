@@ -6,6 +6,10 @@ public class AccountFactory {
         LoginUseCase(networkClient: NetworkRequestFactory.maketNetworkRequestClient(), apiTokenProvider: makeAPITokenProvider(), refreshVpnTokenUseCase: makeRefreshVpnTokenUseCase())
     }
     
+    public static func makeLogoutUseCase() -> LogoutUseCaseType {
+        LogoutUseCase(networkClient: NetworkRequestFactory.maketNetworkRequestClient(), apiTokenProvider: makeAPITokenProvider(), vpnTokenProvider: makeVpnTokenProvider(), refreshAuthTokensChecker: makeRefreshAuthTokensChecker())
+    }
+    
     static func makeRefreshAPITokenUseCase() -> RefreshAPITokenUseCaseType {
         RefreshAPITokenUseCase(apiTokenProvider: makeAPITokenProvider(), networkClient: NetworkRequestFactory.maketNetworkRequestClient())
     }

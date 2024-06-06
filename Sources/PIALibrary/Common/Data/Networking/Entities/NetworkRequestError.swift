@@ -10,6 +10,7 @@ public enum NetworkRequestError: Error, Equatable {
     case unableToSaveAPIToken
     case unableToDecodeAPIToken
     case unableToDecodeVpnToken
+    case unableToDecodeDataContent
     case connectionCompletedWithNoResponse
     case unknown(message: String? = nil)    
 }

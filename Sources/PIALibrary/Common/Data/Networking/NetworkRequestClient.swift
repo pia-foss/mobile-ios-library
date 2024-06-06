@@ -46,10 +46,11 @@ private extension NetworkRequestClient {
         var remainingConnections = connections
         let nextConnection = remainingConnections.removeFirst()
         
-        func tryNextConnectionOrFail() {
+        func tryNextConnectionOrFail(currentStatusCode: Int?) {
             if remainingConnections.isEmpty {
                 // No more endpoints to try a connection
-                completion(NetworkRequestError.allConnectionAttemptsFailed, nil)
+                let requestError = NetworkRequestError.allConnectionAttemptsFailed(statusCode: currentStatusCode)
+                completion(requestError, nil)
             } else {
                 // Continue with the next connection
                 executeRecursivelyUntilSuccess(connections: remainingConnections, completion: completion)
@@ -59,19 +60,20 @@ private extension NetworkRequestClient {
         execute(connection: nextConnection) { error, responseData in
 
             if error != nil {
-                tryNextConnectionOrFail()
+                tryNextConnectionOrFail(currentStatusCode: responseData?.statusCode)
             } else if let responseData {
                 let statusCode: Int = responseData.statusCode ?? -1
                 let isSuccessStatusCode = statusCode > 199 && statusCode < 300
+                
                 if isSuccessStatusCode {
                     completion(nil, responseData)
                 } else {
                     // Connection did not succeed, try the next one
-                    tryNextConnectionOrFail()
+                    tryNextConnectionOrFail(currentStatusCode: responseData.statusCode)
                 }
             } else {
                 // No error and no data
-                tryNextConnectionOrFail()
+                tryNextConnectionOrFail(currentStatusCode: nil)
             }
         }
         
@@ -85,7 +87,7 @@ private extension NetworkRequestClient {
             try connection.connect { error, dataResponse in
                 if let error {
                     connectionHandled = true
-                    completion(NetworkRequestError.connectionError(message: error.localizedDescription), nil)
+                    completion(NetworkRequestError.connectionError(statusCode: dataResponse?.statusCode, message: error.localizedDescription), nil)
                 } else if let dataResponse = dataResponse as? NetworkRequestResponseType {
                     connectionHandled = true
                     completion(nil, dataResponse)
@@ -100,7 +102,7 @@ private extension NetworkRequestClient {
             }
             
         } catch {
-            completion(NetworkRequestError.connectionError(message: error.localizedDescription), nil)
+            completion(NetworkRequestError.unknown(message: error.localizedDescription), nil)
         }
     }
     

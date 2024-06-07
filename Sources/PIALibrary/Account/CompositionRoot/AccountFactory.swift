@@ -10,6 +10,10 @@ public class AccountFactory {
         LogoutUseCase(networkClient: NetworkRequestFactory.maketNetworkRequestClient(), apiTokenProvider: makeAPITokenProvider(), vpnTokenProvider: makeVpnTokenProvider(), refreshAuthTokensChecker: makeRefreshAuthTokensChecker())
     }
     
+    static func makeDefaultAccountProvider(with webServices: WebServices? = nil) -> DefaultAccountProvider {
+        DefaultAccountProvider(webServices: webServices, logoutUseCase: makeLogoutUseCase())
+    }
+    
     static func makeRefreshAPITokenUseCase() -> RefreshAPITokenUseCaseType {
         RefreshAPITokenUseCase(apiTokenProvider: makeAPITokenProvider(), networkClient: NetworkRequestFactory.maketNetworkRequestClient())
     }

@@ -29,7 +29,7 @@ extension Client {
     public class Providers {
         
         /// Provides user related methods.
-        public var accountProvider: AccountProvider = DefaultAccountProvider(logoutUseCase: AccountFactory.makeLogoutUseCase())
+        public var accountProvider: AccountProvider = AccountFactory.makeDefaultAccountProvider()
         
         /// Provides methods for handling the available VPN servers.
         public var serverProvider: ServerProvider = DefaultServerProvider()

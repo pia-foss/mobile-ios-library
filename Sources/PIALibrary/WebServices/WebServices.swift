@@ -42,8 +42,6 @@ protocol WebServices: class {
 
     func update(credentials: Credentials, resetPassword reset: Bool, email: String, _ callback: SuccessLibraryCallback?)
 
-    func loginLink(email: String, _ callback: SuccessLibraryCallback?)
-
     /// The token to use for protocol authentication.
     var vpnToken: String? { get }
 

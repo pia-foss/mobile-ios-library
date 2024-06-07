@@ -12,7 +12,11 @@ public enum NetworkRequestError: Error, Equatable {
     case unableToDecodeVpnToken
     case unableToDecodeDataContent
     case connectionCompletedWithNoResponse
-    case unknown(message: String? = nil)    
+    case unknown(message: String? = nil)
+    
+    func asClientError() -> ClientError {
+        ClientErrorMapper.map(networkRequestError: self)
+    }
 }
 
 

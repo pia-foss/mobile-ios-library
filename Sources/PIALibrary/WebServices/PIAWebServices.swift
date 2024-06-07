@@ -218,6 +218,7 @@ class PIAWebServices: WebServices, ConfigurationAccess {
     func info(_ callback: ((AccountInfo?, Error?) -> Void)?) {
         
         self.accountAPI.accountDetails() { [weak self] (response, errors) in
+            
             if !errors.isEmpty {
                 callback?(nil, self?.mapAccountDetailsError(errors.last!))
                 return
@@ -254,18 +255,6 @@ class PIAWebServices: WebServices, ConfigurationAccess {
                 }
                 callback?(nil)
             }
-        }
-    }
-    
-    func loginLink(email: String, _ callback: SuccessLibraryCallback?) {
-        
-        self.accountAPI.loginLink(email: email) { [weak self] (errors) in
-            if !errors.isEmpty {
-                callback?(self?.mapLoginLinkError(errors.last!))
-                return
-            }
-
-            callback?(nil)
         }
     }
     

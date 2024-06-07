@@ -11,7 +11,7 @@ public class AccountFactory {
     }
     
     static func makeDefaultAccountProvider(with webServices: WebServices? = nil) -> DefaultAccountProvider {
-        DefaultAccountProvider(webServices: webServices, logoutUseCase: makeLogoutUseCase())
+        DefaultAccountProvider(webServices: webServices, logoutUseCase: makeLogoutUseCase(), loginUseCase: makeLoginUseCase(), apiTokenProvider: makeAPITokenProvider(), vpnTokenProvider: makeVpnTokenProvider())
     }
     
     static func makeRefreshAPITokenUseCase() -> RefreshAPITokenUseCaseType {
@@ -24,11 +24,11 @@ public class AccountFactory {
     }
     
     static func makeAPITokenProvider() -> APITokenProviderType {
-        APITokenProvider(keychainStore: makeSecureStore(), tokenSerializer: makeAuthTokenSerializer())
+        apitokenProviderShared
     }
     
     static func makeVpnTokenProvider() -> VpnTokenProviderType {
-        VpnTokenProvider(keychainStore: makeSecureStore(), tokenSerializer: makeAuthTokenSerializer())
+        vpnTokenProviderShared
     }
     
     static func makeRefreshAuthTokensChecker() -> RefreshAuthTokensCheckerType {
@@ -40,8 +40,20 @@ public class AccountFactory {
 
 private extension AccountFactory {
     
-    static func makeSecureStore() -> SecureStore {
+    static var apitokenProviderShared: APITokenProviderType = {
+        APITokenProvider(keychainStore: makeSecureStore(), tokenSerializer: makeAuthTokenSerializer())
+    }()
+    
+    static var vpnTokenProviderShared: VpnTokenProviderType = {
+        VpnTokenProvider(keychainStore: makeSecureStore(), tokenSerializer: makeAuthTokenSerializer())
+    }()
+    
+    static var secureStoreShared: SecureStore = {
         KeychainStore(team: Client.Configuration.teamId, group: Client.Configuration.appGroup)
+    }()
+    
+    static func makeSecureStore() -> SecureStore {
+        secureStoreShared
     }
     
     static func makeAuthTokenSerializer() -> AuthTokenSerializerType {

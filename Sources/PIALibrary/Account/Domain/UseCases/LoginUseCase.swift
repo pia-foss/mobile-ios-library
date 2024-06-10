@@ -99,7 +99,6 @@ private extension LoginUseCase {
     func saveAPIToken(from data: Data, completion: @escaping Completion) {
         do {
             try apiTokenProvider.saveAPIToken(from: data)
-
             // Refresh the Vpn token after successfully login
            refreshVpnTokenUseCase() { error in
                 completion(error)

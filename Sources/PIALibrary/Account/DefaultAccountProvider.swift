@@ -30,8 +30,17 @@ private let log = SwiftyBeaver.self
 open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, DatabaseAccess, WebServicesAccess, InAppAccess, WebServicesConsumer {
     
     private let customWebServices: WebServices?
-
-    init(webServices: WebServices? = nil) {
+    
+    private let logoutUseCase: LogoutUseCaseType
+    private let loginUseCase: LoginUseCaseType
+    private let apiTokenProvider: APITokenProviderType
+    private let vpnTokenProvider: VpnTokenProviderType
+    
+    init(webServices: WebServices? = nil, logoutUseCase: LogoutUseCaseType, loginUseCase: LoginUseCaseType, apiTokenProvider: APITokenProviderType, vpnTokenProvider: VpnTokenProviderType) {
+        self.logoutUseCase = logoutUseCase
+        self.loginUseCase = loginUseCase
+        self.apiTokenProvider = apiTokenProvider
+        self.vpnTokenProvider = vpnTokenProvider
         if let webServices = webServices {
             customWebServices = webServices
         } else {
@@ -80,11 +89,16 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
     }
 
     public var apiToken: String? {
-        return webServices.apiToken
+        let apiToken = apiTokenProvider.getAPIToken()
+        return apiToken?.apiToken
     }
 
     public var vpnToken: String? {
-        return webServices.vpnToken
+        guard let vpnToken = vpnTokenProvider.getVpnToken() else {
+            return nil
+        }
+        let vpnTokenString = "vpn_token_\(vpnToken.vpnUsernameToken):\(vpnToken.vpnPasswordToken)"
+        return vpnTokenString
     }
     
     public var vpnTokenUsername: String? {
@@ -194,10 +208,18 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
             preconditionFailure()
         }
         
+        // TODO: Remove this call to webServices when all the Accounts APIs are implemented (and keep only the one to `loginUseCase`)
         webServices.token(receipt: receiptRequest.receipt) { (error) in
             let credentials = Credentials(username: "", password: "")
             self.handleLoginResult(error: error, credentials: credentials, callback: callback)
         }
+        
+//        loginUseCase.login(with: receiptRequest.receipt.base64EncodedString()) { error in
+//            DispatchQueue.main.async {
+//                let credentials = Credentials(username: "", password: "")
+//                self.handleLoginResult(error: error?.asClientError(), credentials: credentials, callback: callback)
+//            }
+//        }
     }
 
     public func login(with linkToken: String, _ callback: ((UserAccount?, Error?) -> Void)?) {
@@ -215,11 +237,20 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
         guard !isLoggedIn else {
             preconditionFailure()
         }
-
+           
+        
+        // TODO: Remove this call to webServices when all the Accounts APIs are implemented (and keep only the one to `loginUseCase`)
         webServices.token(credentials: request.credentials) { (error) in
             self.handleLoginResult(error: error, credentials: request.credentials, callback: callback)
         }
-
+        
+    
+//        loginUseCase.login(with: request.credentials) { error in
+//            DispatchQueue.main.async {
+//                self.handleLoginResult(error: error?.asClientError(), credentials: request.credentials, callback: callback)
+//            }
+//        }
+        
     }
     
     private func handleLoginResult(error: Error?, credentials: Credentials, callback: ((UserAccount?, Error?) -> Void)?) {
@@ -249,7 +280,7 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
     private func updateUserAccount(credentials: Credentials, callback: ((UserAccount?, Error?) -> Void)?) {
         self.webServices.info() { (accountInfo, error) in
             guard let accountInfo = accountInfo else {
-                self.webServices.logout(nil)
+                self.logout(nil)
                 self.cleanDatabase()
                 callback?(nil,ClientError.unauthorized)
                 return
@@ -326,10 +357,14 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
         guard isLoggedIn else {
             preconditionFailure()
         }
-        webServices.logout { [weak self] (result, error) in
+        
+        logoutUseCase() { [weak self] error in
             self?.cleanDatabase()
-            Macros.postNotification(.PIAAccountDidLogout)
-            callback?(nil)
+            DispatchQueue.main.async {
+                Macros.postNotification(.PIAAccountDidLogout)
+                callback?(nil)
+            }
+            
         }
     }
     
@@ -422,7 +457,12 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
     }
     
     public func loginUsingMagicLink(withEmail email: String, _ callback: SuccessLibraryCallback?) {
-        self.webServices.loginLink(email: email, callback)
+        loginUseCase.loginLink(with: email) { error in
+            DispatchQueue.main.async {
+                callback?(error?.asClientError())
+            }
+            
+        }
     }
 
     public func signup(with request: SignupRequest, _ callback: ((UserAccount?, Error?) -> Void)?) {

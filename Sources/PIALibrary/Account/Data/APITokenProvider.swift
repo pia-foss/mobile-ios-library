@@ -5,6 +5,7 @@ protocol APITokenProviderType {
     func getAPIToken() -> APIToken?
     func save(apiToken: APIToken)
     func saveAPIToken(from data: Data) throws
+    func clearAPIToken()
 }
 
 class APITokenProvider: APITokenProviderType {
@@ -34,6 +35,10 @@ class APITokenProvider: APITokenProviderType {
         }
         
         save(apiToken: apiToken)
+    }
+    
+    func clearAPIToken() {
+        keychainStore.clearToken(for: apiTokenKey)
     }
     
 }

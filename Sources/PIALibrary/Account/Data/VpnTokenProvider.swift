@@ -5,6 +5,7 @@ protocol VpnTokenProviderType {
     func getVpnToken() -> VpnToken?
     func save(vpnToken: VpnToken)
     func saveVpnToken(from data: Data) throws
+    func clearVpnToken()
 }
 
 
@@ -35,6 +36,10 @@ class VpnTokenProvider: VpnTokenProviderType {
         }
         
         save(vpnToken: vpnToken)
+    }
+    
+    func clearVpnToken() {
+        keychainStore.clearToken(for: vpnTokenKey)
     }
         
 }

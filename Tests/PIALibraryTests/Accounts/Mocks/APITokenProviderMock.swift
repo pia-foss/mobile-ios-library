@@ -28,4 +28,9 @@ class APITokenProviderMock: APITokenProviderType {
             throw saveAPITokenFromDataError
         }
     }
+    
+    var clearAPITokenCalledAttempt = 0
+    func clearAPIToken() {
+        clearAPITokenCalledAttempt += 1
+    }
 }

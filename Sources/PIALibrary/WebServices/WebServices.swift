@@ -42,8 +42,6 @@ protocol WebServices: class {
 
     func update(credentials: Credentials, resetPassword reset: Bool, email: String, _ callback: SuccessLibraryCallback?)
 
-    func loginLink(email: String, _ callback: SuccessLibraryCallback?)
-
     /// The token to use for protocol authentication.
     var vpnToken: String? { get }
 
@@ -55,12 +53,6 @@ protocol WebServices: class {
     func handleDIPTokenExpiration(dipToken: String, _ callback: SuccessLibraryCallback?)
     
     func activateDIPToken(tokens: [String], _ callback: LibraryCallback<[Server]>?) 
-
-    /**
-         Invalidates the access token.
-         - Parameter callback: Returns an `Bool` if the token was expired.
-     */
-    func logout(_ callback: LibraryCallback<Bool>?)
 
     /**
          Deletes the user accout on PIA servers.

@@ -41,6 +41,7 @@ class PIAWebServices: WebServices, ConfigurationAccess {
     let csiAPI: CSIAPI!
     let csiProtocolInformationProvider = PIACSIProtocolInformationProvider()
     
+    
     init() {
         let rsa4096Certificate = Client.configuration.rsa4096Certificate
         let endpointsProvider: IRegionEndpointProvider = Client.environment == .staging ? PIARegionStagingClientStateProvider()
@@ -217,6 +218,7 @@ class PIAWebServices: WebServices, ConfigurationAccess {
     func info(_ callback: ((AccountInfo?, Error?) -> Void)?) {
         
         self.accountAPI.accountDetails() { [weak self] (response, errors) in
+            
             if !errors.isEmpty {
                 callback?(nil, self?.mapAccountDetailsError(errors.last!))
                 return
@@ -253,32 +255,6 @@ class PIAWebServices: WebServices, ConfigurationAccess {
                 }
                 callback?(nil)
             }
-        }
-    }
-    
-    func loginLink(email: String, _ callback: SuccessLibraryCallback?) {
-        
-        self.accountAPI.loginLink(email: email) { [weak self] (errors) in
-            if !errors.isEmpty {
-                callback?(self?.mapLoginLinkError(errors.last!))
-                return
-            }
-
-            callback?(nil)
-        }
-    }
-    
-    func logout(_ callback: LibraryCallback<Bool>?) {
-        self.accountAPI.logout() { (errors) in
-            if !errors.isEmpty {
-                if errors.last?.code == 401 {
-                    callback?(true, nil)
-                    return
-                }
-                callback?(false, ClientError.invalidParameter)
-                return
-            }
-            callback?(true, nil)
         }
     }
     

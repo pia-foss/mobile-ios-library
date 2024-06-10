@@ -31,6 +31,8 @@ private extension NetworkRequestClient {
     
     func startRequest(with configuration: NetworkRequestConfigurationType, completion: @escaping Completion) {
         let endpoints = getEndpoints(for: configuration.networkRequestModule)
+        
+        NSLog(">> >>> Endpoints: \(endpoints)")
 
         let connections = endpoints.compactMap { endpoint in
             self.networkConnectionRequestProvider.makeNetworkRequestConnection(for: endpoint, with: configuration)
@@ -106,10 +108,14 @@ private extension NetworkRequestClient {
         }
     }
     
-    func getEndpoints(for module: NetworkRequestModule) -> [PinningEndpoint] {
-        switch module {
-        case .account: 
+    func getEndpoints(for module: NetworkRequestModule, environment: Client.Environment = Client.environment) -> [PinningEndpoint] {
+        switch (module, environment) {
+        case (.account, .production):
             return endpointManager.availableEndpoints()
+        case (.account, .staging):
+            return [
+                PinningEndpoint(host: Client.configuration.baseUrl, isProxy: false, useCertificatePinning: false)
+            ]
         }
     }
 }

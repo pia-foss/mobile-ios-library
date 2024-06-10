@@ -35,13 +35,24 @@ class LoginUseCase: LoginUseCaseType {
     }
     
     func login(with receiptBase64: String, completion: @escaping Completion) {
+        
+        NSLog(">>> >>> Loginuse case: with receipt base64 string: \(receiptBase64)")
         var configuration = LoginRequestConfiguration()
+//        let signInReceiptInformation = SignInReceiptInformation(receipt: receiptBase64)
+//        NSLog(">>> >>> Loginusecase: signin receipt info toData: \(signInReceiptInformation.toData())")
+//        if let bodyString = signInReceiptInformation.toString() {
+//            NSLog(">>> >>> Login with receipt use case body string: \(bodyString)")
+//            
+//            configuration.body = bodyString.data(using: .utf8)
+//            NSLog(">>> >>> Loginusecase with receipt: final configuration body: \(configuration.body)")
+//        }
+        
         let bodyDataDict: [String: String] = [
             "receipt": receiptBase64
         ]
         
         if let bodyData = try? JSONEncoder().encode(bodyDataDict) {
-            configuration.body = bodyData
+            configuration.body = bodyData.base64EncodedData()
         }
         
         executeNetworkRequest(with: configuration, completion: completion)
@@ -70,6 +81,7 @@ private extension LoginUseCase {
         networkClient.executeRequest(with: configuration) {[weak self] error, dataResponse in
             
             guard let self else { return }
+            NSLog(">>> >>> Login use case: execute request with configuration error: \(error) -- data response: \(dataResponse)")
             
             if let error {
                 completion(error)

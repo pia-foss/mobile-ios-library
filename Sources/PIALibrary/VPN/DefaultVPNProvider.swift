@@ -95,10 +95,14 @@ open class DefaultVPNProvider: VPNProvider, ConfigurationAccess, DatabaseAccess,
         
         let completionBlock = { [weak self] in
             profile?.prepare()
+            
 
             #if os(iOS)
-            if let _ = VPNIPAddressFromInterfaces() {
-                self?.accessedDatabase.transient.vpnStatus = .connected
+            if let vpnIpAddress = VPNIPAddressFromInterfaces() {
+                // FIXME: This sets the vpn to 'connected' state everytime when the app launches
+//                self?.accessedDatabase.transient.vpnStatus = .connected
+                NSLog(">>> >>> Vpn status on launch: \(self?.accessedDatabase.transient.vpnStatus)")
+
             }
             #endif
             self?.activeProfile = profile

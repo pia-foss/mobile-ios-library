@@ -170,6 +170,9 @@ class PIAWebServices: WebServices, ConfigurationAccess {
      */
     func token(receipt: Data, _ callback: ((Error?) -> Void)?) {
         self.accountAPI.loginWithReceipt(receiptBase64: receipt.base64EncodedString()) { [weak self] (errors) in
+            NSLog(">>> >>> PIAWebServices login with receipt base64 string: \(receipt.base64EncodedString())")
+            print(">>> >>> Print PIAWebServices login with receipt base64 string: \(receipt.base64EncodedString())")
+            NSLog(">>> >>> PIAWebServices login with receipt base64 string errors: \(errors)")
             self?.handleLoginResponse(errors: errors, callback: callback, mapError: self?.mapLoginFromReceiptError)
         }
     }

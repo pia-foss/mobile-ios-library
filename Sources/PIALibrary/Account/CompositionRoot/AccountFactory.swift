@@ -15,8 +15,13 @@ public class AccountFactory {
         AccountDetailsUseCase(networkClient: NetworkRequestFactory.maketNetworkRequestClient(), refreshAuthTokensChecker: makeRefreshAuthTokensChecker(), accountInforDecoder: makeAccountInfoDecoder())
     }
     
+    public static func makeSignupUseCase() -> SignupUseCaseType {
+        SignupUseCase(networkClient: NetworkRequestFactory.maketNetworkRequestClient(), 
+                      signupInformationDataCoverter: SignupInformationDataCoverter())
+    }
+    
     static func makeDefaultAccountProvider(with webServices: WebServices? = nil) -> DefaultAccountProvider {
-        DefaultAccountProvider(webServices: webServices, logoutUseCase: makeLogoutUseCase(), loginUseCase: makeLoginUseCase(), apiTokenProvider: makeAPITokenProvider(), vpnTokenProvider: makeVpnTokenProvider(), accountDetailsUseCase: makeAccountDetailsUseCase())
+        DefaultAccountProvider(webServices: webServices, logoutUseCase: makeLogoutUseCase(), loginUseCase: makeLoginUseCase(), signupUseCase: makeSignupUseCase(), apiTokenProvider: makeAPITokenProvider(), vpnTokenProvider: makeVpnTokenProvider(), accountDetailsUseCase: makeAccountDetailsUseCase())
     }
     
     static func makeRefreshAPITokenUseCase() -> RefreshAPITokenUseCaseType {

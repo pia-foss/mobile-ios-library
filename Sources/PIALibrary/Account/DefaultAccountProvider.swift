@@ -33,13 +33,15 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
     
     private let logoutUseCase: LogoutUseCaseType
     private let loginUseCase: LoginUseCaseType
+    private let signupUseCase: SignupUseCaseType
     private let apiTokenProvider: APITokenProviderType
     private let vpnTokenProvider: VpnTokenProviderType
     private let accountDetailsUseCase: AccountDetailsUseCaseType
     
-    init(webServices: WebServices? = nil, logoutUseCase: LogoutUseCaseType, loginUseCase: LoginUseCaseType, apiTokenProvider: APITokenProviderType, vpnTokenProvider: VpnTokenProviderType, accountDetailsUseCase: AccountDetailsUseCaseType) {
+    init(webServices: WebServices? = nil, logoutUseCase: LogoutUseCaseType, loginUseCase: LoginUseCaseType, signupUseCase: SignupUseCaseType, apiTokenProvider: APITokenProviderType, vpnTokenProvider: VpnTokenProviderType, accountDetailsUseCase: AccountDetailsUseCaseType) {
         self.logoutUseCase = logoutUseCase
         self.loginUseCase = loginUseCase
+        self.signupUseCase = signupUseCase
         self.apiTokenProvider = apiTokenProvider
         self.vpnTokenProvider = vpnTokenProvider
         self.accountDetailsUseCase = accountDetailsUseCase
@@ -485,62 +487,51 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
         }
 
         accessedDatabase.plain.lastSignupEmail = request.email
-
-        webServices.signup(with: signup) { (credentials, error) in
-            
-            if let urlError = error as? URLError, (urlError.code == .notConnectedToInternet) {
-                callback?(nil, ClientError.internetUnreachable)
-                return
+        
+        signupUseCase(signup: signup) { [weak self] result in
+            guard let self else { return }
+            switch result {
+                case .success(let credentials):
+                    handleSignupSuccessResult(transaction: request.transaction,
+                                              credentials: credentials,
+                                              callback: callback)
+                case .failure(let error):
+                    handleSignupErrorResult(error: error.asClientError(), callback: callback)
             }
-            guard let credentials = credentials else {
-                if let error = error as? ClientError, error == .badReceipt {
-                    if let products = Client.store.availableProducts {
-                        for product in products {
-                            if let uncreditedTransaction = Client.store.uncreditedTransaction(for: product) {
-                                self.accessedStore.finishTransaction(uncreditedTransaction, success: false)
-                            }
-                        }
-                    }
-                }
-                callback?(nil, error)
-                return
-            }
-            if let transaction = request.transaction {
-                self.accessedStore.finishTransaction(transaction, success: true)
-            }
-            
-            self.accessedDatabase.plain.lastSignupEmail = nil
-            self.accessedDatabase.secure.setPublicUsername(credentials.username)
-            self.accessedDatabase.secure.setUsername(credentials.username)
-            self.accessedDatabase.secure.setPassword(credentials.password, for: credentials.username)
-
-            
-            // This method `loginWithCredentials` executes all the API calls and makes the same updates as the code commented out below.
-            // TODO: Make sure that this works as expected when finishing the integration of the sign up API
-            self.loginWithCredentials(credentials, notificationToSend: .PIAAccountDidSignup, callback: callback)
-            
-//            self.webServices.token(credentials: credentials) { (error) in
-//                if error != nil {
-//                    callback?(nil, error)
-//                    return
-//                }
-//
-//                self.webServices.info() { (accountInfo, error) in
-//                    guard let accountInfo = accountInfo else {
-//                        callback?(nil, error)
-//                        return
-//                    }
-//
-//                    self.accessedDatabase.plain.accountInfo = accountInfo
-//                    self.accessedDatabase.secure.setPublicUsername(accountInfo.username)
-//                    
-//                    let user = UserAccount(credentials: credentials, info: nil)
-//                    Macros.postNotification(.PIAAccountDidSignup, [.user: user])
-//                    callback?(user, nil)
-//                }
-//            }
-            
         }
+    }
+    
+    private func handleSignupErrorResult(error: ClientError?, callback: ((UserAccount?, Error?) -> Void)?) {
+        guard error == .badReceipt, let products = Client.store.availableProducts else {
+            DispatchQueue.main.async {
+                callback?(nil, error)
+            }
+            return
+        }
+        
+        for product in products {
+            if let uncreditedTransaction = Client.store.uncreditedTransaction(for: product) {
+                self.accessedStore.finishTransaction(uncreditedTransaction, success: false)
+            }
+        }
+        
+        DispatchQueue.main.async {
+            callback?(nil, error)
+        }
+    }
+    
+    private func handleSignupSuccessResult(transaction: InAppTransaction?, credentials: Credentials, callback: ((UserAccount?, Error?) -> Void)?) {
+        
+        if let transaction = transaction {
+            self.accessedStore.finishTransaction(transaction, success: true)
+        }
+        
+        self.accessedDatabase.plain.lastSignupEmail = nil
+        self.accessedDatabase.secure.setPublicUsername(credentials.username)
+        self.accessedDatabase.secure.setUsername(credentials.username)
+        self.accessedDatabase.secure.setPassword(credentials.password, for: credentials.username)
+        
+        self.loginWithCredentials(credentials, notificationToSend: .PIAAccountDidSignup, callback: callback)
     }
 
     public func listRenewablePlans(_ callback: (([Plan]?, Error?) -> Void)?) {

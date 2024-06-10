@@ -137,6 +137,30 @@ final class SignupUseCaseTests: XCTestCase {
         XCTAssertEqual(error, .unableToDecodeDataContent)
     }
     
+    func test_signup_completes_with_a_badReceipt_error_when_there_is_a_400_status_code() {
+        // GIVEN Network client completes with an connection error with 400 status code
+        fixture.stubRequestWithError(.connectionError(statusCode: 400, message: ""))
+        instantiateSut()
+        
+        let expectation = expectation(description: "Waiting for signup to complete")
+        
+        // WHEN signup is executed
+        let signUpRequest = Signup(email: "email", receipt: Data())
+        sut.callAsFunction(signup: signUpRequest) { [weak self] result in
+            self?.capturedResult = result
+            expectation.fulfill()
+        }
+        
+        // THEN completes with badReceipt error
+        wait(for: [expectation], timeout: 1.0)
+        guard case .failure(let error) = capturedResult else {
+            XCTFail("Expected failure got success")
+            return
+        }
+        
+        XCTAssertEqual(error, .badReceipt)
+    }
+    
     func test_signup_creates_valid_networkConfiguration() {
         // GIVEN
         let expectedBody = SignupInformation(store: "apple_app_store", 

@@ -41,7 +41,6 @@ class NetworkRequestURLProvider: NetworkRequestURLProviderType {
             return urlComponents?.url
         }
         
-        NSLog(">>> >>> NetworkRequestURLProvider: urlString: \(urlString)")
         return URL(string: urlString)
     }
 }

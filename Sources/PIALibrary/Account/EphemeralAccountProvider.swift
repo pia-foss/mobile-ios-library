@@ -53,45 +53,11 @@ class EphemeralAccountProvider: AccountProvider, ProvidersAccess, InAppAccess {
     }
 
     func login(with request: LoginRequest, _ callback: ((UserAccount?, Error?) -> Void)?) {
-
-        webServices?.token(credentials: request.credentials) { (error) in
-            guard error == nil else {
-                callback?(nil, error)
-                return
-            }
-
-            self.webServices?.info() { (info, error) in
-                guard let info = info else {
-                    callback?(nil, error)
-                    return
-                }
-                let user = UserAccount(credentials: request.credentials, info: info)
-                self.currentUser = user
-                self.isLoggedIn = true
-                callback?(user, nil)
-            }
-        }
+        fatalError("Not implemented")
     }
 
     func login(with receiptRequest: LoginReceiptRequest, _ callback: ((UserAccount?, Error?) -> Void)?) {
-
-        webServices?.token(receipt: receiptRequest.receipt) { (error) in
-            guard error == nil else {
-                callback?(nil, error)
-                return
-            }
-
-            self.webServices?.info() { (info, error) in
-                guard let info = info else {
-                    callback?(nil, error)
-                    return
-                }
-                let user = UserAccount(credentials: Credentials(username: "", password: ""), info: info)
-                self.currentUser = user
-                self.isLoggedIn = true
-                callback?(user, nil)
-            }
-        }
+        fatalError("Not implemented")
     }
 
     func refreshAccountInfo(_ callback: ((AccountInfo?, Error?) -> Void)?) {

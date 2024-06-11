@@ -31,7 +31,7 @@ class AccountDetailsUseCase: AccountDetailsUseCaseType {
                         completion(.failure(.connectionError(statusCode: response?.statusCode, message: "No data found in the response")))
                         return
                     }
-                    NSLog(">>> >>> !!! *** Account details resp data string: \(String(data: respData, encoding: .utf8))")
+                
                     guard let accountInfo = self.accountInforDecoder.decodeAccountInfo(from: respData) else {
                         completion(.failure(.connectionError(statusCode: response?.statusCode, message: "Unable to decode accountInfo")))
                         return

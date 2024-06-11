@@ -30,9 +30,12 @@ class LoginUseCaseTests: XCTestCase {
         
         let receiptData = Data()
         var receiptBodyData: Data {
-            let receiptDict = ["receipt": receiptData.base64EncodedString()]
+            let receiptRequestDict = [
+                "store": "apple_app_store",
+                "receipt": receiptData.base64EncodedString()
+            ]
             
-            return try! JSONEncoder().encode(receiptDict)
+            return try! JSONEncoder().encode(receiptRequestDict)
         }
         
         
@@ -189,7 +192,7 @@ class LoginUseCaseTests: XCTestCase {
         var capturedError: NetworkRequestError? = nil
         
         // WHEN login with receipt
-        sut.login(with: fixture.receiptData.base64EncodedString()) { error in
+        sut.login(with: fixture.receiptData) { error in
             capturedError = error
             expectation.fulfill()
         }
@@ -225,7 +228,7 @@ class LoginUseCaseTests: XCTestCase {
         var capturedError: NetworkRequestError? = nil
         
         // WHEN login with Receipt
-        sut.login(with: fixture.receiptData.base64EncodedString()) { error in
+        sut.login(with: fixture.receiptData) { error in
             capturedError = error
             expectation.fulfill()
         }
@@ -256,7 +259,7 @@ class LoginUseCaseTests: XCTestCase {
         var capturedError: NetworkRequestError? = nil
         
         // WHEN login with Creds
-        sut.login(with: fixture.receiptData.base64EncodedString()) { error in
+        sut.login(with: fixture.receiptData) { error in
             capturedError = error
             expectation.fulfill()
         }

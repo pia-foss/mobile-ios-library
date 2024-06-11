@@ -40,7 +40,7 @@ public protocol VPNProfile: class {
     /**
      Prepares the profile for use, like synchronizing with the current VPN status and making sure that the profile is not corrupt.
      */
-    func    prepare()
+    func prepare()
 
     /**
      Saves the profile to the device with a new configuration.

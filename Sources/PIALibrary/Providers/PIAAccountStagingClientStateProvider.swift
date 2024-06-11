@@ -25,11 +25,8 @@ import account
 @available(tvOS 17.0, *)
 class PIAAccountStagingClientStateProvider : IAccountEndpointProvider {
     func accountEndpoints() -> [AccountEndpoint] {
-        let accountEndpoint = AccountEndpoint(ipOrRootDomain: Client.configuration.baseUrl, isProxy: false, usePinnedCertificate: false, certificateCommonName: nil)
-        NSLog(">>> >>> PIAAccountStaging endpoint: \(accountEndpoint)")
-        print(">>> >>> PIAAccountStaging endpoint: \(accountEndpoint)")
         return [
-            accountEndpoint,
+            AccountEndpoint(ipOrRootDomain: Client.configuration.baseUrl, isProxy: false, usePinnedCertificate: false, certificateCommonName: nil),
         ]
     }
 }

@@ -34,12 +34,6 @@ protocol WebServices: class {
 
     func migrateToken(token: String, _ callback: SuccessLibraryCallback?)
 
-    func token(credentials: Credentials, _ callback: SuccessLibraryCallback?)
-
-    func token(receipt: Data, _ callback: SuccessLibraryCallback?)
-
-    func info(_ callback: LibraryCallback<AccountInfo>?)
-
     func update(credentials: Credentials, resetPassword reset: Bool, email: String, _ callback: SuccessLibraryCallback?)
 
     /// The token to use for protocol authentication.

@@ -206,29 +206,18 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
     }
     
     public func login(with receiptRequest: LoginReceiptRequest, _ callback: ((UserAccount?, Error?) -> Void)?) {
+
         guard !isLoggedIn else {
             preconditionFailure()
         }
-
        
-        loginUseCase.login(with: receiptRequest.receipt.base64EncodedString()) { error in
-            NSLog(">>> >>> LoginUseCase login with receipt error: \(error)")
+        loginUseCase.login(with: receiptRequest.receipt) { error in
             DispatchQueue.main.async {
                 let credentials = Credentials(username: "", password: "")
                 self.handleLoginResult(error: error?.asClientError(), credentials: credentials, callback: callback)
             }
         }
         
-        // TODO: Remove this call to webServices when all the Accounts APIs are implemented (and keep only the one to `loginUseCase`)
-        webServices.token(receipt: receiptRequest.receipt) { (error) in
-            NSLog(">>> >>> WebServices login with receipt: \(receiptRequest.receipt)")
-            NSLog(">>> >>> WebServices login with receipt request error: \(error)")
-            let credentials = Credentials(username: "", password: "")
-            self.handleLoginResult(error: error, credentials: credentials, callback: callback)
-        }
-        
-        
-
     }
 
     public func login(with linkToken: String, _ callback: ((UserAccount?, Error?) -> Void)?) {
@@ -498,7 +487,7 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
         accessedDatabase.plain.lastSignupEmail = request.email
 
         webServices.signup(with: signup) { (credentials, error) in
-            NSLog(">>> >>> Sign up error: \(error) -- credentials: \(credentials)")
+            
             if let urlError = error as? URLError, (urlError.code == .notConnectedToInternet) {
                 callback?(nil, ClientError.internetUnreachable)
                 return

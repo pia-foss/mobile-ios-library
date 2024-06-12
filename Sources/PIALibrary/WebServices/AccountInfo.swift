@@ -23,7 +23,7 @@
 import Foundation
 
 /// The information associated with a `Credentials`.
-public struct AccountInfo: Codable {
+public struct AccountInfo: Codable, Equatable {
 
     /// The linked email address if any.
     public internal(set) var email: String?

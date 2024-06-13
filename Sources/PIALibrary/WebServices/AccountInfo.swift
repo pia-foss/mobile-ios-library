@@ -23,7 +23,7 @@
 import Foundation
 
 /// The information associated with a `Credentials`.
-public struct AccountInfo {
+public struct AccountInfo: Codable, Equatable {
 
     /// The linked email address if any.
     public internal(set) var email: String?
@@ -85,5 +85,18 @@ public struct AccountInfo {
         dateFormatter.timeStyle = .none
         dateFormatter.locale = locale
         return dateFormatter.string(from: self.expirationDate)
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case email = "email"
+        case expirationDate = "expiration_time"
+        case isRecurring = "recurring"
+        case isRenewable = "renewable"
+        case plan = "plan"
+        case username = "username"
+        case productId = "product_id"
+        case canInvite = "can_invite"
+        case shouldPresentExpirationAlert = "expire_alert"
+        case renewUrl = "renew_url"
     }
 }

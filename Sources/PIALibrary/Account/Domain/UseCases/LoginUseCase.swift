@@ -4,7 +4,7 @@ import Foundation
 public protocol LoginUseCaseType {
     typealias Completion = ((NetworkRequestError?) -> Void)
     func login(with credentials: Credentials, completion: @escaping Completion)
-    func login(with receiptBase64: String, completion: @escaping Completion)
+    func login(with receipt: Data, completion: @escaping Completion)
     func loginLink(with email: String, completion: @escaping Completion)
 }
 
@@ -34,11 +34,15 @@ class LoginUseCase: LoginUseCaseType {
         executeNetworkRequest(with: configuration, completion: completion)
     }
     
-    func login(with receiptBase64: String, completion: @escaping Completion) {
+    func login(with receipt: Data, completion: @escaping Completion) {
+        
         var configuration = LoginRequestConfiguration()
-        let bodyDataDict: [String: String] = [
-            "receipt": receiptBase64
+
+        let bodyDataDict = [
+            "store": "apple_app_store",
+            "receipt": receipt.base64EncodedString()
         ]
+        
         
         if let bodyData = try? JSONEncoder().encode(bodyDataDict) {
             configuration.body = bodyData

@@ -26,10 +26,12 @@ import account
 class PIAAccountClientStateProvider : IAccountEndpointProvider {
     func accountEndpoints() -> [AccountEndpoint] {
         let validEndpoints = EndpointManager.shared.availableEndpoints()
+
         var clientEndpoints = [AccountEndpoint]()
         for endpoint in validEndpoints {
             clientEndpoints.append(AccountEndpoint(ipOrRootDomain: endpoint.host, isProxy: endpoint.isProxy, usePinnedCertificate: endpoint.useCertificatePinning, certificateCommonName: endpoint.commonName))
         }
+       
         return clientEndpoints
     }
 }

@@ -25,6 +25,7 @@
 
 #import "CMacros.h"
 
+// FIXME: This method always returns a string no matter if the vpn is connected or not
 NSString *VPNIPAddressFromInterfaces()
 {
     struct ifaddrs *ifAddrs;

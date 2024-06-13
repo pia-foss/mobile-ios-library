@@ -30,7 +30,10 @@ class NetworkConnectionRequestProvider: NetworkConnectionRequestProviderType {
             return nil
         }
         
-        var headers: [String: String] = ["Content-Type": configuration.contentType.rawValue]
+        var headers: [String: String] = [
+            "Content-Type": configuration.contentType.rawValue,
+            "User-Agent": PIAWebServices.userAgent
+        ]
         
         if configuration.inlcudeAuthHeaders {
             guard let apiToken = apiTokenProvider.getAPIToken() else {

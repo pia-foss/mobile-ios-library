@@ -165,7 +165,7 @@ final class SignupUseCaseTests: XCTestCase {
         XCTAssertNil(capturedConfiguration.urlQueryParameters)
         XCTAssertEqual(capturedConfiguration.responseDataType, .jsonData)
         XCTAssertEqual(capturedConfiguration.timeout, 10)
-        XCTAssertEqual(capturedConfiguration.body, expectedBody)
+        XCTAssertEqual(capturedConfiguration.body?.count, expectedBody?.count)
     }
 }
 

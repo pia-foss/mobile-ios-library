@@ -136,8 +136,6 @@ class PIAWebServices: WebServices, ConfigurationAccess {
      The token to use for api authentication.
      */
     var apiToken: String? {
-        let keychain = Keychain()
-        let token = try? keychain.token(for: "API_TOKEN_KEY")
         return self.accountAPI.apiToken()
     }
 
@@ -155,33 +153,6 @@ class PIAWebServices: WebServices, ConfigurationAccess {
         }
     }
 
-    /***
-     Generates a new auth token for the specific user
-     */
-    func token(credentials: Credentials, _ callback: ((Error?) -> Void)?) {
-        self.accountAPI.loginWithCredentials(username: credentials.username,
-                                             password: credentials.password) { [weak self] (errors) in
-            self?.handleLoginResponse(errors: errors, callback: callback, mapError: self?.mapLoginError)
-        }
-    }
-
-    /***
-     Generates a new auth token for the specific user
-     */
-    func token(receipt: Data, _ callback: ((Error?) -> Void)?) {
-        self.accountAPI.loginWithReceipt(receiptBase64: receipt.base64EncodedString()) { [weak self] (errors) in
-            self?.handleLoginResponse(errors: errors, callback: callback, mapError: self?.mapLoginFromReceiptError)
-        }
-    }
-
-    private func handleLoginResponse(errors: [AccountRequestError],  callback: ((Error?) -> Void)?, mapError: ((AccountRequestError) -> (ClientError))? = nil) {
-        if !errors.isEmpty {
-            callback?(mapError?(errors.last!))
-            return
-        }
-
-        callback?(nil)
-    }
 
     private func mapLoginError(_ error: AccountRequestError) -> ClientError {
         switch error.code {
@@ -215,23 +186,23 @@ class PIAWebServices: WebServices, ConfigurationAccess {
         return mapLoginLinkError(error)
     }
 
-    func info(_ callback: ((AccountInfo?, Error?) -> Void)?) {
-        
-        self.accountAPI.accountDetails() { [weak self] (response, errors) in
-            
-            if !errors.isEmpty {
-                callback?(nil, self?.mapAccountDetailsError(errors.last!))
-                return
-            }
-
-            if let response = response {
-                let account = AccountInfo(accountInformation: response)
-                callback?(account, nil)
-            } else {
-                callback?(nil, ClientError.malformedResponseData)
-            }
-        }
-    }
+//    func info(_ callback: ((AccountInfo?, Error?) -> Void)?) {
+//        
+//        self.accountAPI.accountDetails() { [weak self] (response, errors) in
+//            
+//            if !errors.isEmpty {
+//                callback?(nil, self?.mapAccountDetailsError(errors.last!))
+//                return
+//            }
+//
+//            if let response = response {
+//                let account = AccountInfo(accountInformation: response)
+//                callback?(account, nil)
+//            } else {
+//                callback?(nil, ClientError.malformedResponseData)
+//            }
+//        }
+//    }
     
     func update(credentials: Credentials, resetPassword reset: Bool, email: String, _ callback: SuccessLibraryCallback?) {
         if reset {

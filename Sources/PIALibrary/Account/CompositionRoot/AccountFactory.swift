@@ -10,8 +10,13 @@ public class AccountFactory {
         LogoutUseCase(networkClient: NetworkRequestFactory.maketNetworkRequestClient(), apiTokenProvider: makeAPITokenProvider(), vpnTokenProvider: makeVpnTokenProvider(), refreshAuthTokensChecker: makeRefreshAuthTokensChecker())
     }
     
+    public static func makeAccountDetailsUseCase() -> AccountDetailsUseCaseType {
+        
+        AccountDetailsUseCase(networkClient: NetworkRequestFactory.maketNetworkRequestClient(), refreshAuthTokensChecker: makeRefreshAuthTokensChecker(), accountInforDecoder: makeAccountInfoDecoder())
+    }
+    
     static func makeDefaultAccountProvider(with webServices: WebServices? = nil) -> DefaultAccountProvider {
-        DefaultAccountProvider(webServices: webServices, logoutUseCase: makeLogoutUseCase(), loginUseCase: makeLoginUseCase(), apiTokenProvider: makeAPITokenProvider(), vpnTokenProvider: makeVpnTokenProvider())
+        DefaultAccountProvider(webServices: webServices, logoutUseCase: makeLogoutUseCase(), loginUseCase: makeLoginUseCase(), apiTokenProvider: makeAPITokenProvider(), vpnTokenProvider: makeVpnTokenProvider(), accountDetailsUseCase: makeAccountDetailsUseCase())
     }
     
     static func makeRefreshAPITokenUseCase() -> RefreshAPITokenUseCaseType {
@@ -58,6 +63,10 @@ private extension AccountFactory {
     
     static func makeAuthTokenSerializer() -> AuthTokenSerializerType {
         AuthTokenSerializer()
+    }
+    
+    static func makeAccountInfoDecoder() -> AccountInfoDecoderType {
+        AccountInfoDecoder()
     }
     
 }

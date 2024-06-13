@@ -106,10 +106,14 @@ private extension NetworkRequestClient {
         }
     }
     
-    func getEndpoints(for module: NetworkRequestModule) -> [PinningEndpoint] {
-        switch module {
-        case .account: 
+    func getEndpoints(for module: NetworkRequestModule, environment: Client.Environment = Client.environment) -> [PinningEndpoint] {
+        switch (module, environment) {
+        case (.account, .production):
             return endpointManager.availableEndpoints()
+        case (.account, .staging):
+            return [
+                PinningEndpoint(host: Client.configuration.baseUrl, isProxy: false, useCertificatePinning: false)
+            ]
         }
     }
 }

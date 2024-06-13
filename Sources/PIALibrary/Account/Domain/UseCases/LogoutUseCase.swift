@@ -25,7 +25,7 @@ class LogoutUseCase: LogoutUseCaseType {
         
         refreshAuthTokensChecker.refreshIfNeeded { [weak self] refreshTokensError in
             guard let self else { return }
-            
+           
             self.networkClient.executeRequest(with: requestConfiguration) { error, response in
                 self.clearAuthTokens(with: completion)
             }

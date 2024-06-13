@@ -37,14 +37,17 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
     private let apiTokenProvider: APITokenProviderType
     private let vpnTokenProvider: VpnTokenProviderType
     private let accountDetailsUseCase: AccountDetailsUseCaseType
+    private let updateAccountUseCase: UpdateAccountUseCaseType
     
-    init(webServices: WebServices? = nil, logoutUseCase: LogoutUseCaseType, loginUseCase: LoginUseCaseType, signupUseCase: SignupUseCaseType, apiTokenProvider: APITokenProviderType, vpnTokenProvider: VpnTokenProviderType, accountDetailsUseCase: AccountDetailsUseCaseType) {
+
+    init(webServices: WebServices? = nil, logoutUseCase: LogoutUseCaseType, loginUseCase: LoginUseCaseType, signupUseCase: SignupUseCaseType, apiTokenProvider: APITokenProviderType, vpnTokenProvider: VpnTokenProviderType, accountDetailsUseCase: AccountDetailsUseCaseType, updateAccountUseCase: UpdateAccountUseCaseType) {
         self.logoutUseCase = logoutUseCase
         self.loginUseCase = loginUseCase
         self.signupUseCase = signupUseCase
         self.apiTokenProvider = apiTokenProvider
         self.vpnTokenProvider = vpnTokenProvider
         self.accountDetailsUseCase = accountDetailsUseCase
+        self.updateAccountUseCase = updateAccountUseCase
         if let webServices = webServices {
             customWebServices = webServices
         } else {
@@ -340,29 +343,62 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
     }
     
     public func update(with request: UpdateAccountRequest, resetPassword reset: Bool, andPassword password: String, _ callback: ((AccountInfo?, Error?) -> Void)?) {
+        
+        let credentials = Credentials(username: Client.providers.accountProvider.publicUsername ?? "",
+                                      password: password)
+        
+        if reset {
+            updateAccountUseCase.setEmail(email: request.email, resetPassword: reset) { result in
+                DispatchQueue.main.async {
+                    self.handleUpdateAccountResult(result, request: request, shouldUpdatePassword: true, callback: callback)
+                }
+            }
+        } else {
+            updateAccountUseCase.setEmail(username: credentials.username, password: credentials.password, email: request.email, resetPassword: reset) { result in
+                DispatchQueue.main.async {
+                    //We use the email and the password returned by the signup endpoint in the previous step, we don't update the password
+                    self.handleUpdateAccountResult(result, request: request, shouldUpdatePassword: false, callback: callback)
+                }
+                
+            }
+        }
+        
+    }
+    
+    private func handleUpdateAccountResult(_ result: Result<String?,  NetworkRequestError>, request: UpdateAccountRequest, shouldUpdatePassword: Bool,  callback: ((AccountInfo?, Error?) -> Void)?) {
+        switch result {
+        case .failure(let error):
+            callback?(nil, error.asClientError())
+        case .success(let tempPassword):
+            if shouldUpdatePassword {
+                if let newPassword = tempPassword {
+                    Client.configuration.tempAccountPassword = newPassword
+                }
+            }
+            
+            self.handleUpdateAccountSuccessRequest(request, callback: callback)
+        }
+    }
+    
+    private func handleUpdateAccountSuccessRequest(_ request: UpdateAccountRequest, callback: ((AccountInfo?, Error?) -> Void)?) {
+        
         guard let user = currentUser else {
             preconditionFailure()
         }
-        let credentials = Credentials(username: Client.providers.accountProvider.publicUsername ?? "",
-                                      password: password)
-        webServices.update(credentials: credentials, resetPassword: reset, email: request.email) { (error) in
-            guard error == nil else {
-                callback?(nil, error)
-                return
-            }
-
-            guard let newAccountInfo = user.info?.with(email: request.email) else {
-                Macros.postNotification(.PIAAccountDidUpdate)
-                callback?(nil, nil)
-                return
-            }
-
-            self.accessedDatabase.plain.accountInfo = newAccountInfo
-            Macros.postNotification(.PIAAccountDidUpdate, [
-                .accountInfo: newAccountInfo
-            ])
-            callback?(newAccountInfo, nil)
+        
+        guard let newAccountInfo = user.info?.with(email: request.email) else {
+            Macros.postNotification(.PIAAccountDidUpdate)
+            callback?(nil, nil)
+            return
         }
+        
+        self.accessedDatabase.plain.accountInfo = newAccountInfo
+        Macros.postNotification(.PIAAccountDidUpdate, [
+            .accountInfo: newAccountInfo
+        ])
+        
+        callback?(newAccountInfo, nil)
+        
     }
     
     public func logout(_ callback: SuccessLibraryCallback?) {

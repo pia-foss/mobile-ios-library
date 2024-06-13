@@ -10,7 +10,10 @@ struct RefreshApiTokenRequestConfiguration: NetworkRequestConfigurationType {
     let inlcudeAuthHeaders: Bool = true
     let urlQueryParameters: [String : String]? = nil
     let responseDataType: NWDataResponseType = .jsonData
+    
     let body: Data? = nil
+    var otherHeaders: [String : String]? = nil
+    
     let timeout: TimeInterval = 10
     let requestQueue: DispatchQueue? = DispatchQueue(label: "refresh.api_token.queue")
 }

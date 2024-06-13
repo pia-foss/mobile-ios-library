@@ -24,7 +24,6 @@ class NetworkConnectionRequestProvider: NetworkConnectionRequestProviderType {
         guard let requestURL = networkRequestURLProvider.getURL(for: endpoint, path: configuration.path, query: configuration.urlQueryParameters) else {
             return nil
         }
-
         
         guard let anchorCertificate = AnchorCertificateProvider.getAnchorCertificate() else {
             return nil
@@ -40,6 +39,10 @@ class NetworkConnectionRequestProvider: NetworkConnectionRequestProviderType {
                 return nil
             }
             headers["Authorization"] = "Token \(apiToken.apiToken)"
+        }
+        
+        if let otherHeaders = configuration.otherHeaders {
+            headers.merge(otherHeaders) { $1 }
         }
         
         let connectionConfiguration = NWConnectionConfiguration(url: requestURL, method: configuration.httpMethod, headers: headers, body: configuration.body, certificateValidation: makeCertificateValidation(for: endpoint, anchorCertificate: anchorCertificate), dataResponseType: configuration.responseDataType, timeout: configuration.timeout, queue: configuration.requestQueue)

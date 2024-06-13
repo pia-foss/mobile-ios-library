@@ -14,6 +14,7 @@ struct NetworkRequestConfigurationMock: NetworkRequestConfigurationType {
     var urlQueryParameters: [String : String]? = nil
     var responseDataType: NWHttpConnection.NWDataResponseType = .jsonData
     var body: Data? = nil
+    var otherHeaders: [String : String]? = nil
     var timeout: TimeInterval = 1
     var requestQueue: DispatchQueue? = nil
     

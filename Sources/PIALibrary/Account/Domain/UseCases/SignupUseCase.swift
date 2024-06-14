@@ -22,9 +22,9 @@ class SignupUseCase: SignupUseCaseType {
         networkClient.executeRequest(with: configuration) { [weak self] error, dataResponse in
             guard let self else { return }
             if let error {
-                completion(.failure(error))
+                handleErrorResponse(error, completion: completion)
             } else if let dataResponse {
-                self.handleDataResponse(dataResponse, completion: completion)
+                handleDataResponse(dataResponse, completion: completion)
             } else {
                 completion(.failure(NetworkRequestError.allConnectionAttemptsFailed()))
             }
@@ -45,6 +45,14 @@ private extension SignupUseCase {
         }
         
         completion(.success(dto.toDomainModel()))
+    }
+    
+    private func handleErrorResponse(_ error: NetworkRequestError, completion: @escaping SignupUseCaseType.Completion) {
+        if case .connectionError(statusCode: let statusCode, message: let message) = error, statusCode == 400 {
+            completion(.failure(NetworkRequestError.badReceipt))
+            return
+        }
+        completion(.failure(error))
     }
 }
 

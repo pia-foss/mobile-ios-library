@@ -36,6 +36,9 @@ struct ClientErrorMapper {
             
         case .unableToDecodeVpnToken:
             return .malformedResponseData
+            
+        case .badReceipt:
+            return .badReceipt
         }
     }
     

@@ -16,17 +16,17 @@ public class AccountFactory {
     }
     
     public static func makeSignupUseCase() -> SignupUseCaseType {
-        SignupUseCase(networkClient: NetworkRequestFactory.maketNetworkRequestClient(), 
+        SignupUseCase(networkClient: NetworkRequestFactory.maketNetworkRequestClient(),
                       signupInformationDataCoverter: SignupInformationDataCoverter())
     }
-
+    
     public static func makeUpdateAccountUseCase() -> UpdateAccountUseCaseType {
         UpdateAccountUseCase(networkClient: NetworkRequestFactory.maketNetworkRequestClient(), refreshAuthTokensChecker: makeRefreshAuthTokensChecker())
     }
     
     static func makeDefaultAccountProvider(with webServices: WebServices? = nil) -> DefaultAccountProvider {
         DefaultAccountProvider(webServices: webServices, logoutUseCase: makeLogoutUseCase(), loginUseCase: makeLoginUseCase(), signupUseCase: makeSignupUseCase(), apiTokenProvider: makeAPITokenProvider(), vpnTokenProvider: makeVpnTokenProvider(), accountDetailsUseCase: makeAccountDetailsUseCase(), updateAccountUseCase: makeUpdateAccountUseCase())
-
+        
     }
     
     static func makeRefreshAPITokenUseCase() -> RefreshAPITokenUseCaseType {
@@ -47,7 +47,7 @@ public class AccountFactory {
     }
     
     static func makeRefreshAuthTokensChecker() -> RefreshAuthTokensCheckerType {
-        RefreshAuthTokensChecker(apiTokenProvider: makeAPITokenProvider(), vpnTokenProvier: makeVpnTokenProvider(), refreshAPITokenUseCase: makeRefreshAPITokenUseCase(), refreshVpnTokenUseCase: makeRefreshVpnTokenUseCase())
+        refreshAuthTokensCheckerShared
     }
     
     public static func makeClientStatusUseCase() -> ClientStatusUseCaseType {
@@ -69,6 +69,10 @@ private extension AccountFactory {
     
     static var secureStoreShared: SecureStore = {
         KeychainStore(team: Client.Configuration.teamId, group: Client.Configuration.appGroup)
+    }()
+    
+    static var refreshAuthTokensCheckerShared: RefreshAuthTokensCheckerType = {
+        RefreshAuthTokensChecker(apiTokenProvider: makeAPITokenProvider(), vpnTokenProvier: makeVpnTokenProvider(), refreshAPITokenUseCase: makeRefreshAPITokenUseCase(), refreshVpnTokenUseCase: makeRefreshVpnTokenUseCase())
     }()
     
     static func makeSecureStore() -> SecureStore {

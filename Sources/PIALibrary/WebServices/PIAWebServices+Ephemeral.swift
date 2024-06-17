@@ -48,21 +48,6 @@ extension PIAWebServices {
                 }
             }
         }
-                
-//        self.accountAPI.clientStatus { (information, errors) in
-//            DispatchQueue.main.async {
-//                if !errors.isEmpty {
-//                    callback?(nil, ClientError.internetUnreachable)
-//                    return
-//                }
-//
-//                if let information = information {
-//                    callback?(ConnectivityStatus(ipAddress: information.ip, isVPN: information.connected), nil)
-//                } else {
-//                    callback?(nil, ClientError.malformedResponseData)
-//                }
-//            }
-//        }
         
     }
     

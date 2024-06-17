@@ -14,6 +14,7 @@ public enum NetworkRequestError: Error, Equatable {
     case connectionCompletedWithNoResponse
     case badReceipt
     case unknown(message: String? = nil)
+    case unableToDecodeData
     
     func asClientError() -> ClientError {
         ClientErrorMapper.map(networkRequestError: self)

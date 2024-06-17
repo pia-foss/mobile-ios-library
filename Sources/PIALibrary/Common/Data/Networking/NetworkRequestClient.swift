@@ -43,6 +43,11 @@ private extension NetworkRequestClient {
     /// Serial execution of all the connections until one succeeds or completes with an error when all connection attempts fail
     func executeRecursivelyUntilSuccess(connections:  [NWHttpConnectionType], completion: @escaping NetworkRequestClientType.Completion) {
         
+        guard !connections.isEmpty else {
+            completion(.allConnectionAttemptsFailed(statusCode: nil), nil)
+            return
+        }
+        
         var remainingConnections = connections
         let nextConnection = remainingConnections.removeFirst()
         

@@ -49,6 +49,10 @@ public class AccountFactory {
     static func makeRefreshAuthTokensChecker() -> RefreshAuthTokensCheckerType {
         RefreshAuthTokensChecker(apiTokenProvider: makeAPITokenProvider(), vpnTokenProvier: makeVpnTokenProvider(), refreshAPITokenUseCase: makeRefreshAPITokenUseCase(), refreshVpnTokenUseCase: makeRefreshVpnTokenUseCase())
     }
+    
+    public static func makeClientStatusUseCase() -> ClientStatusUseCaseType {
+        ClientStatusUseCase(networkClient: NetworkRequestFactory.maketNetworkRequestClient(), refreshAuthTokensChecker: makeRefreshAuthTokensChecker(), clientStatusDecoder: makeClientStatusInfoDecoder())
+    }
 }
 
 // MARK: - Private
@@ -77,6 +81,10 @@ private extension AccountFactory {
     
     static func makeAccountInfoDecoder() -> AccountInfoDecoderType {
         AccountInfoDecoder()
+    }
+    
+    static func makeClientStatusInfoDecoder() -> ClientStatusInformationDecoderType {
+        ClientStatusInformationDecoder()
     }
     
 }

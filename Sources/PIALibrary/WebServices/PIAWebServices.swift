@@ -40,9 +40,11 @@ class PIAWebServices: WebServices, ConfigurationAccess {
     let accountAPI: IOSAccountAPI!
     let csiAPI: CSIAPI!
     let csiProtocolInformationProvider = PIACSIProtocolInformationProvider()
+    let clientStatusUseCase: ClientStatusUseCaseType
     
     
     init() {
+        self.clientStatusUseCase = AccountFactory.makeClientStatusUseCase()
         let rsa4096Certificate = Client.configuration.rsa4096Certificate
         let endpointsProvider: IRegionEndpointProvider = Client.environment == .staging ? PIARegionStagingClientStateProvider()
         : PIARegionClientStateProvider()

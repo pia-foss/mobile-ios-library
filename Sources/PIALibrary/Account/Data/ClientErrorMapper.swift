@@ -39,6 +39,9 @@ struct ClientErrorMapper {
             
         case .badReceipt:
             return .badReceipt
+            
+        case .unableToDecodeData:
+            return .malformedResponseData
         }
     }
     

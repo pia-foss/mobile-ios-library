@@ -127,6 +127,7 @@ class ConnectivityDaemon: Daemon, ConfigurationAccess, DatabaseAccess, Preferenc
 
         isCheckingConnectivity = true
         accessedWebServices.taskForConnectivityCheck { (connectivity, error) in
+    
             self.isCheckingConnectivity = false
 
             guard let connectivity = connectivity else {

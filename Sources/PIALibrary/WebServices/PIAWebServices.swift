@@ -185,24 +185,6 @@ class PIAWebServices: WebServices, ConfigurationAccess {
     private func mapAccountDetailsError(_ error:AccountRequestError) -> ClientError {
         return mapLoginLinkError(error)
     }
-
-//    func info(_ callback: ((AccountInfo?, Error?) -> Void)?) {
-//        
-//        self.accountAPI.accountDetails() { [weak self] (response, errors) in
-//            
-//            if !errors.isEmpty {
-//                callback?(nil, self?.mapAccountDetailsError(errors.last!))
-//                return
-//            }
-//
-//            if let response = response {
-//                let account = AccountInfo(accountInformation: response)
-//                callback?(account, nil)
-//            } else {
-//                callback?(nil, ClientError.malformedResponseData)
-//            }
-//        }
-//    }
     
     func update(credentials: Credentials, resetPassword reset: Bool, email: String, _ callback: SuccessLibraryCallback?) {
         if reset {

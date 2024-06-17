@@ -1,21 +1,21 @@
 
-
 import Foundation
 import NWHttpConnection
 
-struct LogoutRequestConfiguration: NetworkRequestConfigurationType {
+struct UpdateAccountRequestConfiguration: NetworkRequestConfigurationType {
     
     let networkRequestModule: NetworkRequestModule = .account
-    let path: RequestAPI.Path = .logout
+    let path: RequestAPI.Path = .setEmail
     let httpMethod: NWHttpConnection.NWConnectionHTTPMethod = .post
     let contentType: NetworkRequestContentType = .json
-    let inlcudeAuthHeaders: Bool = true
-    let urlQueryParameters: [String : String]? = nil
+    var inlcudeAuthHeaders: Bool = true
+    var urlQueryParameters: [String : String]? = nil
     let responseDataType: NWDataResponseType = .jsonData
     
     var body: Data? = nil
     var otherHeaders: [String : String]? = nil
     
     let timeout: TimeInterval = 10
-    let requestQueue: DispatchQueue? = DispatchQueue(label: "logout_request.queue")
+    let requestQueue: DispatchQueue? = DispatchQueue(label: "updateAccount_request.queue")
 }
+

@@ -68,6 +68,8 @@ class RefreshAuthTokensCheckerTests: XCTestCase {
             expectation.fulfill()
         }
         
+        wait(for: [expectation], timeout: 3)
+        
         // THEN both tokens are refreshed
         XCTAssertEqual(fixture.refreshAPITokenUseCaseMock.callAsFunctionCalledAttempt, 1)
         XCTAssertEqual(fixture.refreshVpnTokenUseCaseMock.callAsFunctionCalledAttempt, 1)
@@ -75,7 +77,6 @@ class RefreshAuthTokensCheckerTests: XCTestCase {
         // AND no error is returned
         XCTAssertNil(capturedError)
         
-        wait(for: [expectation], timeout: 3)
     }
     
     func testRefreshTokensWithError_WhenBothExpireIn10Days() {
@@ -97,6 +98,8 @@ class RefreshAuthTokensCheckerTests: XCTestCase {
             expectation.fulfill()
         }
         
+        wait(for: [expectation], timeout: 3)
+        
         // THEN only the request to refresh the api token is called
         XCTAssertEqual(fixture.refreshAPITokenUseCaseMock.callAsFunctionCalledAttempt, 1)
         XCTAssertEqual(fixture.refreshVpnTokenUseCaseMock.callAsFunctionCalledAttempt, 0)
@@ -104,7 +107,6 @@ class RefreshAuthTokensCheckerTests: XCTestCase {
         // AND an error is returned
         XCTAssertNotNil(capturedError)
         
-        wait(for: [expectation], timeout: 3)
     }
     
     
@@ -124,6 +126,8 @@ class RefreshAuthTokensCheckerTests: XCTestCase {
             expectation.fulfill()
         }
         
+        wait(for: [expectation], timeout: 3)
+        
         // THEN the tokens don't get refreshed
         XCTAssertEqual(fixture.refreshAPITokenUseCaseMock.callAsFunctionCalledAttempt, 0)
         XCTAssertEqual(fixture.refreshVpnTokenUseCaseMock.callAsFunctionCalledAttempt, 0)
@@ -131,7 +135,6 @@ class RefreshAuthTokensCheckerTests: XCTestCase {
         // AND no error is returned
         XCTAssertNil(capturedError)
         
-        wait(for: [expectation], timeout: 3)
     }
     
     func testRefreshTokens_WhenAPITokenIsAboutExpiring() {
@@ -151,6 +154,8 @@ class RefreshAuthTokensCheckerTests: XCTestCase {
             expectation.fulfill()
         }
         
+        wait(for: [expectation], timeout: 3)
+        
         // THEN Only the API token is refreshed
         XCTAssertEqual(fixture.refreshAPITokenUseCaseMock.callAsFunctionCalledAttempt, 1)
         XCTAssertEqual(fixture.refreshVpnTokenUseCaseMock.callAsFunctionCalledAttempt, 0)
@@ -158,7 +163,6 @@ class RefreshAuthTokensCheckerTests: XCTestCase {
         // AND no error is returned
         XCTAssertNil(capturedError)
         
-        wait(for: [expectation], timeout: 3)
     }
     
     func testRefreshTokens_WhenVpnTokenIsAboutExpiring() {
@@ -178,6 +182,8 @@ class RefreshAuthTokensCheckerTests: XCTestCase {
             expectation.fulfill()
         }
         
+        wait(for: [expectation], timeout: 3)
+        
         // THEN Only the Vpn token is refreshed
         XCTAssertEqual(fixture.refreshAPITokenUseCaseMock.callAsFunctionCalledAttempt, 0)
         XCTAssertEqual(fixture.refreshVpnTokenUseCaseMock.callAsFunctionCalledAttempt, 1)
@@ -185,7 +191,6 @@ class RefreshAuthTokensCheckerTests: XCTestCase {
         // AND no error is returned
         XCTAssertNil(capturedError)
         
-        wait(for: [expectation], timeout: 3)
     }
     
     func testRefreshTokens_WhenBothTokensHaveExpired() {
@@ -204,14 +209,14 @@ class RefreshAuthTokensCheckerTests: XCTestCase {
             expectation.fulfill()
         }
         
+        wait(for: [expectation], timeout: 3)
+        
         // THEN both tokens are refreshed
         XCTAssertEqual(fixture.refreshAPITokenUseCaseMock.callAsFunctionCalledAttempt, 1)
         XCTAssertEqual(fixture.refreshVpnTokenUseCaseMock.callAsFunctionCalledAttempt, 1)
         
         // AND no error is returned
         XCTAssertNil(capturedError)
-        
-        wait(for: [expectation], timeout: 3)
     }
     
     func testRefreshTokens_WhenNoneOfTheTokensAreFound() {
@@ -230,6 +235,8 @@ class RefreshAuthTokensCheckerTests: XCTestCase {
             expectation.fulfill()
         }
         
+        wait(for: [expectation], timeout: 3)
+        
         // THEN both tokens are refreshed
         XCTAssertEqual(fixture.refreshAPITokenUseCaseMock.callAsFunctionCalledAttempt, 1)
         XCTAssertEqual(fixture.refreshVpnTokenUseCaseMock.callAsFunctionCalledAttempt, 1)
@@ -237,7 +244,32 @@ class RefreshAuthTokensCheckerTests: XCTestCase {
         // AND no error is returned
         XCTAssertNil(capturedError)
         
+    }
+    
+    func test_callRefresh_when_already_refreshing() {
+
+        instantiateSut()
+        // GIVEN that API request to refresh the tokens has already been called
+        sut.isRefreshing = true
+        
+        let expectation = expectation(description: "Refresh call is finished")
+        var capturedError: NetworkRequestError? = nil
+        
+        // WHEN calling refresh if needed
+        sut.refreshIfNeeded() { error in
+            capturedError = error
+            expectation.fulfill()
+        }
+        
         wait(for: [expectation], timeout: 3)
+        
+        // THEN NONE of the tokens are refreshed again
+        XCTAssertEqual(fixture.refreshAPITokenUseCaseMock.callAsFunctionCalledAttempt, 0)
+        XCTAssertEqual(fixture.refreshVpnTokenUseCaseMock.callAsFunctionCalledAttempt, 0)
+        
+        // AND no error is returned
+        XCTAssertNil(capturedError)
+
     }
     
 }

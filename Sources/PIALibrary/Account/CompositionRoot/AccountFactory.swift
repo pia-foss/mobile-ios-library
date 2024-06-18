@@ -24,8 +24,12 @@ public class AccountFactory {
         UpdateAccountUseCase(networkClient: NetworkRequestFactory.maketNetworkRequestClient(), refreshAuthTokensChecker: makeRefreshAuthTokensChecker())
     }
     
+    static func makePaymentUseCase() -> PaymentUseCaseType {
+        PaymentUseCase(networkClient: NetworkRequestFactory.maketNetworkRequestClient(), paymentInformationDataConverter: makePaymentInformationDataConverter())
+    }
+    
     static func makeDefaultAccountProvider(with webServices: WebServices? = nil) -> DefaultAccountProvider {
-        DefaultAccountProvider(webServices: webServices, logoutUseCase: makeLogoutUseCase(), loginUseCase: makeLoginUseCase(), signupUseCase: makeSignupUseCase(), apiTokenProvider: makeAPITokenProvider(), vpnTokenProvider: makeVpnTokenProvider(), accountDetailsUseCase: makeAccountDetailsUseCase(), updateAccountUseCase: makeUpdateAccountUseCase())
+        DefaultAccountProvider(webServices: webServices, logoutUseCase: makeLogoutUseCase(), loginUseCase: makeLoginUseCase(), signupUseCase: makeSignupUseCase(), apiTokenProvider: makeAPITokenProvider(), vpnTokenProvider: makeVpnTokenProvider(), accountDetailsUseCase: makeAccountDetailsUseCase(), updateAccountUseCase: makeUpdateAccountUseCase(), paymentUseCase: makePaymentUseCase())
         
     }
     
@@ -89,6 +93,10 @@ private extension AccountFactory {
     
     static func makeClientStatusInfoDecoder() -> ClientStatusInformationDecoderType {
         ClientStatusInformationDecoder()
+    }
+    
+    static func makePaymentInformationDataConverter() -> PaymentInformationDataConverterType {
+        PaymentInformationDataConverter()
     }
     
 }

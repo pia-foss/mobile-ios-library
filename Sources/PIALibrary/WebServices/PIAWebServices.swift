@@ -363,27 +363,27 @@ class PIAWebServices: WebServices, ConfigurationAccess {
         return ""
     }
 
-    func processPayment(credentials: Credentials, request: Payment, _ callback: SuccessLibraryCallback?) {
-        var marketingJSON = ""
-        if let json = request.marketing as? JSON {
-            marketingJSON = stringify(json: json)
-        }
-        
-        var debugJSON = ""
-        if let json = request.debug as? JSON {
-            debugJSON = stringify(json: json)
-        }
-        
-        let info = IOSPaymentInformation(store: Self.store, receipt: request.receipt.base64EncodedString(), marketing: marketingJSON, debug: debugJSON)
-
-        self.accountAPI.payment(username: credentials.username, password: credentials.password, information: info) { (errors) in
-            if !errors.isEmpty {
-                callback?(ClientError.badReceipt)
-                return
-            }
-            callback?(nil)
-        }
-    }
+//    func processPayment(credentials: Credentials, request: Payment, _ callback: SuccessLibraryCallback?) {
+//        var marketingJSON = ""
+//        if let json = request.marketing as? JSON {
+//            marketingJSON = stringify(json: json)
+//        }
+//        
+//        var debugJSON = ""
+//        if let json = request.debug as? JSON {
+//            debugJSON = stringify(json: json)
+//        }
+//        
+//        let info = IOSPaymentInformation(store: Self.store, receipt: request.receipt.base64EncodedString(), marketing: marketingJSON, debug: debugJSON)
+//
+//        self.accountAPI.payment(username: credentials.username, password: credentials.password, information: info) { (errors) in
+//            if !errors.isEmpty {
+//                callback?(ClientError.badReceipt)
+//                return
+//            }
+//            callback?(nil)
+//        }
+//    }
     #endif
     
     func downloadServers(_ callback: ((ServersBundle?, Error?) -> Void)?) {

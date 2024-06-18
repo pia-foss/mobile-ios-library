@@ -38,9 +38,10 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
     private let vpnTokenProvider: VpnTokenProviderType
     private let accountDetailsUseCase: AccountDetailsUseCaseType
     private let updateAccountUseCase: UpdateAccountUseCaseType
+    private let paymentUseCase: PaymentUseCaseType
     
 
-    init(webServices: WebServices? = nil, logoutUseCase: LogoutUseCaseType, loginUseCase: LoginUseCaseType, signupUseCase: SignupUseCaseType, apiTokenProvider: APITokenProviderType, vpnTokenProvider: VpnTokenProviderType, accountDetailsUseCase: AccountDetailsUseCaseType, updateAccountUseCase: UpdateAccountUseCaseType) {
+    init(webServices: WebServices? = nil, logoutUseCase: LogoutUseCaseType, loginUseCase: LoginUseCaseType, signupUseCase: SignupUseCaseType, apiTokenProvider: APITokenProviderType, vpnTokenProvider: VpnTokenProviderType, accountDetailsUseCase: AccountDetailsUseCaseType, updateAccountUseCase: UpdateAccountUseCaseType, paymentUseCase: PaymentUseCaseType) {
         self.logoutUseCase = logoutUseCase
         self.loginUseCase = loginUseCase
         self.signupUseCase = signupUseCase
@@ -48,6 +49,7 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
         self.vpnTokenProvider = vpnTokenProvider
         self.accountDetailsUseCase = accountDetailsUseCase
         self.updateAccountUseCase = updateAccountUseCase
+        self.paymentUseCase = paymentUseCase
         if let webServices = webServices {
             customWebServices = webServices
         } else {
@@ -620,7 +622,8 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
             return
         }
         
-        webServices.processPayment(credentials: user.credentials, request: payment) { (error) in
+        paymentUseCase.processPayment(with: user.credentials, request: payment) { (error) in
+            NSLog(">>> >>> DefaultAccountProvider: process payment error: \(error)")
             if let _ = error {
                 callback?(nil, error)
                 return

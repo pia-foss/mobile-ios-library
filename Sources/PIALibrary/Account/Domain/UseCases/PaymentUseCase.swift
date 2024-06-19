@@ -1,5 +1,8 @@
 
 import Foundation
+import SwiftyBeaver
+
+private let log = SwiftyBeaver.self
 
 protocol PaymentUseCaseType {
     typealias Completion = ((NetworkRequestError?) -> Void)
@@ -28,11 +31,13 @@ class PaymentUseCase: PaymentUseCaseType {
         
         networkClient.executeRequest(with: configuration) { [weak self] error, dataResponse in
             guard let self else { return }
-            NSLog(">>> >>> Execute payment request error: \(error) -- dataResponse: \(dataResponse)")
+            
+            log.debug("PaymentUseCase: request executed with status code: \(dataResponse?.statusCode)")
+            
             if let error {
+                log.debug("PaymentUseCase: request executed with error: \(error)")
                 self.handleErrorResponse(error, completion: completion)
             } else {
-                NSLog(">>> >>> Execute payment response: \(dataResponse)")
                 completion(nil)
             }
         }

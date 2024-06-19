@@ -39,9 +39,10 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
     private let accountDetailsUseCase: AccountDetailsUseCaseType
     private let updateAccountUseCase: UpdateAccountUseCaseType
     private let paymentUseCase: PaymentUseCaseType
+    private let subscriptionsUseCase: SubscriptionsUseCaseType
     
 
-    init(webServices: WebServices? = nil, logoutUseCase: LogoutUseCaseType, loginUseCase: LoginUseCaseType, signupUseCase: SignupUseCaseType, apiTokenProvider: APITokenProviderType, vpnTokenProvider: VpnTokenProviderType, accountDetailsUseCase: AccountDetailsUseCaseType, updateAccountUseCase: UpdateAccountUseCaseType, paymentUseCase: PaymentUseCaseType) {
+    init(webServices: WebServices? = nil, logoutUseCase: LogoutUseCaseType, loginUseCase: LoginUseCaseType, signupUseCase: SignupUseCaseType, apiTokenProvider: APITokenProviderType, vpnTokenProvider: VpnTokenProviderType, accountDetailsUseCase: AccountDetailsUseCaseType, updateAccountUseCase: UpdateAccountUseCaseType, paymentUseCase: PaymentUseCaseType, subscriptionsUseCase: SubscriptionsUseCaseType) {
         self.logoutUseCase = logoutUseCase
         self.loginUseCase = loginUseCase
         self.signupUseCase = signupUseCase
@@ -50,6 +51,7 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
         self.accountDetailsUseCase = accountDetailsUseCase
         self.updateAccountUseCase = updateAccountUseCase
         self.paymentUseCase = paymentUseCase
+        self.subscriptionsUseCase = subscriptionsUseCase
         if let webServices = webServices {
             customWebServices = webServices
         } else {
@@ -446,22 +448,26 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
     public func subscriptionInformation(_ callback: LibraryCallback<AppStoreInformation>?) {
         log.debug("Fetching available product keys...")
         
-        let receipt = accessedStore.paymentReceipt
-        
-        webServices.subscriptionInformation(with: receipt, { appStoreInformation, error in
-        
-            guard error == nil else {
-                callback?(nil, error)
-                return
+        subscriptionsUseCase.callAsFunction(receiptBase64: nil) { result in
+            switch result {
+            case .failure(let error):
+                log.debug("SubscriptionsUseCase executed with error: \(error)")
+                DispatchQueue.main.async {
+                    callback?(nil, error.asClientError())
+                }
+            case .success(let appStoreInformation):
+                DispatchQueue.main.async {
+                    if let info = appStoreInformation {
+                        callback?(info, nil)
+                    } else {
+                        log.debug("SubscriptionUseCase executed without error but unable to decode app store information")
+                        callback?(nil, ClientError.malformedResponseData)
+                    }
+                }
             }
             
-            if let appStoreInformation = appStoreInformation {
-                callback?(appStoreInformation, nil)
-            } else {
-                callback?(nil, ClientError.malformedResponseData)
-            }
-
-        })
+        }
+        
     }
     
     public func listPlanProducts(_ callback: (([Plan : InAppProduct]?, Error?) -> Void)?) {
@@ -623,15 +629,22 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
         }
         
         paymentUseCase.processPayment(with: user.credentials, request: payment) { (error) in
-            NSLog(">>> >>> DefaultAccountProvider: process payment error: \(error)")
-            if let _ = error {
-                callback?(nil, error)
-                return
+            
+            log.debug("Payment processed with error: \(error)")
+            
+            DispatchQueue.main.async {
+                if let error {
+                    callback?(nil, error)
+                    return
+                }
+                
+                if let transaction = request.transaction {
+                    self.accessedStore.finishTransaction(transaction, success: true)
+                }
+                
+                Macros.postNotification(.PIAAccountDidRenew)
             }
-            if let transaction = request.transaction {
-                self.accessedStore.finishTransaction(transaction, success: true)
-            }
-            Macros.postNotification(.PIAAccountDidRenew)
+            
             
             self.accountDetailsUseCase() { result in
                 switch result {

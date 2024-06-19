@@ -28,8 +28,23 @@ public class AccountFactory {
         PaymentUseCase(networkClient: NetworkRequestFactory.maketNetworkRequestClient(), paymentInformationDataConverter: makePaymentInformationDataConverter())
     }
     
+    static func makeSubscriptionsUseCase() -> SubscriptionsUseCaseType {
+        SubscriptionsUseCase(networkClient: NetworkRequestFactory.maketNetworkRequestClient(), refreshAuthTokensChecker: makeRefreshAuthTokensChecker())
+    }
+    
     static func makeDefaultAccountProvider(with webServices: WebServices? = nil) -> DefaultAccountProvider {
-        DefaultAccountProvider(webServices: webServices, logoutUseCase: makeLogoutUseCase(), loginUseCase: makeLoginUseCase(), signupUseCase: makeSignupUseCase(), apiTokenProvider: makeAPITokenProvider(), vpnTokenProvider: makeVpnTokenProvider(), accountDetailsUseCase: makeAccountDetailsUseCase(), updateAccountUseCase: makeUpdateAccountUseCase(), paymentUseCase: makePaymentUseCase())
+        DefaultAccountProvider(
+            webServices: webServices,
+            logoutUseCase: makeLogoutUseCase(),
+            loginUseCase: makeLoginUseCase(),
+            signupUseCase: makeSignupUseCase(),
+            apiTokenProvider: makeAPITokenProvider(),
+            vpnTokenProvider: makeVpnTokenProvider(),
+            accountDetailsUseCase: makeAccountDetailsUseCase(),
+            updateAccountUseCase: makeUpdateAccountUseCase(),
+            paymentUseCase: makePaymentUseCase(),
+            subscriptionsUseCase: makeSubscriptionsUseCase()
+        )
         
     }
     

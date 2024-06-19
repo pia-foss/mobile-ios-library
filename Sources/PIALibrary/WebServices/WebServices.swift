@@ -56,13 +56,7 @@ protocol WebServices: class {
     
     #if os(iOS) || os(tvOS)
     func signup(with request: Signup, _ callback: LibraryCallback<Credentials>?)
-
-//    func processPayment(credentials: Credentials, request: Payment, _ callback: SuccessLibraryCallback?)
     #endif
-
-    // MARK: Store
-    
-    func subscriptionInformation(with receipt: Data?, _ callback: LibraryCallback<AppStoreInformation>?)
 
     // MARK: Ephemeral
 

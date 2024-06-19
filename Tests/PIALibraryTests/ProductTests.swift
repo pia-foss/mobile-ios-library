@@ -36,10 +36,6 @@ class ProductTests: XCTestCase {
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-    
-    func testPlans() {
-        __testRetrieveSubscriptionPlans(webServices: PIAWebServices())
-    }
 
     func testMockProductIdentifiers() {
         let expUpdate = expectation(description: "productIdentifiers")
@@ -131,36 +127,7 @@ class ProductTests: XCTestCase {
         
         waitForExpectations(timeout: 5.0, handler: nil)
         
-
     }
     
-    private func __testRetrieveSubscriptionPlans(webServices: PIAWebServices) {
-        let exp = expectation(description: "subscription.plans")
-        
-        webServices.subscriptionInformation(with: nil) { subscriptionInfo, error in
-            
-            if let _ = error {
-                print("Request error: \(error!)")
-                XCTAssert(false)
-                exp.fulfill()
-                return
-            }
-            
-            if let subscriptionInfo = subscriptionInfo,
-                subscriptionInfo.products.count > 0 {
-                XCTAssertEqual(subscriptionInfo.products.count, self.subscriptionProductIds.count)
-                XCTAssertEqual(subscriptionInfo.products.first!.identifier, self.subscriptionProductIds.first!)
-                XCTAssertEqual(subscriptionInfo.products.last!.identifier, self.subscriptionProductIds.last!)
-                exp.fulfill()
-            } else {
-                XCTAssert(error as? ClientError != ClientError.malformedResponseData, "malformedResponseData")
-                XCTAssert(false)
-                exp.fulfill()
-            }
-            
-        }
-        waitForExpectations(timeout: 5.0, handler: nil)
-        
-    }
     
 }

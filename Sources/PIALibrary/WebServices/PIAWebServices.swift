@@ -363,27 +363,6 @@ class PIAWebServices: WebServices, ConfigurationAccess {
         return ""
     }
 
-//    func processPayment(credentials: Credentials, request: Payment, _ callback: SuccessLibraryCallback?) {
-//        var marketingJSON = ""
-//        if let json = request.marketing as? JSON {
-//            marketingJSON = stringify(json: json)
-//        }
-//        
-//        var debugJSON = ""
-//        if let json = request.debug as? JSON {
-//            debugJSON = stringify(json: json)
-//        }
-//        
-//        let info = IOSPaymentInformation(store: Self.store, receipt: request.receipt.base64EncodedString(), marketing: marketingJSON, debug: debugJSON)
-//
-//        self.accountAPI.payment(username: credentials.username, password: credentials.password, information: info) { (errors) in
-//            if !errors.isEmpty {
-//                callback?(ClientError.badReceipt)
-//                return
-//            }
-//            callback?(nil)
-//        }
-//    }
     #endif
     
     func downloadServers(_ callback: ((ServersBundle?, Error?) -> Void)?) {
@@ -423,39 +402,7 @@ class PIAWebServices: WebServices, ConfigurationAccess {
         }
     }
     
-    // MARK: Store
-    func subscriptionInformation(with receipt: Data?, _ callback: LibraryCallback<AppStoreInformation>?) {
-        self.accountAPI.subscriptions(receipt: nil) { (response, errors) in
-            if !errors.isEmpty {
-                callback?(nil, errors.last?.code == 400 ? ClientError.badReceipt : ClientError.invalidParameter)
-                return
-            }
-
-            if let response = response {
-                
-                var products = [Product]()
-                for prod in response.availableProducts {
-                    let product = Product(identifier: prod.id,
-                                          plan: Plan(rawValue: prod.plan) ?? .other,
-                                          price: prod.price,
-                                          legacy: prod.legacy)
-                    products.append(product)
-                }
-
-                let eligibleForTrial = response.eligibleForTrial
-                
-                let info = AppStoreInformation(products: products,
-                                    eligibleForTrial: eligibleForTrial)
-                Client.configuration.eligibleForTrial = info.eligibleForTrial
-                
-                callback?(info, nil)
-
-            } else {
-                callback?(nil, ClientError.malformedResponseData)
-                return
-            }
-        }
-    }
+   
 }
 
 typealias HandlerType<T> = (T?, Int?, Error?) -> Void

@@ -82,7 +82,10 @@ public class MockServerProvider: ServerProvider, DatabaseAccess, WebServicesCons
         ]
 
         let webServices = MockWebServices()
-        delegate = DefaultServerProvider(webServices: webServices)
+        delegate = DefaultServerProvider(webServices: webServices,
+                                         renewDedicatedIP: MockRenewDedicatedIPUseCase(),
+                                         getDedicatedIPs: MockGetDedicatedIPsUseCase(),
+                                         dedicatedIPServerMapper: MockDedicatedIPServerMapper())
         self.webServices = webServices
         
         webServices.serversBundle = {

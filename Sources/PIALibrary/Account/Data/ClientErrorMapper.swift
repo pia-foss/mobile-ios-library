@@ -42,6 +42,9 @@ struct ClientErrorMapper {
             
         case .unableToDecodeData:
             return .malformedResponseData
+            
+        case .unauthorized:
+            return .unauthorized
         }
     }
     

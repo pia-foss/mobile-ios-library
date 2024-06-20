@@ -32,7 +32,7 @@ extension Client {
         public var accountProvider: AccountProvider = AccountFactory.makeDefaultAccountProvider()
         
         /// Provides methods for handling the available VPN servers.
-        public var serverProvider: ServerProvider = DefaultServerProvider()
+        public var serverProvider: ServerProvider = ServerProviderFactory.makeDefaultServerProvider()
         
         /// Provides methods for controlling the VPN connection.
         public var vpnProvider: VPNProvider = DefaultVPNProvider()

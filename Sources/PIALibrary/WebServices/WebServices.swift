@@ -41,12 +41,6 @@ protocol WebServices: class {
 
     /// The token to use for api authentication.
     var apiToken: String? { get }
-    
-    // MARK: DIP Token
-    
-    func handleDIPTokenExpiration(dipToken: String, _ callback: SuccessLibraryCallback?)
-    
-    func activateDIPToken(tokens: [String], _ callback: LibraryCallback<[Server]>?) 
 
     /**
          Deletes the user accout on PIA servers.

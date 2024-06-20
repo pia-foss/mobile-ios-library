@@ -6,7 +6,7 @@ private let log = SwiftyBeaver.self
 
 protocol PaymentUseCaseType {
     typealias Completion = ((NetworkRequestError?) -> Void)
-    func processPayment(with credentials: Credentials, request: Payment, completion: @escaping Completion)
+    func callAsFunction(with credentials: Credentials, request: Payment, completion: @escaping Completion)
 }
 
 
@@ -19,7 +19,7 @@ class PaymentUseCase: PaymentUseCaseType {
         self.paymentInformationDataConverter = paymentInformationDataConverter
     }
     
-    func processPayment(with credentials: Credentials, request: Payment, completion: @escaping Completion) {
+    func callAsFunction(with credentials: Credentials, request: Payment, completion: @escaping Completion) {
         
         var configuration = PaymentRequestConfiguration()
         
@@ -59,7 +59,7 @@ private extension PaymentUseCase {
     }
     
     private func handleErrorResponse(_ error: NetworkRequestError, completion: @escaping Completion) {
-        if case .connectionError(statusCode: let statusCode, message: let message) = error, statusCode == 400 {
+        if case .allConnectionAttemptsFailed(statusCode: let statusCode) = error, statusCode == 400 {
             completion(NetworkRequestError.badReceipt)
             return
         }

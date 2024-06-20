@@ -448,7 +448,7 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
     public func subscriptionInformation(_ callback: LibraryCallback<AppStoreInformation>?) {
         log.debug("Fetching available product keys...")
         
-        subscriptionsUseCase.callAsFunction(receiptBase64: nil) { result in
+        subscriptionsUseCase(receiptBase64: nil) { result in
             switch result {
             case .failure(let error):
                 log.debug("SubscriptionsUseCase executed with error: \(error)")
@@ -628,7 +628,7 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
             return
         }
         
-        paymentUseCase.processPayment(with: user.credentials, request: payment) { (error) in
+        paymentUseCase(with: user.credentials, request: payment) { (error) in
             
             log.debug("Payment processed with error: \(error)")
             

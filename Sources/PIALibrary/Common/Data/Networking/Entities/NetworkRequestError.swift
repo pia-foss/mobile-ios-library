@@ -13,6 +13,7 @@ public enum NetworkRequestError: Error, Equatable {
     case unableToDecodeDataContent
     case connectionCompletedWithNoResponse
     case badReceipt
+    case unauthorized
     case unknown(message: String? = nil)
     case unableToDecodeData
     

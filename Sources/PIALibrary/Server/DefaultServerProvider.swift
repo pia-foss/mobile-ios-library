@@ -27,13 +27,20 @@ import __PIALibraryNative
 open class DefaultServerProvider: ServerProvider, ConfigurationAccess, DatabaseAccess, PreferencesAccess, WebServicesAccess, WebServicesConsumer {
     
     private let customWebServices: WebServices?
+    private let renewDedicatedIP: RenewDedicatedIPUseCaseType
+    private let getDedicatedIPs: GetDedicatedIPsUseCaseType
+    private let dedicatedIPServerMapper: DedicatedIPServerMapperType
     
-    init(webServices: WebServices? = nil) {
+    init(webServices: WebServices? = nil, renewDedicatedIP: RenewDedicatedIPUseCaseType, getDedicatedIPs: GetDedicatedIPsUseCaseType, dedicatedIPServerMapper: DedicatedIPServerMapperType) {
         if let webServices = webServices {
             customWebServices = webServices
         } else {
             customWebServices = nil
         }
+        
+        self.renewDedicatedIP = renewDedicatedIP
+        self.getDedicatedIPs = getDedicatedIPs
+        self.dedicatedIPServerMapper = dedicatedIPServerMapper
     }
 
     // MARK: ServerProvider
@@ -149,6 +156,29 @@ open class DefaultServerProvider: ServerProvider, ConfigurationAccess, DatabaseA
         }
     }
     
+    private func handleDownloadDIPsResponse(_ response: Result<[Server], ClientError>, bundle: ServersBundle, callback: (([Server]?, Error?) -> Void)?) {
+        switch response {
+            case .success(let servers):
+                var allServers = bundle.servers
+                
+                for server in servers where !bundle.servers.contains(where: {$0.dipToken == server.dipToken}) {
+                    allServers.append(server)
+                }
+            
+                
+                currentServers = allServers
+                DispatchQueue.main.async { [self] in
+                    Macros.postNotification(.PIAThemeDidChange)
+                    callback?(currentServers, nil)
+                }
+                
+            case .failure(let clientError):
+                DispatchQueue.main.async { [self] in
+                    callback?(currentServers, clientError)
+                }
+        }
+    }
+    
     public func download(_ callback: (([Server]?, Error?) -> Void)?) {
         webServices.downloadServers { (bundle, error) in
             guard let bundle = bundle else {
@@ -160,6 +190,30 @@ open class DefaultServerProvider: ServerProvider, ConfigurationAccess, DatabaseA
             }
             
             if let tokens = self.accessedDatabase.secure.dipTokens(), !tokens.isEmpty {
+                self.getDedicatedIPs(dipTokens: tokens) { [weak self] result in
+                    guard let self else { return }
+                    switch result {
+                    case .success(let dedicatedIPServers):
+                        let mapperResult = dedicatedIPServerMapper.map(dedicatedIps: dedicatedIPServers)
+                        handleDownloadDIPsResponse(mapperResult, bundle: bundle, callback: callback)
+                        
+                    case .failure(let error):
+                        let clientError = ClientErrorMapper.map(networkRequestError: error)
+                        if clientError == .unauthorized {
+                            DispatchQueue.main.async {
+                                Client.providers.accountProvider.logout(nil)
+                                Macros.postNotification(.PIAUnauthorized)
+                            }
+                        } else {
+                            DispatchQueue.main.async { [self] in
+                                callback?(self.currentServers, clientError)
+                            }
+                        }
+                    }
+                }
+                
+                /*
+                
                 self.webServices.activateDIPToken(tokens: tokens) { (servers, error) in
                     
                     if error != nil, error as! ClientError == ClientError.unauthorized {
@@ -181,12 +235,11 @@ open class DefaultServerProvider: ServerProvider, ConfigurationAccess, DatabaseA
                     self.currentServers = allServers
                     Macros.postNotification(.PIAThemeDidChange)
                     callback?(self.currentServers, error)
-                }
+                }*/
             } else {
                 self.currentServers = bundle.servers
                 callback?(self.currentServers, error)
             }
-            
         }
     }
     
@@ -194,36 +247,81 @@ open class DefaultServerProvider: ServerProvider, ConfigurationAccess, DatabaseA
         guard Client.providers.accountProvider.isLoggedIn else {
             preconditionFailure()
         }
-        webServices.activateDIPToken(tokens: [token]) { (servers, error) in
-            if let servers = servers,
-               let first = servers.first,
-               let status = first.dipStatus {
-                if !self.currentServers.contains(where: {$0.dipToken == first.dipToken}) && status == .active {
-                    self.currentServers.append(contentsOf: servers)
-                }
-                callback?(first, error)
-            } else {
-                callback?(nil, error)
+        
+        getDedicatedIPs(dipTokens: [token]) { [weak self] result in
+            guard let self else { return }
+            switch result {
+                case .success(let servers):
+                    DispatchQueue.main.async {
+                        self.handleDIPServerResponse(self.dedicatedIPServerMapper.map(dedicatedIps: servers), callback)
+                    }
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        callback?(nil, ClientErrorMapper.map(networkRequestError: error))
+                    }
             }
         }
+    }
+    
+    private func handleDIPServerResponse(_ response: Result<[Server], ClientError>, _ callback: LibraryCallback<Server>?) {
+        guard case .success(let servers) = response else {
+            guard case .failure(let error) = response else {
+                callback?(nil, ClientError.unexpectedReply)
+                return
+            }
+
+            callback?(nil, error)
+            return
+        }
+        
+        guard let first = servers.first, let status = first.dipStatus else {
+            callback?(nil, ClientError.unexpectedReply)
+            return
+        }
+            
+        if !self.currentServers.contains(where: {$0.dipToken == first.dipToken}) && status == .active {
+            self.currentServers.append(contentsOf: servers)
+        }
+            
+        callback?(first, nil)
     }
 
     public func activateDIPTokens(_ tokens: [String], _ callback: LibraryCallback<[Server]>?) {
         guard Client.providers.accountProvider.isLoggedIn else {
             preconditionFailure()
         }
-        webServices.activateDIPToken(tokens: tokens) { (servers, error) in
-            if let servers = servers {
-                for server in servers {
-                    if !self.currentServers.contains(where: {$0.dipToken == server.dipToken}) {
-                        self.currentServers.append(server)
+        
+        getDedicatedIPs(dipTokens: tokens) { [weak self] result in
+            guard let self else { return }
+            switch result {
+                case .success(let servers):
+                    DispatchQueue.main.async {
+                        self.handleDIPServersResponse(self.dedicatedIPServerMapper.map(dedicatedIps: servers), callback)
                     }
-                }
-                callback?(servers, error)
-            } else {
-                callback?([], error)
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        callback?([], ClientErrorMapper.map(networkRequestError: error))
+                    }
             }
         }
+    }
+    
+    private func handleDIPServersResponse(_ response: Result<[Server], ClientError>, _ callback: LibraryCallback<[Server]>?) {
+        guard case .success(let servers) = response else {
+            guard case .failure(let error) = response else {
+                callback?(nil, ClientError.unexpectedReply)
+                return
+            }
+
+            callback?(nil, error)
+            return
+        }
+            
+        for server in servers where !self.currentServers.contains(where: {$0.dipToken == server.dipToken}) {
+            self.currentServers.append(server)
+        }
+            
+        callback?(servers, nil)
     }
     
     public func removeDIPToken(_ dipToken: String) {
@@ -238,7 +336,8 @@ open class DefaultServerProvider: ServerProvider, ConfigurationAccess, DatabaseA
         guard Client.providers.accountProvider.isLoggedIn else {
             preconditionFailure()
         }
-        webServices.handleDIPTokenExpiration(dipToken: dipToken, nil)
+        
+        renewDedicatedIP(dipToken: dipToken, completion: { _ in })
     }
     
     public func find(withIdentifier identifier: String) -> Server? {

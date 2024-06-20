@@ -46,8 +46,6 @@ protocol WebServices: class {
     
     func handleDIPTokenExpiration(dipToken: String, _ callback: SuccessLibraryCallback?)
     
-    func activateDIPToken(tokens: [String], _ callback: LibraryCallback<[Server]>?) 
-    
     #if os(iOS) || os(tvOS)
     func signup(with request: Signup, _ callback: LibraryCallback<Credentials>?)
     #endif

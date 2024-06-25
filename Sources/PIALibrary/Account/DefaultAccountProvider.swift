@@ -40,9 +40,10 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
     private let updateAccountUseCase: UpdateAccountUseCaseType
     private let paymentUseCase: PaymentUseCaseType
     private let subscriptionsUseCase: SubscriptionsUseCaseType
+    private let deleteAccountUseCase: DeleteAccountUseCaseType
     
 
-    init(webServices: WebServices? = nil, logoutUseCase: LogoutUseCaseType, loginUseCase: LoginUseCaseType, signupUseCase: SignupUseCaseType, apiTokenProvider: APITokenProviderType, vpnTokenProvider: VpnTokenProviderType, accountDetailsUseCase: AccountDetailsUseCaseType, updateAccountUseCase: UpdateAccountUseCaseType, paymentUseCase: PaymentUseCaseType, subscriptionsUseCase: SubscriptionsUseCaseType) {
+    init(webServices: WebServices? = nil, logoutUseCase: LogoutUseCaseType, loginUseCase: LoginUseCaseType, signupUseCase: SignupUseCaseType, apiTokenProvider: APITokenProviderType, vpnTokenProvider: VpnTokenProviderType, accountDetailsUseCase: AccountDetailsUseCaseType, updateAccountUseCase: UpdateAccountUseCaseType, paymentUseCase: PaymentUseCaseType, subscriptionsUseCase: SubscriptionsUseCaseType, deleteAccountUseCase: DeleteAccountUseCaseType) {
         self.logoutUseCase = logoutUseCase
         self.loginUseCase = loginUseCase
         self.signupUseCase = signupUseCase
@@ -52,6 +53,7 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
         self.updateAccountUseCase = updateAccountUseCase
         self.paymentUseCase = paymentUseCase
         self.subscriptionsUseCase = subscriptionsUseCase
+        self.deleteAccountUseCase = deleteAccountUseCase
         if let webServices = webServices {
             customWebServices = webServices
         } else {
@@ -424,13 +426,14 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
         guard isLoggedIn else {
             preconditionFailure()
         }
-        webServices.deleteAccount { (result, error) in
-            guard let result = result, result != false else {
-                callback?(error)
-                return
+        
+        deleteAccountUseCase() { error in
+            DispatchQueue.main.async {
+                callback?(error?.asClientError())
             }
-            callback?(nil)
+            
         }
+        
     }
     
     public func featureFlags(_ callback: SuccessLibraryCallback?) {

@@ -43,7 +43,8 @@ public class AccountFactory {
             accountDetailsUseCase: makeAccountDetailsUseCase(),
             updateAccountUseCase: makeUpdateAccountUseCase(),
             paymentUseCase: makePaymentUseCase(),
-            subscriptionsUseCase: makeSubscriptionsUseCase()
+            subscriptionsUseCase: makeSubscriptionsUseCase(),
+            deleteAccountUseCase: makeDeleteAccountUseCase()
         )
         
     }
@@ -112,6 +113,10 @@ private extension AccountFactory {
     
     static func makePaymentInformationDataConverter() -> PaymentInformationDataConverterType {
         PaymentInformationDataConverter()
+    }
+    
+    static func makeDeleteAccountUseCase() -> DeleteAccountUseCaseType {
+        DeleteAccountUseCase(networkClient: NetworkRequestFactory.maketNetworkRequestClient(), refreshAuthTokenChecker: makeRefreshAuthTokensChecker(), apiTokenProvider: makeAPITokenProvider(), vpnTokenProvider: makeVpnTokenProvider())
     }
     
 }

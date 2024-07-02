@@ -47,12 +47,6 @@ protocol WebServices: class {
     func handleDIPTokenExpiration(dipToken: String, _ callback: SuccessLibraryCallback?)
     
     func activateDIPToken(tokens: [String], _ callback: LibraryCallback<[Server]>?) 
-
-    /**
-         Deletes the user accout on PIA servers.
-         - Parameter callback: Returns an `Bool` if the API returns a success.
-     */
-    func deleteAccount(_ callback: LibraryCallback<Bool>?)
     
     #if os(iOS) || os(tvOS)
     func signup(with request: Signup, _ callback: LibraryCallback<Credentials>?)

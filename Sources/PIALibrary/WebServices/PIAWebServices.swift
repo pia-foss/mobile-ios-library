@@ -295,16 +295,6 @@ class PIAWebServices: WebServices, ConfigurationAccess {
         }
     }
     
-    func featureFlags(_ callback: LibraryCallback<[String]>?) {
-        self.accountAPI.featureFlags { (info, errors) in
-            if let flags = info?.flags {
-                callback?(flags, nil)
-            } else {
-                callback?([], ClientError.malformedResponseData)
-            }
-        }
-    }
-    
     #if os(iOS) || os(tvOS)
     func signup(with request: Signup, _ callback: ((Credentials?, Error?) -> Void)?) {
         var marketingJSON = ""

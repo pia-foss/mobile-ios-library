@@ -440,7 +440,6 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
     
     public func featureFlags(_ callback: SuccessLibraryCallback?) {
         featureFlagsUseCase() { result in
-            NSLog(">>> >>> DEfault account provider feature flags result: \(result)")
             switch result {
             case .failure(let error):
                 callback?(error.asClientError())
@@ -451,16 +450,6 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
                 callback?(nil)
             }
         }
-        
-        
-//        webServices.featureFlags { (features, nil) in
-//            Client.configuration.featureFlags.removeAll()
-//            if let features = features, !features.isEmpty {
-//                Client.configuration.featureFlags.append(contentsOf: features)
-//            }
-//            Macros.postNotification(Notification.Name.__AppDidFetchFeatureFlags)
-//            callback?(nil)
-//        }
     }
     
     #if os(iOS) || os(tvOS)

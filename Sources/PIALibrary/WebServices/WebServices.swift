@@ -59,6 +59,5 @@ protocol WebServices: class {
     func taskForConnectivityCheck(_ callback: LibraryCallback<ConnectivityStatus>?)
 
     func submitDebugReport(_ shouldSendPersistedData: Bool, _ protocolLogs: String, _ callback: LibraryCallback<String>?)
-
-    func featureFlags(_ callback: LibraryCallback<[String]>?)
+    
 }

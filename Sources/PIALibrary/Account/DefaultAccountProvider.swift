@@ -41,9 +41,10 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
     private let paymentUseCase: PaymentUseCaseType
     private let subscriptionsUseCase: SubscriptionsUseCaseType
     private let deleteAccountUseCase: DeleteAccountUseCaseType
+    private let featureFlagsUseCase: FeatureFlagsUseCaseType
     
 
-    init(webServices: WebServices? = nil, logoutUseCase: LogoutUseCaseType, loginUseCase: LoginUseCaseType, signupUseCase: SignupUseCaseType, apiTokenProvider: APITokenProviderType, vpnTokenProvider: VpnTokenProviderType, accountDetailsUseCase: AccountDetailsUseCaseType, updateAccountUseCase: UpdateAccountUseCaseType, paymentUseCase: PaymentUseCaseType, subscriptionsUseCase: SubscriptionsUseCaseType, deleteAccountUseCase: DeleteAccountUseCaseType) {
+    init(webServices: WebServices? = nil, logoutUseCase: LogoutUseCaseType, loginUseCase: LoginUseCaseType, signupUseCase: SignupUseCaseType, apiTokenProvider: APITokenProviderType, vpnTokenProvider: VpnTokenProviderType, accountDetailsUseCase: AccountDetailsUseCaseType, updateAccountUseCase: UpdateAccountUseCaseType, paymentUseCase: PaymentUseCaseType, subscriptionsUseCase: SubscriptionsUseCaseType, deleteAccountUseCase: DeleteAccountUseCaseType, featureFlagsUseCase: FeatureFlagsUseCaseType) {
         self.logoutUseCase = logoutUseCase
         self.loginUseCase = loginUseCase
         self.signupUseCase = signupUseCase
@@ -54,6 +55,7 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
         self.paymentUseCase = paymentUseCase
         self.subscriptionsUseCase = subscriptionsUseCase
         self.deleteAccountUseCase = deleteAccountUseCase
+        self.featureFlagsUseCase = featureFlagsUseCase
         if let webServices = webServices {
             customWebServices = webServices
         } else {
@@ -437,13 +439,16 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
     }
     
     public func featureFlags(_ callback: SuccessLibraryCallback?) {
-        webServices.featureFlags { (features, nil) in
-            Client.configuration.featureFlags.removeAll()
-            if let features = features, !features.isEmpty {
-                Client.configuration.featureFlags.append(contentsOf: features)
+        featureFlagsUseCase() { result in
+            switch result {
+            case .failure(let error):
+                callback?(error.asClientError())
+            case .success(let featuresInfo):
+                Client.configuration.featureFlags.removeAll()
+                Client.configuration.featureFlags.append(contentsOf: featuresInfo.flags)
+                Macros.postNotification(Notification.Name.__AppDidFetchFeatureFlags)
+                callback?(nil)
             }
-            Macros.postNotification(Notification.Name.__AppDidFetchFeatureFlags)
-            callback?(nil)
         }
     }
     

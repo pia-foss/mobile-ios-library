@@ -44,7 +44,8 @@ public class AccountFactory {
             updateAccountUseCase: makeUpdateAccountUseCase(),
             paymentUseCase: makePaymentUseCase(),
             subscriptionsUseCase: makeSubscriptionsUseCase(),
-            deleteAccountUseCase: makeDeleteAccountUseCase()
+            deleteAccountUseCase: makeDeleteAccountUseCase(),
+            featureFlagsUseCase: makeFeatureFlagsUseCase()
         )
         
     }
@@ -68,6 +69,10 @@ public class AccountFactory {
     
     static func makeRefreshAuthTokensChecker() -> RefreshAuthTokensCheckerType {
         refreshAuthTokensCheckerShared
+    }
+    
+    static func makeFeatureFlagsUseCase() -> FeatureFlagsUseCaseType {
+        FeatureFlagsUseCase(networkClient: NetworkRequestFactory.maketNetworkRequestClient(), refreshAuthTokensChecker: makeRefreshAuthTokensChecker())
     }
     
     public static func makeClientStatusUseCase() -> ClientStatusUseCaseType {

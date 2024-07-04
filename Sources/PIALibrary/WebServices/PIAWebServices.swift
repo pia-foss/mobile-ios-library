@@ -128,20 +128,6 @@ class PIAWebServices: WebServices, ConfigurationAccess {
     }()
 
     /***
-     The token to use for protocol authentication.
-     */
-    var vpnToken: String? {
-        return self.accountAPI.vpnToken()
-    }
-
-    /***
-     The token to use for api authentication.
-     */
-    var apiToken: String? {
-        return self.accountAPI.apiToken()
-    }
-
-    /***
      Generates a new auth expiring token based on a previous non-expiry one.
      */
     func migrateToken(token: String, _ callback: ((Error?) -> Void)?) {

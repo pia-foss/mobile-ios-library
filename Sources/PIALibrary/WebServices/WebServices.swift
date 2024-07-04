@@ -35,12 +35,6 @@ protocol WebServices: class {
     func migrateToken(token: String, _ callback: SuccessLibraryCallback?)
 
     func update(credentials: Credentials, resetPassword reset: Bool, email: String, _ callback: SuccessLibraryCallback?)
-
-    /// The token to use for protocol authentication.
-    var vpnToken: String? { get }
-
-    /// The token to use for api authentication.
-    var apiToken: String? { get }
     
     // MARK: DIP Token
     

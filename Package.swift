@@ -1,5 +1,5 @@
 
-// swift-tools-version:5.8
+// swift-tools-version:5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -9,7 +9,7 @@ let package = Package(
     defaultLocalization: "en",
     platforms: [
         .iOS(.v12),
-        .tvOS(.v16)
+        .tvOS(.v17)
     ],
     products: [
         .library(
@@ -34,7 +34,8 @@ let package = Package(
       .package(url: "https://github.com/SwiftyBeaver/SwiftyBeaver.git", from: "1.9.0"),
       .package(url: "https://github.com/ashleymills/Reachability.swift.git", from: "4.3.0"),
       .package(url: "https://github.com/michaeltyson/TPKeyboardAvoiding.git", from: "1.3.5"),
-      .package(url: "https://github.com/Alamofire/Alamofire.git", exact: "5.0.1")
+      .package(url: "https://github.com/Alamofire/Alamofire.git", exact: "5.0.1"),
+      .package(url: "git@github.com:pia-foss/mobile-ios-networking.git", exact: "1.3.1")
     ],
     targets: [
         .target(
@@ -55,7 +56,8 @@ let package = Package(
                 .product(name: "PIAWireguard", package: "mobile-ios-wireguard", condition: .when(platforms: [.iOS])),
                 .product(name: "TunnelKit", package: "mobile-ios-openvpn", condition: .when(platforms: [.iOS])),
                 .product(name: "TunnelKitOpenVPN", package: "mobile-ios-openvpn", condition: TargetDependencyCondition.when(platforms: [.iOS])),
-                .product(name: "TunnelKitOpenVPNAppExtension", package: "mobile-ios-openvpn", condition: TargetDependencyCondition.when(platforms: [.iOS]))
+                .product(name: "TunnelKitOpenVPNAppExtension", package: "mobile-ios-openvpn", condition: TargetDependencyCondition.when(platforms: [.iOS])),
+                .product(name: "NWHttpConnection", package: "mobile-ios-networking")
             ],
             resources: [
                 .process("Resources")

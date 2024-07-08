@@ -75,13 +75,14 @@ private extension LoginUseCase {
             
             guard let self else { return }
             
-            if let error {
-                completion(error)
+            if error != nil {
+
+                completion(.unauthorized)
             } else if let dataResponse {
                 let shouldSaveToken = configuration.path == .login
                 self.handleDataResponse(dataResponse, shouldSaveTokenFromResponse: shouldSaveToken, completion: completion)
             } else {
-                completion(NetworkRequestError.allConnectionAttemptsFailed())
+                completion(.unauthorized)
             }
         }
     }
@@ -90,7 +91,7 @@ private extension LoginUseCase {
         
         if shouldSaveTokenFromResponse {
             guard let dataResponseContent = dataResponse.data else {
-                completion(NetworkRequestError.noDataContent)
+                completion(.unauthorized)
                 return
             }
             saveAPIToken(from: dataResponseContent, completion: completion)
@@ -105,11 +106,15 @@ private extension LoginUseCase {
             try apiTokenProvider.saveAPIToken(from: data)
             // Refresh the Vpn token after successfully login
            refreshVpnTokenUseCase() { error in
-                completion(error)
+               if error != nil {
+                   completion(.unauthorized)
+               } else {
+                   completion(nil)
+               }
             }
             
         } catch {
-            completion(NetworkRequestError.unableToSaveAPIToken)
+            completion(.unauthorized)
         }
     }
 }

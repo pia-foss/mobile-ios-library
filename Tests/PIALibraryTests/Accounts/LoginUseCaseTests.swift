@@ -145,8 +145,9 @@ class LoginUseCaseTests: XCTestCase {
         // AND the Vpn token is NOT refreshed
         XCTAssertEqual(fixture.refreshVpnTokenUseCaseMock.callAsFunctionCalledAttempt, 0)
         
-        // AND an error is returned
+        // AND an 'unauthorized' error is returned
         XCTAssertNotNil(capturedError)
+        XCTAssertEqual(capturedError!, .unauthorized)
         
     }
     
@@ -177,8 +178,9 @@ class LoginUseCaseTests: XCTestCase {
         // AND the Vpn token is NOT refreshed
         XCTAssertEqual(fixture.refreshVpnTokenUseCaseMock.callAsFunctionCalledAttempt, 0)
         
-        // AND an error is returned
+        // AND an 'unauthorized' error is returned
         XCTAssertNotNil(capturedError)
+        XCTAssertEqual(capturedError!, .unauthorized)
         
     }
     
@@ -244,8 +246,9 @@ class LoginUseCaseTests: XCTestCase {
         // AND the Vpn token is NOT refreshed
         XCTAssertEqual(fixture.refreshVpnTokenUseCaseMock.callAsFunctionCalledAttempt, 0)
         
-        // AND an error is returned
+        // AND an 'unauthorized' error is returned
         XCTAssertNotNil(capturedError)
+        XCTAssertEqual(capturedError!, .unauthorized)
         
     }
     
@@ -275,8 +278,9 @@ class LoginUseCaseTests: XCTestCase {
         // AND the Vpn token is NOT refreshed
         XCTAssertEqual(fixture.refreshVpnTokenUseCaseMock.callAsFunctionCalledAttempt, 0)
         
-        // AND an error is returned
+        // AND an 'unauthorized' error is returned
         XCTAssertNotNil(capturedError)
+        XCTAssertEqual(capturedError!, .unauthorized)
         
     }
     
@@ -334,8 +338,9 @@ class LoginUseCaseTests: XCTestCase {
         XCTAssertEqual(fixture.networkClientMock.executeRequestCalledAttempt, 1)
         XCTAssertEqual(fixture.networkClientMock.executeRequestWithConfiguation?.path, RequestAPI.Path.loginLink)
         
-        // AND an error is returned
+        // AND an 'unauthorized' error is returned
         XCTAssertNotNil(capturedError)
+        XCTAssertEqual(capturedError!, .unauthorized)
         
     }
     

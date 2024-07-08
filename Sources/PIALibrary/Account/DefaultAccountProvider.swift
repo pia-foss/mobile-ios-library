@@ -257,7 +257,7 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
         
         loginUseCase.login(with: credentials) { error in
             DispatchQueue.main.async {
-                self.handleLoginResult(error: error, credentials: credentials, notificationToSend: notificationToSend, callback: callback)
+                self.handleLoginResult(error: error?.asClientError(), credentials: credentials, notificationToSend: notificationToSend, callback: callback)
             }
         }
     }

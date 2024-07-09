@@ -442,12 +442,16 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
         featureFlagsUseCase() { result in
             switch result {
             case .failure(let error):
-                callback?(error.asClientError())
+                DispatchQueue.main.async {
+                    callback?(error.asClientError())
+                }
             case .success(let featuresInfo):
-                Client.configuration.featureFlags.removeAll()
-                Client.configuration.featureFlags.append(contentsOf: featuresInfo.flags)
-                Macros.postNotification(Notification.Name.__AppDidFetchFeatureFlags)
-                callback?(nil)
+                DispatchQueue.main.async {
+                    Client.configuration.featureFlags.removeAll()
+                    Client.configuration.featureFlags.append(contentsOf: featuresInfo.flags)
+                    Macros.postNotification(Notification.Name.__AppDidFetchFeatureFlags)
+                    callback?(nil)
+                }
             }
         }
     }

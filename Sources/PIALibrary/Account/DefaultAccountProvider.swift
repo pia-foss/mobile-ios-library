@@ -409,14 +409,10 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
         
     }
     
-    public func logout(_ callback: SuccessLibraryCallback?) {
-        guard isLoggedIn else {
-            preconditionFailure()
-        }
-        
+    public func logout(_ callback: SuccessLibraryCallback?) {        
         logoutUseCase() { [weak self] error in
-            self?.cleanDatabase()
             DispatchQueue.main.async {
+                self?.cleanDatabase()
                 Macros.postNotification(.PIAAccountDidLogout)
                 callback?(nil)
             }

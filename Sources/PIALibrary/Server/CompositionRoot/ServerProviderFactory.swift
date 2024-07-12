@@ -1,8 +1,8 @@
 
 import Foundation
 
-class ServerProviderFactory {
-    static func makeDefaultServerProvider() -> ServerProvider {
+public class ServerProviderFactory {
+    public static func makeDefaultServerProvider() -> ServerProvider {
         DefaultServerProvider(renewDedicatedIP: makeRenewDedicatedIPUseCase(),
                               getDedicatedIPs: makeGetDedicatedIPsUseCase(),
                               dedicatedIPServerMapper: makeDedicatedIPServerMapper())
@@ -13,7 +13,7 @@ class ServerProviderFactory {
                                refreshAuthTokensChecker: AccountFactory.makeRefreshAuthTokensChecker())
     }
     
-    public static func makeDedicatedIPServerMapper() -> DedicatedIPServerMapperType {
+    static func makeDedicatedIPServerMapper() -> DedicatedIPServerMapperType {
         DedicatedIPServerMapper(dedicatedIPTokenHandler: makeDedicatedIPTokenHandler())
     }
     

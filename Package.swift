@@ -35,7 +35,7 @@ let package = Package(
       .package(url: "https://github.com/ashleymills/Reachability.swift.git", from: "4.3.0"),
       .package(url: "https://github.com/michaeltyson/TPKeyboardAvoiding.git", from: "1.3.5"),
       .package(url: "https://github.com/Alamofire/Alamofire.git", exact: "5.0.1"),
-      .package(url: "git@github.com:pia-foss/mobile-ios-networking.git", exact: "1.3.1")
+      .package(url: "git@github.com:pia-foss/mobile-ios-networking.git", branch: "add_networking_logs")
     ],
     targets: [
         .target(

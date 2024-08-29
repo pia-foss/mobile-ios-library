@@ -20,6 +20,7 @@
 //
 
 import Foundation
+import account
 
 public enum DedicatedIPStatus {
     
@@ -29,6 +30,19 @@ public enum DedicatedIPStatus {
     case error
     
     init(fromAPIStatus dipStatus: DedicatedIPInformation.Status) {
+        switch dipStatus {
+        case .invalid:
+            self = .invalid
+        case .expired:
+            self = .expired
+        case .error:
+            self = .error
+        default:
+            self = .active
+        }
+    }
+    
+    init(fromAPIStatus dipStatus: DedicatedIPInformationResponse.Status) {
         switch dipStatus {
         case .invalid:
             self = .invalid

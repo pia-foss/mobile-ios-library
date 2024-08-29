@@ -27,24 +27,18 @@ import Gloss
 extension PIAWebServices {
 
     func taskForConnectivityCheck(_ callback: ((ConnectivityStatus?, Error?) -> Void)?) {
-        
-        self.clientStatusUseCase() { result in
-            switch result {
-            case .failure(let error):
-                DispatchQueue.main.async {
+                
+        self.accountAPI.clientStatus { (information, errors) in
+            DispatchQueue.main.async {
+                if !errors.isEmpty {
                     callback?(nil, ClientError.internetUnreachable)
+                    return
                 }
-            case .success(let statusInfo):
-                if let information = statusInfo {
-                    DispatchQueue.main.async {
-                        callback?(ConnectivityStatus(ipAddress: information.ip, isVPN: information.connected), nil)
-                    }
 
+                if let information = information {
+                    callback?(ConnectivityStatus(ipAddress: information.ip, isVPN: information.connected), nil)
                 } else {
-                    DispatchQueue.main.async {
-                        callback?(nil, ClientError.malformedResponseData)
-                    }
-
+                    callback?(nil, ClientError.malformedResponseData)
                 }
             }
         }

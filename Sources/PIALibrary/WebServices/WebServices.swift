@@ -34,15 +34,49 @@ protocol WebServices: class {
 
     func migrateToken(token: String, _ callback: SuccessLibraryCallback?)
 
+    func token(credentials: Credentials, _ callback: SuccessLibraryCallback?)
+
+    func token(receipt: Data, _ callback: SuccessLibraryCallback?)
+
+    func info(_ callback: LibraryCallback<AccountInfo>?)
+
     func update(credentials: Credentials, resetPassword reset: Bool, email: String, _ callback: SuccessLibraryCallback?)
+
+    func loginLink(email: String, _ callback: SuccessLibraryCallback?)
+
+    /// The token to use for protocol authentication.
+    var vpnToken: String? { get }
+
+    /// The token to use for api authentication.
+    var apiToken: String? { get }
     
     // MARK: DIP Token
     
     func handleDIPTokenExpiration(dipToken: String, _ callback: SuccessLibraryCallback?)
     
+    func activateDIPToken(tokens: [String], _ callback: LibraryCallback<[Server]>?)
+
+    /**
+         Invalidates the access token.
+         - Parameter callback: Returns an `Bool` if the token was expired.
+     */
+    func logout(_ callback: LibraryCallback<Bool>?)
+
+    /**
+         Deletes the user accout on PIA servers.
+         - Parameter callback: Returns an `Bool` if the API returns a success.
+     */
+    func deleteAccount(_ callback: LibraryCallback<Bool>?)
+    
     #if os(iOS) || os(tvOS)
     func signup(with request: Signup, _ callback: LibraryCallback<Credentials>?)
+
+    func processPayment(credentials: Credentials, request: Payment, _ callback: SuccessLibraryCallback?)
     #endif
+
+    // MARK: Store
+    
+    func subscriptionInformation(with receipt: Data?, _ callback: LibraryCallback<AppStoreInformation>?)
 
     // MARK: Ephemeral
 
@@ -51,5 +85,6 @@ protocol WebServices: class {
     func taskForConnectivityCheck(_ callback: LibraryCallback<ConnectivityStatus>?)
 
     func submitDebugReport(_ shouldSendPersistedData: Bool, _ protocolLogs: String, _ callback: LibraryCallback<String>?)
-    
+
+    func featureFlags(_ callback: LibraryCallback<[String]>?)
 }

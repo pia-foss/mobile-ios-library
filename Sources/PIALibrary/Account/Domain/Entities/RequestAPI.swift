@@ -25,6 +25,7 @@ enum RequestAPI {
         case iosPayment = "/api/client/payment"
         case iosSubscriptions = "/api/client/ios"
         case iosFeatureFlag = "/clients/desktop/ios-flags"
+        case generateQR = "/api/client/v5/login_token"
     }
     
     static func subdomain(for path: RequestAPI.Path) -> String {
@@ -67,6 +68,8 @@ enum RequestAPI {
             return "api"
         case .iosFeatureFlag:
             return "api"
+        case .generateQR:
+            return "generateQR"
         }
     }
 }

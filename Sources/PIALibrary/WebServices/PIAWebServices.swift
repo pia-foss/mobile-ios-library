@@ -161,6 +161,20 @@ class PIAWebServices: WebServices, ConfigurationAccess {
             self?.handleLoginResponse(errors: errors, callback: callback, mapError: self?.mapLoginError)
         }
     }
+    
+    /***
+     Validates the QR Token and generates a new auth token for the specific user
+     */
+    func validateLoginQR(qrToken: String, _ callback: ((String?, Error?) -> Void)?) {
+        self.accountAPI.validateLoginQR(qrToken: qrToken) { apiToken, errors in
+            if !errors.isEmpty {
+                callback?(nil, ClientError.unauthorized)
+                return
+            }
+
+            callback?(apiToken, nil)
+        }
+    }
 
     /***
      Generates a new auth token for the specific user
@@ -290,7 +304,7 @@ class PIAWebServices: WebServices, ConfigurationAccess {
     }
     
     func handleDIPTokenExpiration(dipToken: String, _ callback: SuccessLibraryCallback?) {
-        self.accountAPI.renewDedicatedIP(ipToken: dipToken) { (errors) in
+        self.accountAPI.renewDedicatedIP(dipToken: dipToken) { (errors) in
             if !errors.isEmpty {
                 callback?(errors.last?.code == 401 ? ClientError.unauthorized : ClientError.dipTokenRenewalError)
                 return
@@ -314,7 +328,7 @@ class PIAWebServices: WebServices, ConfigurationAccess {
     }
     
     func activateDIPToken(tokens: [String], _ callback: LibraryCallback<[Server]>?) {
-        self.accountAPI.dedicatedIPs(ipTokens: tokens) { (dedicatedIps, errors) in
+        self.accountAPI.redeemDedicatedIPs(dipTokens: tokens) { (dedicatedIps, errors) in
             if !errors.isEmpty {
                 callback?([], self.mapDIPError(errors.last))
                 return

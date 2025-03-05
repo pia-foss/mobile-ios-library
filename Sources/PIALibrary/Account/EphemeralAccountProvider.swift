@@ -151,4 +151,8 @@ class EphemeralAccountProvider: AccountProvider, ProvidersAccess, InAppAccess {
     func featureFlags(_ callback: SuccessLibraryCallback?) {
         callback?(nil)
     }
+    
+    func validateLoginQR(with qrToken: String, _ callback: ((String?, Error?) -> Void)?) {
+        callback?(nil, nil)
+    }
 }

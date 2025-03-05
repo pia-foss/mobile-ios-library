@@ -337,4 +337,8 @@ public class MockAccountProvider: AccountProvider, WebServicesConsumer {
     public func featureFlags(_ callback: SuccessLibraryCallback?) {
         callback?(nil)
     }
+    
+    public func validateLoginQR(with qrToken: String, _ callback: ((String?, (any Error)?) -> Void)?) {
+        callback?(nil, nil)
+    }
 }

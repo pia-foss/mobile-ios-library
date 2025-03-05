@@ -69,7 +69,7 @@ enum RequestAPI {
         case .iosFeatureFlag:
             return "api"
         case .generateQR:
-            return "generateQR"
+            return "apiv5"
         }
     }
 }

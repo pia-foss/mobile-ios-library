@@ -107,6 +107,16 @@ public protocol AccountProvider: AnyObject {
     - Parameter callback: Returns an `UserAccount`.
     */
     func login(with linkToken: String, _ callback: ((UserAccount?, Error?) -> Void)?)
+    
+    /**
+    Validates the QR token and generated a new API Token.
+
+    - Precondition: `isLoggedIn` is `false`.
+    - Parameter qrToken: A valid qr token.
+    - Parameter callback: Returns an `String`.
+    */
+    func validateLoginQR(with qrToken: String, _ callback: ((String?, (any Error)?) -> Void)?)
+    
     /**
      Refreshes information associated with the account currently logged in.
  

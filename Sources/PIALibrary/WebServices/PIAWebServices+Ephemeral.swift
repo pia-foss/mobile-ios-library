@@ -27,8 +27,7 @@ import Gloss
 extension PIAWebServices {
 
     func taskForConnectivityCheck(_ callback: ((ConnectivityStatus?, Error?) -> Void)?) {
-                
-        self.accountAPI.clientStatus { (information, errors) in
+        self.accountAPI.clientStatus(requestTimeoutMillis: 30) { (information, errors) in
             DispatchQueue.main.async {
                 if !errors.isEmpty {
                     callback?(nil, ClientError.internetUnreachable)

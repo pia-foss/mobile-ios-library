@@ -37,6 +37,8 @@ protocol WebServices: class {
     func token(credentials: Credentials, _ callback: SuccessLibraryCallback?)
 
     func token(receipt: Data, _ callback: SuccessLibraryCallback?)
+    
+    func validateLoginQR(qrToken: String, _ callback: ((String?, Error?) -> Void)?)
 
     func info(_ callback: LibraryCallback<AccountInfo>?)
 

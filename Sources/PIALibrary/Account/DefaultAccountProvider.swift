@@ -233,6 +233,15 @@ open class DefaultAccountProvider: AccountProvider, ConfigurationAccess, Databas
 
     }
     
+    public func validateLoginQR(with qrToken: String, _ callback: ((String?, (any Error)?) -> Void)?) {
+        guard !isLoggedIn else {
+            preconditionFailure()
+        }
+        webServices.validateLoginQR(qrToken: qrToken) { apiToken, error in
+            callback?(apiToken, error)
+        }
+    }
+    
     private func handleLoginResult(error: Error?, credentials: Credentials, callback: ((UserAccount?, Error?) -> Void)?) {
         guard error == nil else {
             callback?(nil, error)

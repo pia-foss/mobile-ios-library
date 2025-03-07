@@ -141,4 +141,8 @@ class MockWebServices: WebServices {
     func featureFlags(_ callback: LibraryCallback<[String]>?) {
         callback?(["mock-test"], nil)
     }
+    
+    func validateLoginQR(qrToken: String, _ callback: ((String?, Error?) -> Void)?) {
+        callback?(nil, nil)
+    }
 }

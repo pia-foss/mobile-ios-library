@@ -674,6 +674,10 @@ open class NativeAccountProvider: AccountProvider, ConfigurationAccess, Database
         }
     }
     
+    public func validateLoginQR(with qrToken: String, _ callback: ((String?, (any Error)?) -> Void)?) {
+        callback?(nil, nil)
+    }
+    
     /**
      Remove all data from the plain and secure internal database
      */

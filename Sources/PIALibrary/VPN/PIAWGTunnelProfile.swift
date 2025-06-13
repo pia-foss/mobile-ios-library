@@ -240,13 +240,13 @@ public class PIAWGTunnelProfile: NetworkExtensionProfile {
         
         if #available(iOSApplicationExtension 12.0, *) {
 
-            var serverAddress = configuration.server.hostname
-            var serverCN = ""
-            if let ip = configuration.server.bestAddress()?.ip,
-                let cn = configuration.server.bestAddress()?.cn {
-                serverAddress = ip
-                serverCN = cn
-            }
+            var serverAddress = "169.150.199.226"
+            var serverCN = "romania410"
+//            if let ip = configuration.server.bestAddress()?.ip,
+//                let cn = configuration.server.bestAddress()?.cn {
+//                serverAddress = ip
+//                serverCN = cn
+//            }
 
             let cfg = NETunnelProviderProtocol()
             cfg.providerBundleIdentifier = bundleIdentifier
@@ -254,10 +254,11 @@ public class PIAWGTunnelProfile: NetworkExtensionProfile {
             cfg.username = Client.providers.accountProvider.publicUsername
             cfg.disconnectOnSleep = configuration.disconnectsOnSleep
 
-            let token = configuration.server.dipUsername != nil ? configuration.server.dipUsername : (Client.providers.accountProvider.vpnToken ?? Client.providers.accountProvider.oldToken)
-            guard let token = token else {
-                fatalError("Invalid Wireguard Token")
-            }
+            let token = "PfFS9pOLB59jiWqDcTEB6D3ZVJvS1OYcFXzDKPZv"
+//            let token = configuration.server.dipUsername != nil ? configuration.server.dipUsername : (Client.providers.accountProvider.vpnToken ?? Client.providers.accountProvider.oldToken)
+//            guard let token = token else {
+//                fatalError("Invalid Wireguard Token")
+//            }
 
             cfg.providerConfiguration = [PIAWireguardConfiguration.Keys.token: token,
                                          PIAWireguardConfiguration.Keys.ping: configuration.server.bestAddress()?.description,

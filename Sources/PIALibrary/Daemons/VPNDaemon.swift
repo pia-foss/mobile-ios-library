@@ -80,6 +80,7 @@ class VPNDaemon: Daemon, DatabaseAccess, ProvidersAccess {
                 return
             }
 
+            Client.preferences.lastVPNConnectionSuccess = Date().timeIntervalSince1970
             invalidateTimer()
             reset()
             
@@ -161,6 +162,7 @@ class VPNDaemon: Daemon, DatabaseAccess, ProvidersAccess {
 
             }
 
+            Client.preferences.lastVPNConnectionSuccess = nil
             self.lastKnownVpnStatus = .disconnected
 
         default:

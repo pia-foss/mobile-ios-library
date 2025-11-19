@@ -104,6 +104,8 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
         static let versionWhenServiceQualityOpted = "versionWhenServiceQualityOpted"
         
         static let lastVPNConnectionAttempt = "lastVPNConnectionAttempt"
+
+        static let lastVPNConnectionSuccess = "lastVPNConnectionSuccess"
         
         static let timeToConnectVPN = "timeToConnectVPN"
 
@@ -434,7 +436,16 @@ class UserDefaultsStore: PlainStore, ConfigurationAccess {
             backend.set(newValue, forKey: Entries.lastVPNConnectionAttempt)
         }
     }
-    
+
+    var lastVPNConnectionSuccess: Double? {
+        get {
+            return backend.object(forKey: Entries.lastVPNConnectionSuccess) as? Double
+        }
+        set {
+            backend.set(newValue, forKey: Entries.lastVPNConnectionSuccess)
+        }
+    }
+
     var timeToConnectVPN: Double {
         get {
             return backend.double(forKey: Entries.timeToConnectVPN)

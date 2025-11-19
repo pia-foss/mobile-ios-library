@@ -80,6 +80,7 @@ class VPNDaemon: Daemon, DatabaseAccess, ProvidersAccess {
                 return
             }
 
+            Client.preferences.lastVPNConnectionSuccess = Date().timeIntervalSince1970
             invalidateTimer()
             reset()
             
@@ -95,8 +96,6 @@ class VPNDaemon: Daemon, DatabaseAccess, ProvidersAccess {
             
             nextStatus = .connecting
             Client.preferences.lastVPNConnectionAttempt = Date().timeIntervalSince1970
-            
-            let previousStatus = accessedDatabase.transient.vpnStatus
             
             if accessedDatabase.transient.vpnStatus == .disconnected,
                self.lastKnownVpnStatus == .disconnected,
@@ -161,6 +160,7 @@ class VPNDaemon: Daemon, DatabaseAccess, ProvidersAccess {
 
             }
 
+            Client.preferences.lastVPNConnectionSuccess = nil
             self.lastKnownVpnStatus = .disconnected
 
         default:

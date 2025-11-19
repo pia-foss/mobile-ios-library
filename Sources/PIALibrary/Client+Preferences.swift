@@ -394,6 +394,16 @@ extension Client {
                 accessedDatabase.plain.lastVPNConnectionAttempt = newValue
             }
         }
+
+        /// Store a date as a number when last VPN Connection has succeeded.
+        public var lastVPNConnectionSuccess: Double? {
+            get {
+                return accessedDatabase.plain.lastVPNConnectionSuccess
+            }
+            set {
+                accessedDatabase.plain.lastVPNConnectionSuccess = newValue
+            }
+        }
         
         /// Store a decimal number which represents time (in seconds) between
         /// connecting and connect state of VPNDaemon

@@ -97,8 +97,6 @@ class VPNDaemon: Daemon, DatabaseAccess, ProvidersAccess {
             nextStatus = .connecting
             Client.preferences.lastVPNConnectionAttempt = Date().timeIntervalSince1970
             
-            let previousStatus = accessedDatabase.transient.vpnStatus
-            
             if accessedDatabase.transient.vpnStatus == .disconnected,
                self.lastKnownVpnStatus == .disconnected,
                Client.preferences.shareServiceQualityData,

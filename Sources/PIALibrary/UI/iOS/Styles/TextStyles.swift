@@ -308,6 +308,14 @@ public extension TextStyle {
         lineHeight: 20
     )
 
+    static let textStyleNavigationBarTitle = TextStyle(
+        font: UIFont.mediumFontWith(size: 16),
+        color: UIColor.piaGrey6,
+        foregroundColor: nil,
+        backgroundColor: nil,
+        tintColor: nil,
+        lineHeight: 18
+    )
 
     struct Buttons {
         

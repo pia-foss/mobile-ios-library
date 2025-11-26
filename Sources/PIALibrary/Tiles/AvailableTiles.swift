@@ -31,10 +31,11 @@ public enum AvailableTiles: Int, EnumsBuilder {
     case quickSettings
     case favoriteServers
     case connectionTile
+    case feedback
     case messages
 
     public static func fixedTiles() -> [AvailableTiles] {
-        return [.messages]
+        return [.messages, .feedback]
     }
 
     public static func allTiles() -> [AvailableTiles] {

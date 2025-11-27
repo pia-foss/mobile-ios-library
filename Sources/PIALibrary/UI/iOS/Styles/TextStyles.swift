@@ -280,6 +280,15 @@ public extension TextStyle {
         tintColor: nil,
         lineHeight: 20
     )
+
+    static let textStyle24 = TextStyle(
+        font: UIFont.mediumFontWith(size: 16),
+        color: UIColor.black,
+        foregroundColor: nil,
+        backgroundColor: nil,
+        tintColor: nil,
+        lineHeight: 18
+    )
     
     static let textStyleSubscriptionInformation = TextStyle(
         font: UIFont.regularFontWith(size: 16),

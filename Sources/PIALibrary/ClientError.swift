@@ -55,6 +55,9 @@ public enum ClientError: Error, Equatable {
     /// Error while checking the dip token renewal.
     case dipTokenRenewalError
 
+    /// The Wireguard Token is missing.
+    case missingWireguardToken
+
     #if os(iOS) || os(tvOS)
     /// No in-app history receipt is available.
     case noReceipt

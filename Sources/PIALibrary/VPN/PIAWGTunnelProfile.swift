@@ -236,45 +236,39 @@ public class PIAWGTunnelProfile: NetworkExtensionProfile {
     // MARK: NetworkExtensionProfile
     
     /// :nodoc:
-    public func generatedProtocol(withConfiguration configuration: VPNConfiguration) -> NEVPNProtocol {
-        
-        if #available(iOSApplicationExtension 12.0, *) {
-
-            var serverAddress = configuration.server.hostname
-            var serverCN = ""
-            if let ip = configuration.server.bestAddress()?.ip,
-                let cn = configuration.server.bestAddress()?.cn {
-                serverAddress = ip
-                serverCN = cn
-            }
-
-            let cfg = NETunnelProviderProtocol()
-            cfg.providerBundleIdentifier = bundleIdentifier
-            cfg.serverAddress = serverAddress
-            cfg.username = Client.providers.accountProvider.publicUsername
-            cfg.disconnectOnSleep = configuration.disconnectsOnSleep
-
-            let token = configuration.server.dipUsername != nil ? configuration.server.dipUsername : (Client.providers.accountProvider.vpnToken ?? Client.providers.accountProvider.oldToken)
-            guard let token = token else {
-                fatalError("Invalid Wireguard Token")
-            }
-
-            cfg.providerConfiguration = [PIAWireguardConfiguration.Keys.token: token,
-                                         PIAWireguardConfiguration.Keys.ping: configuration.server.bestAddress()?.description,
-                                         PIAWireguardConfiguration.Keys.serial: configuration.server.serial,
-                                         PIAWireguardConfiguration.Keys.cn: serverCN,
-                                         PIAWireguardConfiguration.Keys.useIP: true]
-
-            var customCfg = configuration.customConfiguration
-            if let piaCfg = customCfg as? PIAWireguardConfiguration {
-                cfg.providerConfiguration?[PIAWireguardConfiguration.Keys.dnsServers] = piaCfg.customDNSServers
-                cfg.providerConfiguration?[PIAWireguardConfiguration.Keys.packetSize] = piaCfg.packetSize
-            }
-
-            return cfg
-        } else {
-            fatalError("Wireguard should be initialized with iOS version 12.0 or higher")
+    public func generatedProtocol(withConfiguration configuration: VPNConfiguration) throws -> NEVPNProtocol {
+        var serverAddress = configuration.server.hostname
+        var serverCN = ""
+        if let ip = configuration.server.bestAddress()?.ip,
+            let cn = configuration.server.bestAddress()?.cn {
+            serverAddress = ip
+            serverCN = cn
         }
+
+        let cfg = NETunnelProviderProtocol()
+        cfg.providerBundleIdentifier = bundleIdentifier
+        cfg.serverAddress = serverAddress
+        cfg.username = Client.providers.accountProvider.publicUsername
+        cfg.disconnectOnSleep = configuration.disconnectsOnSleep
+
+        let token = configuration.server.dipUsername != nil ? configuration.server.dipUsername : (Client.providers.accountProvider.vpnToken ?? Client.providers.accountProvider.oldToken)
+        guard let token = token else {
+            throw ClientError.missingWireguardToken
+        }
+
+        cfg.providerConfiguration = [PIAWireguardConfiguration.Keys.token: token,
+                                     PIAWireguardConfiguration.Keys.ping: configuration.server.bestAddress()?.description,
+                                     PIAWireguardConfiguration.Keys.serial: configuration.server.serial,
+                                     PIAWireguardConfiguration.Keys.cn: serverCN,
+                                     PIAWireguardConfiguration.Keys.useIP: true]
+
+        var customCfg = configuration.customConfiguration
+        if let piaCfg = customCfg as? PIAWireguardConfiguration {
+            cfg.providerConfiguration?[PIAWireguardConfiguration.Keys.dnsServers] = piaCfg.customDNSServers
+            cfg.providerConfiguration?[PIAWireguardConfiguration.Keys.packetSize] = piaCfg.packetSize
+        }
+
+        return cfg
     }
     
     // MARK: Helpers

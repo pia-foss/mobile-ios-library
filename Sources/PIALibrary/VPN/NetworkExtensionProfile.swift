@@ -36,7 +36,7 @@ public protocol NetworkExtensionProfile: VPNProfile {
      - Parameter configuration: The `VPNConfiguration` to build the protocol upon.
      - Returns: A native `NEVPNProtocol` object for use with NetworkExtension.
      */
-    func generatedProtocol(withConfiguration configuration: VPNConfiguration) -> NEVPNProtocol
+    func generatedProtocol(withConfiguration configuration: VPNConfiguration) throws -> NEVPNProtocol
 }
 
 @available(tvOS 17.0, *)
@@ -66,7 +66,13 @@ extension NetworkExtensionProfile {
      - Seealso: `NetworkExtensionProfile.generatedProtocol(...)`
      */
     public func doSave(_ vpn: NEVPNManager, withConfiguration configuration: VPNConfiguration, force: Bool, _ callback: SuccessLibraryCallback?) {
-        vpn.protocolConfiguration = generatedProtocol(withConfiguration: configuration)
+        do {
+            vpn.protocolConfiguration = try generatedProtocol(withConfiguration: configuration)
+        } catch {
+            callback?(error)
+            return
+        }
+
         guard let protocolConfiguration = vpn.protocolConfiguration else {
             fatalError("Never provided a configuration?")
         }

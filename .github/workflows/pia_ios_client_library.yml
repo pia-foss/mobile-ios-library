@@ -33,7 +33,7 @@ jobs:
       - name: Test
         run: |
           set -o pipefail
-          xcodebuild -scheme 'PIALibrary' -destination "platform=iOS Simulator,OS=latest,name=iPhone 15"  \
+          xcodebuild -scheme 'PIALibrary' -destination "platform=iOS Simulator,OS=latest,name=iPhone 17 Pro"  \
             -skip-testing:PIALibraryTests/EndpointManagerTests \
             -skip-testing:PIALibraryTests/AccountTests \
             -skip-testing:PIALibraryTests/AccountInfoTests \
